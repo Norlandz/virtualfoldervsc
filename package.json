@@ -1,0 +1,176 @@
+{
+  "name": "virtualfoldervsc",
+  "displayName": "VirtualFolderVsc",
+  "description": "create Virtual Folders in Vscode Panel for Files",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.82.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "// onCommand:vstodo.helloWorld // This activation event can be removed for extensions targeting engine version ^1.75 as VS Code will generate these automatically from your package.json contribution declarations."
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "idVal_virtualFolderTreeView.addEntry",
+        "title": "Add"
+      },
+      {
+        "command": "idVal_virtualFolderTreeView.editEntry",
+        "title": "Edit",
+        "icon": {
+          "light": "resources/light/edit.svg",
+          "dark": "resources/dark/edit.svg"
+        }
+      },
+      {
+        "command": "idVal_virtualFolderTreeView.deleteEntry",
+        "title": "Delete"
+      },
+      {
+        "command": "idVal_virtualFolderTreeView.refreshEntry",
+        "title": "Refresh",
+        "icon": {
+          "light": "resources/light/refresh.svg",
+          "dark": "resources/dark/refresh.svg"
+        }
+      },
+      {
+        "command": "fileExplorer.openFile",
+        "title": "Open File"
+      },
+      {
+        "command": "idVal_virtualFolderTreeView.cmd_cut_FileorfolderNode",
+        "title": "Cut"
+      },
+      {
+        "command": "idVal_virtualFolderTreeView.cmd_paste_FileorfolderNode",
+        "title": "Paste"
+      },
+      {
+        "command": "idVal_virtualFolderTreeView.cmd_save_VirtualFolderStructure",
+        "title": "Save Virtual Folder Structure"
+      },
+      {
+        "command": "idVal_virtualFolderTreeView.cmd_restoreToFactory_VirtualFolderStructure",
+        "title": "Restore to Factory"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "idVal_virtualFolderTreeView.cmd_cut_FileorfolderNode",
+        "// key": "ctrl+x",
+        "// when": "view == idVal_virtualFolderTreeView"
+      },
+      {
+        "command": "idVal_virtualFolderTreeView.cmd_paste_FileorfolderNode",
+        "// key": "ctrl+v",
+        "// when": "view == idVal_virtualFolderTreeView // need remove this, dk why, // but still wont work, cuz no context is passed https://github.com/microsoft/vscode/issues/72442 "
+      }
+    ],
+    "menus": {
+      "view/item/context": [
+        {
+          "command": "idVal_virtualFolderTreeView.addEntry",
+          "when": "view == idVal_virtualFolderTreeView && viewItem == ctxvalueVal_virtualFolder",
+          "group": "inline@4"
+        },
+        {
+          "command": "idVal_virtualFolderTreeView.editEntry",
+          "when": "view == idVal_virtualFolderTreeView && viewItem == ctxvalueVal_virtualFolder",
+          "group": "inline@8"
+        },
+        {
+          "command": "idVal_virtualFolderTreeView.deleteEntry",
+          "when": "view == idVal_virtualFolderTreeView",
+          "group": "inline@12"
+        },
+        {
+          "command": "idVal_virtualFolderTreeView.cmd_cut_FileorfolderNode",
+          "when": "view == idVal_virtualFolderTreeView",
+          "group": "inline@16"
+        },
+        {
+          "command": "idVal_virtualFolderTreeView.cmd_paste_FileorfolderNode",
+          "when": "view == idVal_virtualFolderTreeView",
+          "group": "inline@20"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "idVal_virtualFolderTreeView.refreshEntry",
+          "when": "view == idVal_virtualFolderTreeView",
+          "group": "navigation"
+        }
+      ]
+    },
+    "views": {
+      "idVal_virtualFolderViewContainer": [
+        {
+          "id": "idVal_virtualFolderTreeView",
+          "name": "Virtual Folder 1st FlowPane",
+          "icon": "media/dep.svg",
+          "contextualTitle": "Virtual Folder"
+        }
+      ],
+      "idVal_simpleTestTreeViewContainer": [
+        {
+          "id": "idVal_simpleTestTreeView",
+          "name": "Simple Test Tree View 1st FlowPane",
+          "icon": "media/dep.svg",
+          "contextualTitle": "Simple Test Tree"
+        }
+      ]
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "idVal_virtualFolderViewContainer",
+          "title": "Virtual Folder",
+          "icon": "media/dep.svg"
+        },
+        {
+          "id": "idVal_simpleTestTreeViewContainer",
+          "title": "Simple Test Tree",
+          "icon": "media/dep.svg"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "pnpm run package",
+    "compile": "webpack",
+    "watch": "webpack --watch",
+    "package": "webpack --mode production --devtool hidden-source-map",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "pnpm run compile-tests && pnpm run compile && pnpm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.1",
+    "@types/node": "16.x",
+    "@types/vscode": "^1.82.0",
+    "@typescript-eslint/eslint-plugin": "^6.4.1",
+    "@typescript-eslint/parser": "^6.4.1",
+    "@vscode/test-electron": "^2.3.4",
+    "eslint": "^8.47.0",
+    "glob": "^10.3.3",
+    "mocha": "^10.2.0",
+    "ts-loader": "^9.4.4",
+    "typescript": "^5.1.6",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4",
+    "@types/mkdirp": "^0.5.2",
+    "@types/rimraf": "^2.0.2"
+  },
+  "dependencies": {
+    "mkdirp": "^0.5.1",
+    "rimraf": "^2.6.2"
+  }
+}
