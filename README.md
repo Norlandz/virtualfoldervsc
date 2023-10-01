@@ -1,36 +1,16 @@
 ### Introduction
 
-## Requirements
+- This is a Virtual Folder.
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+  You can create more virtual folders inside. \
+  Then move your workspace (real) files/folders inside \
+  & manage them better inside the Virtual Folder. 
 
-## Extension Settings
+  The underlying (real) files/folders will not be changed \
+  (-- thats what Virtual stands for).
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+- These are Project Folders copied from your current workspace.
 
-For example:
+  You drag files/folders from here into the Virtual Folder.
 
-This extension contributes the following settings:
-
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
+- ![image](https://github.com/Norlandz/virtualfoldervsc/assets/43581880/16703b54-49cc-46cb-909d-dc4f1428e75d)
