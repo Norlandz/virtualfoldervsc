@@ -8,7 +8,7 @@
 		{
 			"name": "Run Extension",
 			"type": "extensionHost",
-			"request": "launch",
+			"request": "launch", // seems like sometimes need to open this launch.json file so the run `npm: watch ` knows where to start ... 
 			"args": [
 				"--extensionDevelopmentPath=${workspaceFolder}"
 			],

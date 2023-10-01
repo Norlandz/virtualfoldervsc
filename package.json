@@ -29,7 +29,8 @@
       },
       {
         "command": "idVal_virtualFolderTreeView.deleteEntry",
-        "title": "Delete"
+        "title": "Delete",
+        "icon": "media/delete.svg"
       },
       {
         "command": "idVal_virtualFolderTreeView.refreshEntry",
@@ -52,12 +53,23 @@
         "title": "Paste"
       },
       {
+        "command": "idVal_virtualFolderTreeView.cmd_print_RootVirtualFolderNode_inJson",
+        "title": "Print Folder Structure",
+        "icon": "media/print.svg"
+      },
+      {
         "command": "idVal_virtualFolderTreeView.cmd_save_VirtualFolderStructure",
-        "title": "Save Virtual Folder Structure"
+        "title": "Save Virtual Folder Structure",
+        "icon": "media/save.svg"
       },
       {
         "command": "idVal_virtualFolderTreeView.cmd_restoreToFactory_VirtualFolderStructure",
-        "title": "Restore to Factory"
+        "title": "Restore to Factory",
+        "icon": "media/restoreToFactory.svg"
+      },
+      {
+        "command": "idVal_virtualFolderTreeView.reloadExtension",
+        "title": "Reload Extension"
       }
     ],
     "keybindings": [
@@ -104,7 +116,22 @@
         {
           "command": "idVal_virtualFolderTreeView.refreshEntry",
           "when": "view == idVal_virtualFolderTreeView",
-          "group": "navigation"
+          "group": "navigation@100"
+        },
+        {
+          "command": "idVal_virtualFolderTreeView.cmd_print_RootVirtualFolderNode_inJson",
+          "when": "view == idVal_virtualFolderTreeView",
+          "group": "navigation@4"
+        },
+        {
+          "command": "idVal_virtualFolderTreeView.cmd_save_VirtualFolderStructure",
+          "when": "view == idVal_virtualFolderTreeView",
+          "group": "navigation@8"
+        },
+        {
+          "command": "idVal_virtualFolderTreeView.cmd_restoreToFactory_VirtualFolderStructure",
+          "when": "view == idVal_virtualFolderTreeView",
+          "group": "navigation@12"
         }
       ]
     },
@@ -153,8 +180,10 @@
     "test": "node ./out/test/runTest.js"
   },
   "devDependencies": {
+    "@types/mkdirp": "^0.5.2",
     "@types/mocha": "^10.0.1",
     "@types/node": "16.x",
+    "@types/rimraf": "^2.0.2",
     "@types/vscode": "^1.82.0",
     "@typescript-eslint/eslint-plugin": "^6.4.1",
     "@typescript-eslint/parser": "^6.4.1",
@@ -165,12 +194,13 @@
     "ts-loader": "^9.4.4",
     "typescript": "^5.1.6",
     "webpack": "^5.88.2",
-    "webpack-cli": "^5.1.4",
-    "@types/mkdirp": "^0.5.2",
-    "@types/rimraf": "^2.0.2"
+    "webpack-cli": "^5.1.4"
   },
   "dependencies": {
+    "class-transformer": "^0.5.1",
+    "flatted": "^3.2.9",
     "mkdirp": "^0.5.1",
+    "reflect-metadata": "^0.1.13",
     "rimraf": "^2.6.2"
   }
 }

@@ -9,49 +9,29 @@ module.exports = require("vscode");
 
 /***/ }),
 /* 2 */
-/***/ ((module) => {
-
-"use strict";
-module.exports = require("fs");
-
-/***/ }),
-/* 3 */
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
 
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.VirtualFolderNodeTypeHolder = exports.VirtualFolderTreeView = void 0;
 const vscode = __webpack_require__(1);
-const path = __webpack_require__(4);
-const fileExplorer = __webpack_require__(5);
+const fileExplorer = __webpack_require__(3);
+const class_transformer_1 = __webpack_require__(26);
+__webpack_require__(44);
 class VirtualFolderTreeView {
-    constructor() {
-        // ;not_helping the indent css bug; , vscode.FileSystemProvider {@¦  // ;not_helping the indent css bug;  private _onDidChangeFile: vscode.EventEmitter<vscode.FileChangeEvent[]>;@¦  // ;not_helping the indent css bug;@¦  // ;not_helping the indent css bug;  constructor() {@¦  // ;not_helping the indent css bug;    this._onDidChangeFile = new vscode.EventEmitter<vscode.FileChangeEvent[]>();@¦  // ;not_helping the indent css bug;  }@¦  // ;not_helping the indent css bug;@¦  // ;not_helping the indent css bug;  get onDidChangeFile(): vscode.Event<vscode.FileChangeEvent[]> {@¦  // ;not_helping the indent css bug;    return this._onDidChangeFile.event;@¦  // ;not_helping the indent css bug;  }@¦  // ;not_helping the indent css bug;@¦  // ;not_helping the indent css bug;  watch(uri: vscode.Uri, options: { recursive: boolean; excludes: string[] }): vscode.Disposable {@¦  // ;not_helping the indent css bug;    const watcher = fs.watch(uri.fsPath, { recursive: options.recursive }, async (event, filename) => {@¦  // ;not_helping the indent css bug;      if (filename) {@¦  // ;not_helping the indent css bug;        const filepath = path.join(uri.fsPath, _.normalizeNFC(filename.toString()));@¦  // ;not_helping the indent css bug;@¦  // ;not_helping the indent css bug;        // TODO support excludes (using minimatch library?)@¦  // ;not_helping the indent css bug;@¦  // ;not_helping the indent css bug;        this._onDidChangeFile.fire([@¦  // ;not_helping the indent css bug;          {@¦  // ;not_helping the indent css bug;            type: event === 'change' ? vscode.FileChangeType.Changed : (await _.exists(filepath)) ? vscode.FileChangeType.Created : vscode.FileChangeType.Deleted,@¦  // ;not_helping the indent css bug;            uri: uri.with({ path: filepath }),@¦  // ;not_helping the indent css bug;          } as vscode.FileChangeEvent,@¦  // ;not_helping the indent css bug;        ]);@¦  // ;not_helping the indent css bug;      }@¦  // ;not_helping the indent css bug;    });@¦  // ;not_helping the indent css bug;@¦  // ;not_helping the indent css bug;    return { dispose: () => watcher.close() };@¦  // ;not_helping the indent css bug;  }@¦  // ;not_helping the indent css bug;@¦  // ;not_helping the indent css bug;  stat(uri: vscode.Uri): vscode.FileStat | Thenable<vscode.FileStat> {@¦  // ;not_helping the indent css bug;    return this._stat(uri.fsPath);@¦  // ;not_helping the indent css bug;  }@¦  // ;not_helping the indent css bug;@¦  // ;not_helping the indent css bug;  async _stat(path: string): Promise<vscode.FileStat> {@¦  // ;not_helping the indent css bug;    return new FileStat(await _.stat(path));@¦  // ;not_helping the indent css bug;  }@¦  // ;not_helping the indent css bug;@¦  // ;not_helping the indent css bug;  readDirectory(uri: vscode.Uri): [string, vscode.FileType][] | Thenable<[string, vscode.FileType][]> {@¦  // ;not_helping the indent css bug;    return this._readDirectory(uri);@¦  // ;not_helping the indent css bug;  }@¦  // ;not_helping the indent css bug;@¦  // ;not_helping the indent css bug;  async _readDirectory(uri: vscode.Uri): Promise<[string, vscode.FileType][]> {@¦  // ;not_helping the indent css bug;    const children = await _.readdir(uri.fsPath);@¦  // ;not_helping the indent css bug;@¦  // ;not_helping the indent css bug;    const result: [string, vscode.FileType][] = [];@¦  // ;not_helping the indent css bug;    for (let i = 0; i < children.length; i++) {@¦  // ;not_helping the indent css bug;      const child = children[i];@¦  // ;not_helping the indent css bug;      const stat = await this._stat(path.join(uri.fsPath, child));@¦  // ;not_helping the indent css bug;      result.push([child, stat.type]);@¦  // ;not_helping the indent css bug;    }@¦  // ;not_helping the indent css bug;@¦  // ;not_helping the indent css bug;    return Promise.resolve(result);@¦  // ;not_helping the indent css bug;  }@¦  // ;not_helping the indent css bug;@¦  // ;not_helping the indent css bug;  createDirectory(uri: vscode.Uri): void | Thenable<void> {@¦  // ;not_helping the indent css bug;    return _.mkdir(uri.fsPath);@¦  // ;not_helping the indent css bug;  }@¦  // ;not_helping the indent css bug;@¦  // ;not_helping the indent css bug;  readFile(uri: vscode.Uri): Uint8Array | Thenable<Uint8Array> {@¦  // ;not_helping the indent css bug;    return _.readfile(uri.fsPath);@¦  // ;not_helping the indent css bug;  }@¦  // ;not_helping the indent css bug;@¦  // ;not_helping the indent css bug;  writeFile(uri: vscode.Uri, content: Uint8Array, options: { create: boolean; overwrite: boolean }): void | Thenable<void> {@¦  // ;not_helping the indent css bug;    return this._writeFile(uri, content, options);@¦  // ;not_helping the indent css bug;  }@¦  // ;not_helping the indent css bug;@¦  // ;not_helping the indent css bug;  async _writeFile(uri: vscode.Uri, content: Uint8Array, options: { create: boolean; overwrite: boolean }): Promise<void> {@¦  // ;not_helping the indent css bug;    const exists = await _.exists(uri.fsPath);@¦  // ;not_helping the indent css bug;    if (!exists) {@¦  // ;not_helping the indent css bug;      if (!options.create) {@¦  // ;not_helping the indent css bug;        throw vscode.FileSystemError.FileNotFound();@¦  // ;not_helping the indent css bug;      }@¦  // ;not_helping the indent css bug;@¦  // ;not_helping the indent css bug;      await _.mkdir(path.dirname(uri.fsPath));@¦  // ;not_helping the indent css bug;    } else {@¦  // ;not_helping the indent css bug;      if (!options.overwrite) {@¦  // ;not_helping the indent css bug;        throw vscode.FileSystemError.FileExists();@¦  // ;not_helping the indent css bug;      }@¦  // ;not_helping the indent css bug;    }@¦  // ;not_helping the indent css bug;@¦  // ;not_helping the indent css bug;    return _.writefile(uri.fsPath, content as Buffer);@¦  // ;not_helping the indent css bug;  }@¦  // ;not_helping the indent css bug;@¦  // ;not_helping the indent css bug;  delete(uri: vscode.Uri, options: { recursive: boolean }): void | Thenable<void> {@¦  // ;not_helping the indent css bug;    if (options.recursive) {@¦  // ;not_helping the indent css bug;      return _.rmrf(uri.fsPath);@¦  // ;not_helping the indent css bug;    }@¦  // ;not_helping the indent css bug;@¦  // ;not_helping the indent css bug;    return _.unlink(uri.fsPath);@¦  // ;not_helping the indent css bug;  }@¦  // ;not_helping the indent css bug;@¦  // ;not_helping the indent css bug;  rename(oldUri: vscode.Uri, newUri: vscode.Uri, options: { overwrite: boolean }): void | Thenable<void> {@¦  // ;not_helping the indent css bug;    return this._rename(oldUri, newUri, options);@¦  // ;not_helping the indent css bug;  }@¦  // ;not_helping the indent css bug;@¦  // ;not_helping the indent css bug;  async _rename(oldUri: vscode.Uri, newUri: vscode.Uri, options: { overwrite: boolean }): Promise<void> {@¦  // ;not_helping the indent css bug;    const exists = await _.exists(newUri.fsPath);@¦  // ;not_helping the indent css bug;    if (exists) {@¦  // ;not_helping the indent css bug;      if (!options.overwrite) {@¦  // ;not_helping the indent css bug;        throw vscode.FileSystemError.FileExists();@¦  // ;not_helping the indent css bug;      } else {@¦  // ;not_helping the indent css bug;        await _.rmrf(newUri.fsPath);@¦  // ;not_helping the indent css bug;      }@¦  // ;not_helping the indent css bug;    }@¦  // ;not_helping the indent css bug;@¦  // ;not_helping the indent css bug;    const parentExists = await _.exists(path.dirname(newUri.fsPath));@¦  // ;not_helping the indent css bug;    if (!parentExists) {@¦  // ;not_helping the indent css bug;      await _.mkdir(path.dirname(newUri.fsPath));@¦  // ;not_helping the indent css bug;    }@¦  // ;not_helping the indent css bug;@¦  // ;not_helping the indent css bug;    return _.rename(oldUri.fsPath, newUri.fsPath);@¦  // ;not_helping the indent css bug;  }
-        this.nodeRoot = new VirtualFolderNodeTypeHolder('root VirtualFolderNode', vscode.TreeItemCollapsibleState.Expanded);
-        // /**
-        //  * @deprecated better private not public...
-        //  */
-        this.fileSystemProvider = new fileExplorer.FileSystemProvider();
-        // ####
-        // ~~~// dk how that event works .. but wel
-        // 	export interface TreeDataProvider<T> {
-        // 		/**
-        // 		 * An optional event to signal that an element or root has changed.
-        // 		 * This will trigger the view to update the changed element/root and its children recursively (if shown).
-        // 		 * To signal that root has changed, do not pass any argument or pass `undefined` or `null`.
-        // 		 */
-        // 		onDidChangeTreeData?: Event<T | T[] | undefined | null | void>;
-        // ~~~// but the syntax ... is this how it impl well ok interface ok
-        // em that manual refresh every time ...
-        this._onDidChangeTreeData = new vscode.EventEmitter();
-        this.onDidChangeTreeData = this._onDidChangeTreeData.event;
-    }
+    // ;not_helping the indent css bug; , vscode.FileSystemProvider {@¦  // ;not_helping the indent css bug;  private _onDidChangeFile: vscode.EventEmitter<vscode.FileChangeEvent[]>;@¦  // ;not_helping the indent css bug;@¦  // ;not_helping the indent css bug;  constructor() {@¦  // ;not_helping the indent css bug;    this._onDidChangeFile = new vscode.EventEmitter<vscode.FileChangeEvent[]>();@¦  // ;not_helping the indent css bug;  }@¦  // ;not_helping the indent css bug;@¦  // ;not_helping the indent css bug;  get onDidChangeFile(): vscode.Event<vscode.FileChangeEvent[]> {@¦  // ;not_helping the indent css bug;    return this._onDidChangeFile.event;@¦  // ;not_helping the indent css bug;  }@¦  // ;not_helping the indent css bug;@¦  // ;not_helping the indent css bug;  watch(uri: vscode.Uri, options: { recursive: boolean; excludes: string[] }): vscode.Disposable {@¦  // ;not_helping the indent css bug;    const watcher = fs.watch(uri.fsPath, { recursive: options.recursive }, async (event, filename) => {@¦  // ;not_helping the indent css bug;      if (filename) {@¦  // ;not_helping the indent css bug;        const filepath = path.join(uri.fsPath, _.normalizeNFC(filename.toString()));@¦  // ;not_helping the indent css bug;@¦  // ;not_helping the indent css bug;        // TODO support excludes (using minimatch library?)@¦  // ;not_helping the indent css bug;@¦  // ;not_helping the indent css bug;        this._onDidChangeFile.fire([@¦  // ;not_helping the indent css bug;          {@¦  // ;not_helping the indent css bug;            type: event === 'change' ? vscode.FileChangeType.Changed : (await _.exists(filepath)) ? vscode.FileChangeType.Created : vscode.FileChangeType.Deleted,@¦  // ;not_helping the indent css bug;            uri: uri.with({ path: filepath }),@¦  // ;not_helping the indent css bug;          } as vscode.FileChangeEvent,@¦  // ;not_helping the indent css bug;        ]);@¦  // ;not_helping the indent css bug;      }@¦  // ;not_helping the indent css bug;    });@¦  // ;not_helping the indent css bug;@¦  // ;not_helping the indent css bug;    return { dispose: () => watcher.close() };@¦  // ;not_helping the indent css bug;  }@¦  // ;not_helping the indent css bug;@¦  // ;not_helping the indent css bug;  stat(uri: vscode.Uri): vscode.FileStat | Thenable<vscode.FileStat> {@¦  // ;not_helping the indent css bug;    return this._stat(uri.fsPath);@¦  // ;not_helping the indent css bug;  }@¦  // ;not_helping the indent css bug;@¦  // ;not_helping the indent css bug;  async _stat(path: string): Promise<vscode.FileStat> {@¦  // ;not_helping the indent css bug;    return new FileStat(await _.stat(path));@¦  // ;not_helping the indent css bug;  }@¦  // ;not_helping the indent css bug;@¦  // ;not_helping the indent css bug;  readDirectory(uri: vscode.Uri): [string, vscode.FileType][] | Thenable<[string, vscode.FileType][]> {@¦  // ;not_helping the indent css bug;    return this._readDirectory(uri);@¦  // ;not_helping the indent css bug;  }@¦  // ;not_helping the indent css bug;@¦  // ;not_helping the indent css bug;  async _readDirectory(uri: vscode.Uri): Promise<[string, vscode.FileType][]> {@¦  // ;not_helping the indent css bug;    const children = await _.readdir(uri.fsPath);@¦  // ;not_helping the indent css bug;@¦  // ;not_helping the indent css bug;    const result: [string, vscode.FileType][] = [];@¦  // ;not_helping the indent css bug;    for (let i = 0; i < children.length; i++) {@¦  // ;not_helping the indent css bug;      const child = children[i];@¦  // ;not_helping the indent css bug;      const stat = await this._stat(path.join(uri.fsPath, child));@¦  // ;not_helping the indent css bug;      result.push([child, stat.type]);@¦  // ;not_helping the indent css bug;    }@¦  // ;not_helping the indent css bug;@¦  // ;not_helping the indent css bug;    return Promise.resolve(result);@¦  // ;not_helping the indent css bug;  }@¦  // ;not_helping the indent css bug;@¦  // ;not_helping the indent css bug;  createDirectory(uri: vscode.Uri): void | Thenable<void> {@¦  // ;not_helping the indent css bug;    return _.mkdir(uri.fsPath);@¦  // ;not_helping the indent css bug;  }@¦  // ;not_helping the indent css bug;@¦  // ;not_helping the indent css bug;  readFile(uri: vscode.Uri): Uint8Array | Thenable<Uint8Array> {@¦  // ;not_helping the indent css bug;    return _.readfile(uri.fsPath);@¦  // ;not_helping the indent css bug;  }@¦  // ;not_helping the indent css bug;@¦  // ;not_helping the indent css bug;  writeFile(uri: vscode.Uri, content: Uint8Array, options: { create: boolean; overwrite: boolean }): void | Thenable<void> {@¦  // ;not_helping the indent css bug;    return this._writeFile(uri, content, options);@¦  // ;not_helping the indent css bug;  }@¦  // ;not_helping the indent css bug;@¦  // ;not_helping the indent css bug;  async _writeFile(uri: vscode.Uri, content: Uint8Array, options: { create: boolean; overwrite: boolean }): Promise<void> {@¦  // ;not_helping the indent css bug;    const exists = await _.exists(uri.fsPath);@¦  // ;not_helping the indent css bug;    if (!exists) {@¦  // ;not_helping the indent css bug;      if (!options.create) {@¦  // ;not_helping the indent css bug;        throw vscode.FileSystemError.FileNotFound();@¦  // ;not_helping the indent css bug;      }@¦  // ;not_helping the indent css bug;@¦  // ;not_helping the indent css bug;      await _.mkdir(path.dirname(uri.fsPath));@¦  // ;not_helping the indent css bug;    } else {@¦  // ;not_helping the indent css bug;      if (!options.overwrite) {@¦  // ;not_helping the indent css bug;        throw vscode.FileSystemError.FileExists();@¦  // ;not_helping the indent css bug;      }@¦  // ;not_helping the indent css bug;    }@¦  // ;not_helping the indent css bug;@¦  // ;not_helping the indent css bug;    return _.writefile(uri.fsPath, content as Buffer);@¦  // ;not_helping the indent css bug;  }@¦  // ;not_helping the indent css bug;@¦  // ;not_helping the indent css bug;  delete(uri: vscode.Uri, options: { recursive: boolean }): void | Thenable<void> {@¦  // ;not_helping the indent css bug;    if (options.recursive) {@¦  // ;not_helping the indent css bug;      return _.rmrf(uri.fsPath);@¦  // ;not_helping the indent css bug;    }@¦  // ;not_helping the indent css bug;@¦  // ;not_helping the indent css bug;    return _.unlink(uri.fsPath);@¦  // ;not_helping the indent css bug;  }@¦  // ;not_helping the indent css bug;@¦  // ;not_helping the indent css bug;  rename(oldUri: vscode.Uri, newUri: vscode.Uri, options: { overwrite: boolean }): void | Thenable<void> {@¦  // ;not_helping the indent css bug;    return this._rename(oldUri, newUri, options);@¦  // ;not_helping the indent css bug;  }@¦  // ;not_helping the indent css bug;@¦  // ;not_helping the indent css bug;  async _rename(oldUri: vscode.Uri, newUri: vscode.Uri, options: { overwrite: boolean }): Promise<void> {@¦  // ;not_helping the indent css bug;    const exists = await _.exists(newUri.fsPath);@¦  // ;not_helping the indent css bug;    if (exists) {@¦  // ;not_helping the indent css bug;      if (!options.overwrite) {@¦  // ;not_helping the indent css bug;        throw vscode.FileSystemError.FileExists();@¦  // ;not_helping the indent css bug;      } else {@¦  // ;not_helping the indent css bug;        await _.rmrf(newUri.fsPath);@¦  // ;not_helping the indent css bug;      }@¦  // ;not_helping the indent css bug;    }@¦  // ;not_helping the indent css bug;@¦  // ;not_helping the indent css bug;    const parentExists = await _.exists(path.dirname(newUri.fsPath));@¦  // ;not_helping the indent css bug;    if (!parentExists) {@¦  // ;not_helping the indent css bug;      await _.mkdir(path.dirname(newUri.fsPath));@¦  // ;not_helping the indent css bug;    }@¦  // ;not_helping the indent css bug;@¦  // ;not_helping the indent css bug;    return _.rename(oldUri.fsPath, newUri.fsPath);@¦  // ;not_helping the indent css bug;  }
     // ########################
     // ########################
     // ########################
     getTreeItem(node) {
-        console.log(`>> getTreeItem() ${node}`);
+        // console.log(`>> getTreeItem() ${node}`);
         // // ~~~//copied-from fileExplorer
         // function getTreeItem_fileExplorer_static(element: fileExplorer.Entry): vscode.TreeItem {
         //   const treeItem = new vscode.TreeItem(element.uri, element.type === vscode.FileType.Directory ? vscode.TreeItemCollapsibleState.Collapsed : vscode.TreeItemCollapsibleState.None);
@@ -139,15 +119,63 @@ class VirtualFolderTreeView {
     // // seems only have Static initialization blocks, not instance initialization block typescript ...
     // constructor() {
     // } // maybe better regi in extention ...
-    // /**
-    //  * for persistance & restore only
-    //  * @param nodeRoot
-    //  */
-    // constructor(nodeRoot?: VirtualFolderNodeTypeHolder) {
-    //   if (nodeRoot !== undefined) {
-    //     this.nodeRoot = nodeRoot;
-    //   }
-    // }
+    /**
+     * for persistance & restore only
+     * @param nodeRoot
+     */
+    constructor(nodeRoot) {
+        this.nodeRoot = new VirtualFolderNodeTypeHolder('root VirtualFolderNode', vscode.TreeItemCollapsibleState.Expanded);
+        // /**
+        //  * @deprecated better private not public...
+        //  */
+        this.fileSystemProvider = new fileExplorer.FileSystemProvider();
+        // ########################
+        // ~~~// dk how that event works .. but wel
+        // 	export interface TreeDataProvider<T> {
+        // 		/**
+        // 		 * An optional event to signal that an element or root has changed.
+        // 		 * This will trigger the view to update the changed element/root and its children recursively (if shown).
+        // 		 * To signal that root has changed, do not pass any argument or pass `undefined` or `null`.
+        // 		 */
+        // 		onDidChangeTreeData?: Event<T | T[] | undefined | null | void>;
+        // ~~~// but the syntax ... is this how it impl well ok interface ok
+        // em that manual refresh every time ...
+        this._onDidChangeTreeData = new vscode.EventEmitter();
+        this.onDidChangeTreeData = this._onDidChangeTreeData.event;
+        // ########################
+        // ########################
+        // ########################
+        // What is the purpose of dragMimeTypes? · Issue #145907 · microsoft/vscode
+        // https://github.com/microsoft/vscode/issues/145907
+        //
+        // How to understand Drag and Drop MIME types ? | Qt Forum
+        // https://forum.qt.io/topic/11160/how-to-understand-drag-and-drop-mime-types
+        //
+        // MIME types (IANA media types) - HTTP | MDN
+        // https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_Types
+        //
+        // Chapter 4. Metadata Design
+        // file:///H:/Book/debug/RestApiRule/oebps/ch04.html#type_____subtype________parameter__
+        //
+        // Custom mimetypes (MIME types) — Jupyter Documentation 4.1.1 alpha documentation
+        // https://docs.jupyter.org/en/latest/reference/mimetype.html
+        //
+        // vscode extensions - Is it possible to drag & drop between custom VS Code tree views? - Stack Overflow
+        // https://stackoverflow.com/questions/72055681/is-it-possible-to-drag-drop-between-custom-vs-code-tree-views
+        //
+        // ~~~// missing_details dk how that custom works hum // also the auto set .. em
+        this.dragMimeTypes = ['application/vnd.code.tree.idval_virtualfoldertreeview']; // , 'text/uri-list'];
+        this.dropMimeTypes = ['application/vnd.code.tree.idval_virtualfoldertreeview'];
+        // TODO allow drop from Window FileSystem ... -- so any file
+        this.arr_node_Clipped = [];
+        /**
+         * must pass in before drag & drop
+         */
+        this.refreshView_and_saveNodeStructure__import_messy = null; // @messy
+        if (nodeRoot !== undefined) {
+            this.nodeRoot = nodeRoot;
+        }
+    }
     async getChildren(node) {
         if (node === undefined) {
             // ;;Ma const node_root = VirtualFolderNodeTypeHolder.initVirtualFolder('root VirtualFolderNode', vscode.TreeItemCollapsibleState.Expanded);
@@ -190,42 +218,42 @@ class VirtualFolderTreeView {
             // ;test;      // <>
             // ;test;      // https://stackoverflow.com/questions/51961457/how-to-get-file-name-or-path-in-vscode-extension-when-user-right-click-on-file-i
             // ;test;
-            // ;debug,test;
-            // ;debug,test;      this.nodeRoot.addChildNode(
-            // ;debug,test;        new VirtualFolderNodeTypeHolder(
-            // ;debug,test;          'Lv2 RealFileNode Test', //
-            // ;debug,test;          vscode.TreeItemCollapsibleState.Expanded,
-            // ;debug,test;          {
-            // ;debug,test;            uri: vscode.Uri.file('h:\\Using\\JsParserSub\\src'),
-            // ;debug,test;            type: vscode.FileType.Directory,
-            // ;debug,test;          }
-            // ;debug,test;        )
-            // ;debug,test;      );
-            // ;debug,test;
-            // ;debug,test;      this.nodeRoot.addChildNode(
-            // ;debug,test;        new VirtualFolderNodeTypeHolder(
-            // ;debug,test;          'Lv2 RealFileNode Test', //
-            // ;debug,test;          vscode.TreeItemCollapsibleState.None, // that proves is not related to this pb then ..
-            // ;debug,test;          {
-            // ;debug,test;            uri: vscode.Uri.file('h:\\Using\\JsParserSub\\tsconfig.json'),
-            // ;debug,test;            type: vscode.FileType.File,
-            // ;debug,test;          }
-            // ;debug,test;        )
-            // ;debug,test;      );
-            // ;debug,test;
-            // ;debug,test;      this.nodeRoot.addChildNode(
-            // ;debug,test;        new VirtualFolderNodeTypeHolder(
-            // ;debug,test;          'Lv2 VirtualFileNode Test', //
-            // ;debug,test;          vscode.TreeItemCollapsibleState.None
-            // ;debug,test;        )
-            // ;debug,test;      );
-            // ;debug,test;
-            // ;debug,test;      this.nodeRoot.addChildNode(
-            // ;debug,test;        new VirtualFolderNodeTypeHolder(
-            // ;debug,test;          'Lv2 VirtualFileNode Collapsed Test', //
-            // ;debug,test;          vscode.TreeItemCollapsibleState.Collapsed
-            // ;debug,test;        )
-            // ;debug,test;      );
+            //
+            //  this.nodeRoot.addChildNode(
+            //    new VirtualFolderNodeTypeHolder(
+            //      'Lv2 RealFileNode Test', //
+            //      vscode.TreeItemCollapsibleState.Expanded,
+            //      {
+            //        uri: vscode.Uri.file('h:\\Using\\JsParserSub\\src'),
+            //        type: vscode.FileType.Directory,
+            //      }
+            //    )
+            //  );
+            //
+            //  this.nodeRoot.addChildNode(
+            //    new VirtualFolderNodeTypeHolder(
+            //      'Lv2 RealFileNode Test', //
+            //      vscode.TreeItemCollapsibleState.None, // that proves is not related to this pb then ..
+            //      {
+            //        uri: vscode.Uri.file('h:\\Using\\JsParserSub\\tsconfig.json'),
+            //        type: vscode.FileType.File,
+            //      }
+            //    )
+            //  );
+            //
+            //  this.nodeRoot.addChildNode(
+            //    new VirtualFolderNodeTypeHolder(
+            //      'Lv2 VirtualFileNode Test', //
+            //      vscode.TreeItemCollapsibleState.None
+            //    )
+            //  );
+            //
+            //  this.nodeRoot.addChildNode(
+            //    new VirtualFolderNodeTypeHolder(
+            //      'Lv2 VirtualFileNode Collapsed Test', //
+            //      vscode.TreeItemCollapsibleState.Collapsed
+            //    )
+            //  );
             // ~~~//copied-modified-from fileExplorer // @messy
             async function getWorkspaceFolders() {
                 if (vscode.workspace.workspaceFolders !== undefined) {
@@ -296,6 +324,150 @@ class VirtualFolderTreeView {
     refresh() {
         this._onDidChangeTreeData.fire();
     }
+    // do I need async?
+    handleDrag(source, dataTransfer, token) {
+        // console.log('>> handleDrag()');
+        // ;M; // can be an array.... not_sure
+        // ;M; const nodeJsobj_Source = instanceToPlain(source, {
+        // ;M;   enableCircularCheck: true,
+        // ;M; });
+        // ;M; dataTransfer.set('application/vnd.code.tree.idval_virtualfoldertreeview', new vscode.DataTransferItem(nodeJsobj_Source));
+        // javascript - Copy array by value - Stack Overflow
+        // https://stackoverflow.com/questions/7486085/copy-array-by-value
+        //
+        // How to extend an existing JavaScript array with another array, without creating a new array - Stack Overflow
+        // https://stackoverflow.com/questions/1374126/how-to-extend-an-existing-javascript-array-with-another-array-without-creating
+        // ~~~~// been ..
+        // feels hacky... & cannot handle other kinds of drop .. @messy
+        this.arr_node_Clipped.length = 0;
+        this.arr_node_Clipped.push(...source);
+        // when cancel, the old move ones are still in side .. seems this is by design which is bad .. need cancellation
+        // []
+        //       customCancellationToken.token.onCancellationRequested(() => {
+        //         customCancellationToken?.dispose();
+        //         customCancellationToken = null;
+        // <>
+        // https://www.eliostruyf.com/cancel-progress-programmatically-visual-studio-code-extensions/
+        // @check //;not_working; maybe just clear everytime before ... 
+        token.onCancellationRequested(() => {
+            console.log('>> token.onCancellationRequested()');
+            this.arr_node_Clipped.length = 0;
+        });
+    }
+    // @duplicated_code @messy -- type conversion is very Unsafe ...
+    handleDrop(target, dataTransfer, token) {
+        // console.log('>> handleDrop()');
+        // token.onCancellationRequested(() => {
+        //   this.arr_node_Clipped.length = 0;
+        // });
+        // "token.onCancellationRequested is not a function"
+        // console.log(token)
+        // ~~~// ? no idea but only that is accessible , is that how its used ? ...
+        // @check //;not_working; maybe just clear everytime before ... 
+        if (token.isCancellationRequested) {
+            console.log('>> token.isCancellationRequested');
+            this.arr_node_Clipped.length = 0;
+            return;
+        }
+        if (target === undefined) {
+            this.arr_node_Clipped.length = 0;
+            throw new TypeError();
+        }
+        else if (target instanceof VirtualFolderNodeTypeHolder) {
+            // ;M; const transferItem = dataTransfer.get('application/vnd.code.tree.idval_virtualfoldertreeview');
+            // ;M; if (!transferItem) {
+            // ;M;   return;
+            // ;M; }
+            // ;M; const treeItems = transferItem.value; // @check @pb so this is an array? but then convert before can screw up things, ; dk those auto convert hum ...
+            // ;M; console.log(treeItems);
+            // ;M; for (const treeItem of treeItems) {
+            // ;M;   if ((treeItem as VirtualFolderNodeTypeHolder).realFileExplorerEntry !== undefined) {
+            // ;M;     // if (treeItem instanceof VirtualFolderNodeTypeHolder) {
+            // ;M;     const treeItem_VF = plainToInstance(VirtualFolderNodeTypeHolder, treeItem as { length?: never }, {
+            // ;M;       enableCircularCheck: true,
+            // ;M;     });
+            // ;M;     target.addChildNode(treeItem_VF);
+            // ;M;     this.refresh();
+            // ;M;     // @pb: this cannot remove the old instance ... because this is after serialization ..
+            // ;M;     // @pb //? why cut paste fileExplorer.Entry is able to be removed from old parent? ...
+            // ;M;     //   // that chekc just hard... cache pb & session scope , serialization will trigger this too ... just bad that drag drop ... -- its not actually passing the instance hum ..
+            // ;M;     //   // well, maybe just one time array -- dont persist and check again ...
+            // ;M;     //   private mpp__uuid_vs_virtualFolderNodeTypeHolder = new Map<string, VirtualFolderNodeTypeHolder>();
+            // ;M;     // that duplicate of code just no going back ....
+            // ;M;   } else if ((treeItem as fileExplorer.Entry).uri !== undefined) {
+            // ;M;     // aga dk if classtransform has better handle on mixed type
+            // ;M;     function convertTo_FileExplorerEntry(item_convertFrom: any): fileExplorer.Entry | null {
+            // ;M;       const value = item_convertFrom as fileExplorer.Entry;
+            // ;M;       if (value === undefined) {
+            // ;M;         throw new TypeError('realFileExplorerEntry cannot be undefined');
+            // ;M;       }
+            // ;M;       if (value !== null) {
+            // ;M;         return {
+            // ;M;           uri: vscode.Uri.file(value.uri.path),
+            // ;M;           type: value.type,
+            // ;M;         };
+            // ;M;       } else {
+            // ;M;         return null;
+            // ;M;       }
+            // ;M;     }
+            // ;M;     const treeItem_RF = convertTo_FileExplorerEntry(treeItem);
+            // ;M;     if (treeItem_RF === null) {
+            // ;M;       throw new TypeError();
+            // ;M;     }
+            // ;M;     let state_CollapsedOr = vscode.TreeItemCollapsibleState.Collapsed;
+            // ;M;     if (treeItem_RF.type === vscode.FileType.Directory) {
+            // ;M;       state_CollapsedOr = vscode.TreeItemCollapsibleState.Collapsed;
+            // ;M;     } else if (treeItem_RF.type === vscode.FileType.File) {
+            // ;M;       state_CollapsedOr = vscode.TreeItemCollapsibleState.None;
+            // ;M;     } else {
+            // ;M;       throw new TypeError();
+            // ;M;     }
+            // ;M;     target.addChildNode(new VirtualFolderNodeTypeHolder(null, state_CollapsedOr, treeItem_RF));
+            // ;M;     this.refresh();
+            // ;M;   } else {
+            // ;M;     throw new TypeError();
+            // ;M;   }
+            // ;M; }
+            for (const node_Clipped of this.arr_node_Clipped) {
+                if (node_Clipped instanceof VirtualFolderNodeTypeHolder) {
+                    if (target.realFileExplorerEntry === null) {
+                        target.addChildNode(node_Clipped);
+                    }
+                    else {
+                        // TODO if drop at a real file, its gone ....  
+                        console.error('Target is fileExplorer.Entry, cannot drop.');
+                    }
+                }
+                else if (node_Clipped.uri !== undefined) {
+                    let state_CollapsedOr = vscode.TreeItemCollapsibleState.Collapsed;
+                    if (node_Clipped.type === vscode.FileType.Directory) {
+                        state_CollapsedOr = vscode.TreeItemCollapsibleState.Collapsed;
+                    }
+                    else if (node_Clipped.type === vscode.FileType.File) {
+                        state_CollapsedOr = vscode.TreeItemCollapsibleState.None;
+                    }
+                    else {
+                        throw new TypeError();
+                    }
+                    target.addChildNode(new VirtualFolderNodeTypeHolder(null, state_CollapsedOr, node_Clipped));
+                }
+                else {
+                    throw new TypeError();
+                }
+            }
+            this.arr_node_Clipped.length = 0;
+            // this.refresh(); // must call save too ... 
+            this.refreshView_and_saveNodeStructure__import_messy();
+        }
+        else if (target.uri !== undefined) {
+            this.arr_node_Clipped.length = 0;
+            console.error('Targe is fileExplorer.Entry, cannot drop.');
+        }
+        else {
+            this.arr_node_Clipped.length = 0;
+            throw new TypeError();
+        }
+    }
 }
 exports.VirtualFolderTreeView = VirtualFolderTreeView;
 /**
@@ -317,16 +489,21 @@ exports.VirtualFolderTreeView = VirtualFolderTreeView;
 class VirtualFolderNodeTypeHolder extends vscode.TreeItem {
     constructor(name, collapsibleState, realFileExplorerEntry) {
         // fix name when null
-        if (name === null) {
-            if (realFileExplorerEntry !== undefined) {
-                name = realFileExplorerEntry.uri.fsPath;
+        {
+            if (name === null) {
+                if (realFileExplorerEntry !== undefined) {
+                    name = realFileExplorerEntry.uri.fsPath;
+                }
+                else {
+                    throw new Error('name cannot be null');
+                }
             }
             else {
-                throw new Error('name cannot be null');
+                if (realFileExplorerEntry !== undefined) {
+                    name = realFileExplorerEntry.uri.fsPath + ' - ' + name; // cant use 📁 hum ..
+                }
+                // if pure file -- it will just pass to as fileExplorer.Entry, will not be here
             }
-        }
-        if (realFileExplorerEntry !== undefined) {
-            name = realFileExplorerEntry.uri.fsPath + ' - ' + name;
         }
         //
         super(name, collapsibleState);
@@ -338,20 +515,25 @@ class VirtualFolderNodeTypeHolder extends vscode.TreeItem {
          * - cannot coexit virtual folder & real file
          *   -- real file wil take over
          */
+        // ;X @Transform((tinfo) => plainToInstance(VirtualFolderNodeTypeHolder, tinfo.value))
+        // @Type(() => fileExplorer.Entry)
         this.realFileExplorerEntry = null;
         // ############
         // Context value of the tree item. This can be used to contribute item specific actions in the tree. For example, a tree item is given a context value as folder. When contributing actions to view/item/context using menus extension point, you can specify context value for key viewItem in when expression like viewItem == folder.
         // ~~~// still arg passing dk
         this.contextValue = 'ctxvalueVal_virtualFolder';
-        this.iconPath = {
-            light: path.join(__filename, '..', '..', 'resources', 'light', 'dependency.svg'),
-            dark: path.join(__filename, '..', '..', 'resources', 'dark', 'dependency.svg'),
-        };
+        // super(vscode.Uri.file('/v/fake'), collapsibleState);
+        // super(vscode.Uri.file('H:/Using/JsParserSub'), collapsibleState);
         this.virtualFolderNode = new VirtualFolderNode(name);
         if (realFileExplorerEntry !== undefined) {
             this.realFileExplorerEntry = realFileExplorerEntry;
             // seems no right side Nullish coalescing assignment? ... . can add, but those syntax sugar just mess things
         }
+        // @pb[folder with icon cause file with large ident] } else {
+        // @pb[folder with icon cause file with large ident]   this.iconPath = {
+        // @pb[folder with icon cause file with large ident]     light: path.join(__filename, '..', '..', 'resources', 'light', 'dependency.svg'),
+        // @pb[folder with icon cause file with large ident]     dark: path.join(__filename, '..', '..', 'resources', 'dark', 'dependency.svg'),
+        // @pb[folder with icon cause file with large ident]   };
     }
     // 2 cstu init method removed
     // ############
@@ -399,6 +581,66 @@ class VirtualFolderNodeTypeHolder extends vscode.TreeItem {
     }
 }
 exports.VirtualFolderNodeTypeHolder = VirtualFolderNodeTypeHolder;
+__decorate([
+    (0, class_transformer_1.Type)(() => VirtualFolderNode)
+], VirtualFolderNodeTypeHolder.prototype, "virtualFolderNode", void 0);
+__decorate([
+    (0, class_transformer_1.Transform)((tinfo) => {
+        // console.log('>> @Transform((tinfo) => ');
+        // console.log(tinfo);
+        // console.log(JSON.stringify(tinfo, null, 2));
+        // // key: "realFileExplorerEntry"
+        // // obj:
+        // //   collapsibleState: 2
+        // //   contextValue: "ctxvalueVal_virtualFolder"
+        // //   label: "root VirtualFolderNode"
+        // //   realFileExplorerEntry: null
+        // //   virtualFolderNode: {arr_node_child: Array(4), node_parent: null, name: 'root VirtualFolderNode'}
+        // //   [[Prototype]]: Object
+        // // options: {enableCircularCheck: true, enableImplicitConversion: false, excludeExtraneousValues: false, exposeDefaultValues: false, exposeUnsetFields: true, …}
+        // // type: 0
+        // // value: null
+        //    // if (tinfo.type === PLAIN_TO_CLASS) {
+        // if (tinfo.key === 'uri') {
+        //   return vscode.Uri.file((tinfo.value as vscode.Uri).path);
+        // } else if (tinfo.key === 'type') {
+        //   return tinfo.value as vscode.FileType;
+        // } else {
+        //   throw new TypeError();
+        // }
+        //
+        // const obj = tinfo.obj as VirtualFolderNodeTypeHolder;
+        // if (obj.realFileExplorerEntry === undefined) {
+        //   throw new Error('realFileExplorerEntry cannot be undefined');
+        // }
+        // if (obj.realFileExplorerEntry !== null) {
+        //   console.error('ssssssssss')
+        //   console.log(obj.realFileExplorerEntry)
+        //   return {
+        //     uri: vscode.Uri.file(obj.realFileExplorerEntry.uri.path),
+        //     type: obj.realFileExplorerEntry.type,
+        //   };
+        // }
+        // // just use the value ... -- yes ok indeed is that -- this seems the whole obj em (well should works though .. idk )
+        // ;wrong; [cannot add this, else the fileExplorer.Entry is wrong converted & no icon] if (tinfo.type === TransformationType.PLAIN_TO_CLASS) {
+        // ~~~// maybe this is reverse direction in reverse process , hum ...
+        const value = tinfo.value;
+        if (value === undefined) {
+            throw new TypeError('realFileExplorerEntry cannot be undefined');
+        }
+        if (value !== null) {
+            return {
+                uri: vscode.Uri.file(value.uri.path),
+                type: value.type,
+            };
+        }
+        else {
+            return null;
+        }
+        // `} else {       return null;     }` this welll ..
+        // `@Transform((tinfo): fileExplorer.Entry | null => {` seems cannot, cuz other way transformation
+    })
+], VirtualFolderNodeTypeHolder.prototype, "realFileExplorerEntry", void 0);
 class VirtualFolderNode {
     constructor(name) {
         this.arr_node_child = [];
@@ -406,17 +648,16 @@ class VirtualFolderNode {
         this.name = name;
     }
 }
+__decorate([
+    (0, class_transformer_1.Type)(() => VirtualFolderNodeTypeHolder)
+], VirtualFolderNode.prototype, "arr_node_child", void 0);
+__decorate([
+    (0, class_transformer_1.Type)(() => VirtualFolderNodeTypeHolder)
+], VirtualFolderNode.prototype, "node_parent", void 0);
 
 
 /***/ }),
-/* 4 */
-/***/ ((module) => {
-
-"use strict";
-module.exports = require("path");
-
-/***/ }),
-/* 5 */
+/* 3 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -426,7 +667,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.FileExplorer = exports.FileSystemProvider = exports.FileStat = void 0;
 const vscode = __webpack_require__(1);
 const path = __webpack_require__(4);
-const fs = __webpack_require__(2);
+const fs = __webpack_require__(5);
 const mkdirp = __webpack_require__(6);
 const rimraf = __webpack_require__(7);
 //#region Utilities
@@ -685,11 +926,25 @@ exports.FileExplorer = FileExplorer;
 
 
 /***/ }),
+/* 4 */
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("path");
+
+/***/ }),
+/* 5 */
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("fs");
+
+/***/ }),
 /* 6 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 var path = __webpack_require__(4);
-var fs = __webpack_require__(2);
+var fs = __webpack_require__(5);
 var _0777 = parseInt('0777', 8);
 
 module.exports = mkdirP.mkdirp = mkdirP.mkdirP = mkdirP;
@@ -797,7 +1052,7 @@ rimraf.sync = rimrafSync
 
 var assert = __webpack_require__(8)
 var path = __webpack_require__(4)
-var fs = __webpack_require__(2)
+var fs = __webpack_require__(5)
 var glob = __webpack_require__(9)
 var _0666 = parseInt('666', 8)
 
@@ -1969,7 +2224,7 @@ realpath.realpathSync = realpathSync
 realpath.monkeypatch = monkeypatch
 realpath.unmonkeypatch = unmonkeypatch
 
-var fs = __webpack_require__(2)
+var fs = __webpack_require__(5)
 var origRealpath = fs.realpath
 var origRealpathSync = fs.realpathSync
 
@@ -2057,7 +2312,7 @@ function unmonkeypatch () {
 
 var pathModule = __webpack_require__(4);
 var isWindows = process.platform === 'win32';
-var fs = __webpack_require__(2);
+var fs = __webpack_require__(5);
 
 // JavaScript implementation of realpath, ported from node pre-v6
 
@@ -4181,7 +4436,7 @@ function ownProp (obj, field) {
   return Object.prototype.hasOwnProperty.call(obj, field)
 }
 
-var fs = __webpack_require__(2)
+var fs = __webpack_require__(5)
 var path = __webpack_require__(4)
 var minimatch = __webpack_require__(12)
 var isAbsolute = __webpack_require__(20)
@@ -4554,6 +4809,2439 @@ function onceStrict (fn) {
 }
 
 
+/***/ }),
+/* 26 */
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ClassTransformer: () => (/* reexport safe */ _ClassTransformer__WEBPACK_IMPORTED_MODULE_0__.ClassTransformer),
+/* harmony export */   Exclude: () => (/* reexport safe */ _decorators__WEBPACK_IMPORTED_MODULE_1__.Exclude),
+/* harmony export */   Expose: () => (/* reexport safe */ _decorators__WEBPACK_IMPORTED_MODULE_1__.Expose),
+/* harmony export */   Transform: () => (/* reexport safe */ _decorators__WEBPACK_IMPORTED_MODULE_1__.Transform),
+/* harmony export */   TransformInstanceToInstance: () => (/* reexport safe */ _decorators__WEBPACK_IMPORTED_MODULE_1__.TransformInstanceToInstance),
+/* harmony export */   TransformInstanceToPlain: () => (/* reexport safe */ _decorators__WEBPACK_IMPORTED_MODULE_1__.TransformInstanceToPlain),
+/* harmony export */   TransformPlainToInstance: () => (/* reexport safe */ _decorators__WEBPACK_IMPORTED_MODULE_1__.TransformPlainToInstance),
+/* harmony export */   TransformationType: () => (/* reexport safe */ _enums__WEBPACK_IMPORTED_MODULE_2__.TransformationType),
+/* harmony export */   Type: () => (/* reexport safe */ _decorators__WEBPACK_IMPORTED_MODULE_1__.Type),
+/* harmony export */   classToClassFromExist: () => (/* binding */ classToClassFromExist),
+/* harmony export */   classToPlain: () => (/* binding */ classToPlain),
+/* harmony export */   classToPlainFromExist: () => (/* binding */ classToPlainFromExist),
+/* harmony export */   deserialize: () => (/* binding */ deserialize),
+/* harmony export */   deserializeArray: () => (/* binding */ deserializeArray),
+/* harmony export */   instanceToInstance: () => (/* binding */ instanceToInstance),
+/* harmony export */   instanceToPlain: () => (/* binding */ instanceToPlain),
+/* harmony export */   plainToClass: () => (/* binding */ plainToClass),
+/* harmony export */   plainToClassFromExist: () => (/* binding */ plainToClassFromExist),
+/* harmony export */   plainToInstance: () => (/* binding */ plainToInstance),
+/* harmony export */   serialize: () => (/* binding */ serialize)
+/* harmony export */ });
+/* harmony import */ var _ClassTransformer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(27);
+/* harmony import */ var _decorators__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(35);
+/* harmony import */ var _enums__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(43);
+
+
+
+
+
+var classTransformer = new _ClassTransformer__WEBPACK_IMPORTED_MODULE_0__.ClassTransformer();
+function classToPlain(object, options) {
+    return classTransformer.instanceToPlain(object, options);
+}
+function instanceToPlain(object, options) {
+    return classTransformer.instanceToPlain(object, options);
+}
+function classToPlainFromExist(object, plainObject, options) {
+    return classTransformer.classToPlainFromExist(object, plainObject, options);
+}
+function plainToClass(cls, plain, options) {
+    return classTransformer.plainToInstance(cls, plain, options);
+}
+function plainToInstance(cls, plain, options) {
+    return classTransformer.plainToInstance(cls, plain, options);
+}
+function plainToClassFromExist(clsObject, plain, options) {
+    return classTransformer.plainToClassFromExist(clsObject, plain, options);
+}
+function instanceToInstance(object, options) {
+    return classTransformer.instanceToInstance(object, options);
+}
+function classToClassFromExist(object, fromObject, options) {
+    return classTransformer.classToClassFromExist(object, fromObject, options);
+}
+function serialize(object, options) {
+    return classTransformer.serialize(object, options);
+}
+/**
+ * Deserializes given JSON string to a object of the given class.
+ *
+ * @deprecated This function is being removed. Please use the following instead:
+ * ```
+ * instanceToClass(cls, JSON.parse(json), options)
+ * ```
+ */
+function deserialize(cls, json, options) {
+    return classTransformer.deserialize(cls, json, options);
+}
+/**
+ * Deserializes given JSON string to an array of objects of the given class.
+ *
+ * @deprecated This function is being removed. Please use the following instead:
+ * ```
+ * JSON.parse(json).map(value => instanceToClass(cls, value, options))
+ * ```
+ *
+ */
+function deserializeArray(cls, json, options) {
+    return classTransformer.deserializeArray(cls, json, options);
+}
+//# sourceMappingURL=index.js.map
+
+/***/ }),
+/* 27 */
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ClassTransformer: () => (/* binding */ ClassTransformer)
+/* harmony export */ });
+/* harmony import */ var _TransformOperationExecutor__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(28);
+/* harmony import */ var _enums__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(29);
+/* harmony import */ var _constants_default_options_constant__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(34);
+var __assign = (undefined && undefined.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+
+
+
+var ClassTransformer = /** @class */ (function () {
+    function ClassTransformer() {
+    }
+    ClassTransformer.prototype.instanceToPlain = function (object, options) {
+        var executor = new _TransformOperationExecutor__WEBPACK_IMPORTED_MODULE_0__.TransformOperationExecutor(_enums__WEBPACK_IMPORTED_MODULE_1__.TransformationType.CLASS_TO_PLAIN, __assign(__assign({}, _constants_default_options_constant__WEBPACK_IMPORTED_MODULE_2__.defaultOptions), options));
+        return executor.transform(undefined, object, undefined, undefined, undefined, undefined);
+    };
+    ClassTransformer.prototype.classToPlainFromExist = function (object, plainObject, options) {
+        var executor = new _TransformOperationExecutor__WEBPACK_IMPORTED_MODULE_0__.TransformOperationExecutor(_enums__WEBPACK_IMPORTED_MODULE_1__.TransformationType.CLASS_TO_PLAIN, __assign(__assign({}, _constants_default_options_constant__WEBPACK_IMPORTED_MODULE_2__.defaultOptions), options));
+        return executor.transform(plainObject, object, undefined, undefined, undefined, undefined);
+    };
+    ClassTransformer.prototype.plainToInstance = function (cls, plain, options) {
+        var executor = new _TransformOperationExecutor__WEBPACK_IMPORTED_MODULE_0__.TransformOperationExecutor(_enums__WEBPACK_IMPORTED_MODULE_1__.TransformationType.PLAIN_TO_CLASS, __assign(__assign({}, _constants_default_options_constant__WEBPACK_IMPORTED_MODULE_2__.defaultOptions), options));
+        return executor.transform(undefined, plain, cls, undefined, undefined, undefined);
+    };
+    ClassTransformer.prototype.plainToClassFromExist = function (clsObject, plain, options) {
+        var executor = new _TransformOperationExecutor__WEBPACK_IMPORTED_MODULE_0__.TransformOperationExecutor(_enums__WEBPACK_IMPORTED_MODULE_1__.TransformationType.PLAIN_TO_CLASS, __assign(__assign({}, _constants_default_options_constant__WEBPACK_IMPORTED_MODULE_2__.defaultOptions), options));
+        return executor.transform(clsObject, plain, undefined, undefined, undefined, undefined);
+    };
+    ClassTransformer.prototype.instanceToInstance = function (object, options) {
+        var executor = new _TransformOperationExecutor__WEBPACK_IMPORTED_MODULE_0__.TransformOperationExecutor(_enums__WEBPACK_IMPORTED_MODULE_1__.TransformationType.CLASS_TO_CLASS, __assign(__assign({}, _constants_default_options_constant__WEBPACK_IMPORTED_MODULE_2__.defaultOptions), options));
+        return executor.transform(undefined, object, undefined, undefined, undefined, undefined);
+    };
+    ClassTransformer.prototype.classToClassFromExist = function (object, fromObject, options) {
+        var executor = new _TransformOperationExecutor__WEBPACK_IMPORTED_MODULE_0__.TransformOperationExecutor(_enums__WEBPACK_IMPORTED_MODULE_1__.TransformationType.CLASS_TO_CLASS, __assign(__assign({}, _constants_default_options_constant__WEBPACK_IMPORTED_MODULE_2__.defaultOptions), options));
+        return executor.transform(fromObject, object, undefined, undefined, undefined, undefined);
+    };
+    ClassTransformer.prototype.serialize = function (object, options) {
+        return JSON.stringify(this.instanceToPlain(object, options));
+    };
+    /**
+     * Deserializes given JSON string to a object of the given class.
+     */
+    ClassTransformer.prototype.deserialize = function (cls, json, options) {
+        var jsonObject = JSON.parse(json);
+        return this.plainToInstance(cls, jsonObject, options);
+    };
+    /**
+     * Deserializes given JSON string to an array of objects of the given class.
+     */
+    ClassTransformer.prototype.deserializeArray = function (cls, json, options) {
+        var jsonObject = JSON.parse(json);
+        return this.plainToInstance(cls, jsonObject, options);
+    };
+    return ClassTransformer;
+}());
+
+//# sourceMappingURL=ClassTransformer.js.map
+
+/***/ }),
+/* 28 */
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   TransformOperationExecutor: () => (/* binding */ TransformOperationExecutor)
+/* harmony export */ });
+/* harmony import */ var _storage__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(32);
+/* harmony import */ var _enums__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(29);
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(30);
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(31);
+var __spreadArray = (undefined && undefined.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
+};
+
+
+
+function instantiateArrayType(arrayType) {
+    var array = new arrayType();
+    if (!(array instanceof Set) && !('push' in array)) {
+        return [];
+    }
+    return array;
+}
+var TransformOperationExecutor = /** @class */ (function () {
+    // -------------------------------------------------------------------------
+    // Constructor
+    // -------------------------------------------------------------------------
+    function TransformOperationExecutor(transformationType, options) {
+        this.transformationType = transformationType;
+        this.options = options;
+        // -------------------------------------------------------------------------
+        // Private Properties
+        // -------------------------------------------------------------------------
+        this.recursionStack = new Set();
+    }
+    // -------------------------------------------------------------------------
+    // Public Methods
+    // -------------------------------------------------------------------------
+    TransformOperationExecutor.prototype.transform = function (source, value, targetType, arrayType, isMap, level) {
+        var _this = this;
+        if (level === void 0) { level = 0; }
+        if (Array.isArray(value) || value instanceof Set) {
+            var newValue_1 = arrayType && this.transformationType === _enums__WEBPACK_IMPORTED_MODULE_0__.TransformationType.PLAIN_TO_CLASS
+                ? instantiateArrayType(arrayType)
+                : [];
+            value.forEach(function (subValue, index) {
+                var subSource = source ? source[index] : undefined;
+                if (!_this.options.enableCircularCheck || !_this.isCircular(subValue)) {
+                    var realTargetType = void 0;
+                    if (typeof targetType !== 'function' &&
+                        targetType &&
+                        targetType.options &&
+                        targetType.options.discriminator &&
+                        targetType.options.discriminator.property &&
+                        targetType.options.discriminator.subTypes) {
+                        if (_this.transformationType === _enums__WEBPACK_IMPORTED_MODULE_0__.TransformationType.PLAIN_TO_CLASS) {
+                            realTargetType = targetType.options.discriminator.subTypes.find(function (subType) {
+                                return subType.name === subValue[targetType.options.discriminator.property];
+                            });
+                            var options = { newObject: newValue_1, object: subValue, property: undefined };
+                            var newType = targetType.typeFunction(options);
+                            realTargetType === undefined ? (realTargetType = newType) : (realTargetType = realTargetType.value);
+                            if (!targetType.options.keepDiscriminatorProperty)
+                                delete subValue[targetType.options.discriminator.property];
+                        }
+                        if (_this.transformationType === _enums__WEBPACK_IMPORTED_MODULE_0__.TransformationType.CLASS_TO_CLASS) {
+                            realTargetType = subValue.constructor;
+                        }
+                        if (_this.transformationType === _enums__WEBPACK_IMPORTED_MODULE_0__.TransformationType.CLASS_TO_PLAIN) {
+                            subValue[targetType.options.discriminator.property] = targetType.options.discriminator.subTypes.find(function (subType) { return subType.value === subValue.constructor; }).name;
+                        }
+                    }
+                    else {
+                        realTargetType = targetType;
+                    }
+                    var value_1 = _this.transform(subSource, subValue, realTargetType, undefined, subValue instanceof Map, level + 1);
+                    if (newValue_1 instanceof Set) {
+                        newValue_1.add(value_1);
+                    }
+                    else {
+                        newValue_1.push(value_1);
+                    }
+                }
+                else if (_this.transformationType === _enums__WEBPACK_IMPORTED_MODULE_0__.TransformationType.CLASS_TO_CLASS) {
+                    if (newValue_1 instanceof Set) {
+                        newValue_1.add(subValue);
+                    }
+                    else {
+                        newValue_1.push(subValue);
+                    }
+                }
+            });
+            return newValue_1;
+        }
+        else if (targetType === String && !isMap) {
+            if (value === null || value === undefined)
+                return value;
+            return String(value);
+        }
+        else if (targetType === Number && !isMap) {
+            if (value === null || value === undefined)
+                return value;
+            return Number(value);
+        }
+        else if (targetType === Boolean && !isMap) {
+            if (value === null || value === undefined)
+                return value;
+            return Boolean(value);
+        }
+        else if ((targetType === Date || value instanceof Date) && !isMap) {
+            if (value instanceof Date) {
+                return new Date(value.valueOf());
+            }
+            if (value === null || value === undefined)
+                return value;
+            return new Date(value);
+        }
+        else if (!!(0,_utils__WEBPACK_IMPORTED_MODULE_1__.getGlobal)().Buffer && (targetType === Buffer || value instanceof Buffer) && !isMap) {
+            if (value === null || value === undefined)
+                return value;
+            return Buffer.from(value);
+        }
+        else if ((0,_utils__WEBPACK_IMPORTED_MODULE_2__.isPromise)(value) && !isMap) {
+            return new Promise(function (resolve, reject) {
+                value.then(function (data) { return resolve(_this.transform(undefined, data, targetType, undefined, undefined, level + 1)); }, reject);
+            });
+        }
+        else if (!isMap && value !== null && typeof value === 'object' && typeof value.then === 'function') {
+            // Note: We should not enter this, as promise has been handled above
+            // This option simply returns the Promise preventing a JS error from happening and should be an inaccessible path.
+            return value; // skip promise transformation
+        }
+        else if (typeof value === 'object' && value !== null) {
+            // try to guess the type
+            if (!targetType && value.constructor !== Object /* && TransformationType === TransformationType.CLASS_TO_PLAIN*/)
+                if (!Array.isArray(value) && value.constructor === Array) {
+                    // Somebody attempts to convert special Array like object to Array, eg:
+                    // const evilObject = { '100000000': '100000000', __proto__: [] };
+                    // This could be used to cause Denial-of-service attack so we don't allow it.
+                    // See prevent-array-bomb.spec.ts for more details.
+                }
+                else {
+                    // We are good we can use the built-in constructor
+                    targetType = value.constructor;
+                }
+            if (!targetType && source)
+                targetType = source.constructor;
+            if (this.options.enableCircularCheck) {
+                // add transformed type to prevent circular references
+                this.recursionStack.add(value);
+            }
+            var keys = this.getKeys(targetType, value, isMap);
+            var newValue = source ? source : {};
+            if (!source &&
+                (this.transformationType === _enums__WEBPACK_IMPORTED_MODULE_0__.TransformationType.PLAIN_TO_CLASS ||
+                    this.transformationType === _enums__WEBPACK_IMPORTED_MODULE_0__.TransformationType.CLASS_TO_CLASS)) {
+                if (isMap) {
+                    newValue = new Map();
+                }
+                else if (targetType) {
+                    newValue = new targetType();
+                }
+                else {
+                    newValue = {};
+                }
+            }
+            var _loop_1 = function (key) {
+                if (key === '__proto__' || key === 'constructor') {
+                    return "continue";
+                }
+                var valueKey = key;
+                var newValueKey = key, propertyName = key;
+                if (!this_1.options.ignoreDecorators && targetType) {
+                    if (this_1.transformationType === _enums__WEBPACK_IMPORTED_MODULE_0__.TransformationType.PLAIN_TO_CLASS) {
+                        var exposeMetadata = _storage__WEBPACK_IMPORTED_MODULE_3__.defaultMetadataStorage.findExposeMetadataByCustomName(targetType, key);
+                        if (exposeMetadata) {
+                            propertyName = exposeMetadata.propertyName;
+                            newValueKey = exposeMetadata.propertyName;
+                        }
+                    }
+                    else if (this_1.transformationType === _enums__WEBPACK_IMPORTED_MODULE_0__.TransformationType.CLASS_TO_PLAIN ||
+                        this_1.transformationType === _enums__WEBPACK_IMPORTED_MODULE_0__.TransformationType.CLASS_TO_CLASS) {
+                        var exposeMetadata = _storage__WEBPACK_IMPORTED_MODULE_3__.defaultMetadataStorage.findExposeMetadata(targetType, key);
+                        if (exposeMetadata && exposeMetadata.options && exposeMetadata.options.name) {
+                            newValueKey = exposeMetadata.options.name;
+                        }
+                    }
+                }
+                // get a subvalue
+                var subValue = undefined;
+                if (this_1.transformationType === _enums__WEBPACK_IMPORTED_MODULE_0__.TransformationType.PLAIN_TO_CLASS) {
+                    /**
+                     * This section is added for the following report:
+                     * https://github.com/typestack/class-transformer/issues/596
+                     *
+                     * We should not call functions or constructors when transforming to class.
+                     */
+                    subValue = value[valueKey];
+                }
+                else {
+                    if (value instanceof Map) {
+                        subValue = value.get(valueKey);
+                    }
+                    else if (value[valueKey] instanceof Function) {
+                        subValue = value[valueKey]();
+                    }
+                    else {
+                        subValue = value[valueKey];
+                    }
+                }
+                // determine a type
+                var type = undefined, isSubValueMap = subValue instanceof Map;
+                if (targetType && isMap) {
+                    type = targetType;
+                }
+                else if (targetType) {
+                    var metadata_1 = _storage__WEBPACK_IMPORTED_MODULE_3__.defaultMetadataStorage.findTypeMetadata(targetType, propertyName);
+                    if (metadata_1) {
+                        var options = { newObject: newValue, object: value, property: propertyName };
+                        var newType = metadata_1.typeFunction ? metadata_1.typeFunction(options) : metadata_1.reflectedType;
+                        if (metadata_1.options &&
+                            metadata_1.options.discriminator &&
+                            metadata_1.options.discriminator.property &&
+                            metadata_1.options.discriminator.subTypes) {
+                            if (!(value[valueKey] instanceof Array)) {
+                                if (this_1.transformationType === _enums__WEBPACK_IMPORTED_MODULE_0__.TransformationType.PLAIN_TO_CLASS) {
+                                    type = metadata_1.options.discriminator.subTypes.find(function (subType) {
+                                        if (subValue && subValue instanceof Object && metadata_1.options.discriminator.property in subValue) {
+                                            return subType.name === subValue[metadata_1.options.discriminator.property];
+                                        }
+                                    });
+                                    type === undefined ? (type = newType) : (type = type.value);
+                                    if (!metadata_1.options.keepDiscriminatorProperty) {
+                                        if (subValue && subValue instanceof Object && metadata_1.options.discriminator.property in subValue) {
+                                            delete subValue[metadata_1.options.discriminator.property];
+                                        }
+                                    }
+                                }
+                                if (this_1.transformationType === _enums__WEBPACK_IMPORTED_MODULE_0__.TransformationType.CLASS_TO_CLASS) {
+                                    type = subValue.constructor;
+                                }
+                                if (this_1.transformationType === _enums__WEBPACK_IMPORTED_MODULE_0__.TransformationType.CLASS_TO_PLAIN) {
+                                    if (subValue) {
+                                        subValue[metadata_1.options.discriminator.property] = metadata_1.options.discriminator.subTypes.find(function (subType) { return subType.value === subValue.constructor; }).name;
+                                    }
+                                }
+                            }
+                            else {
+                                type = metadata_1;
+                            }
+                        }
+                        else {
+                            type = newType;
+                        }
+                        isSubValueMap = isSubValueMap || metadata_1.reflectedType === Map;
+                    }
+                    else if (this_1.options.targetMaps) {
+                        // try to find a type in target maps
+                        this_1.options.targetMaps
+                            .filter(function (map) { return map.target === targetType && !!map.properties[propertyName]; })
+                            .forEach(function (map) { return (type = map.properties[propertyName]); });
+                    }
+                    else if (this_1.options.enableImplicitConversion &&
+                        this_1.transformationType === _enums__WEBPACK_IMPORTED_MODULE_0__.TransformationType.PLAIN_TO_CLASS) {
+                        // if we have no registererd type via the @Type() decorator then we check if we have any
+                        // type declarations in reflect-metadata (type declaration is emited only if some decorator is added to the property.)
+                        var reflectedType = Reflect.getMetadata('design:type', targetType.prototype, propertyName);
+                        if (reflectedType) {
+                            type = reflectedType;
+                        }
+                    }
+                }
+                // if value is an array try to get its custom array type
+                var arrayType_1 = Array.isArray(value[valueKey])
+                    ? this_1.getReflectedType(targetType, propertyName)
+                    : undefined;
+                // const subValueKey = TransformationType === TransformationType.PLAIN_TO_CLASS && newKeyName ? newKeyName : key;
+                var subSource = source ? source[valueKey] : undefined;
+                // if its deserialization then type if required
+                // if we uncomment this types like string[] will not work
+                // if (this.transformationType === TransformationType.PLAIN_TO_CLASS && !type && subValue instanceof Object && !(subValue instanceof Date))
+                //     throw new Error(`Cannot determine type for ${(targetType as any).name }.${propertyName}, did you forget to specify a @Type?`);
+                // if newValue is a source object that has method that match newKeyName then skip it
+                if (newValue.constructor.prototype) {
+                    var descriptor = Object.getOwnPropertyDescriptor(newValue.constructor.prototype, newValueKey);
+                    if ((this_1.transformationType === _enums__WEBPACK_IMPORTED_MODULE_0__.TransformationType.PLAIN_TO_CLASS ||
+                        this_1.transformationType === _enums__WEBPACK_IMPORTED_MODULE_0__.TransformationType.CLASS_TO_CLASS) &&
+                        // eslint-disable-next-line @typescript-eslint/unbound-method
+                        ((descriptor && !descriptor.set) || newValue[newValueKey] instanceof Function))
+                        return "continue";
+                }
+                if (!this_1.options.enableCircularCheck || !this_1.isCircular(subValue)) {
+                    var transformKey = this_1.transformationType === _enums__WEBPACK_IMPORTED_MODULE_0__.TransformationType.PLAIN_TO_CLASS ? newValueKey : key;
+                    var finalValue = void 0;
+                    if (this_1.transformationType === _enums__WEBPACK_IMPORTED_MODULE_0__.TransformationType.CLASS_TO_PLAIN) {
+                        // Get original value
+                        finalValue = value[transformKey];
+                        // Apply custom transformation
+                        finalValue = this_1.applyCustomTransformations(finalValue, targetType, transformKey, value, this_1.transformationType);
+                        // If nothing change, it means no custom transformation was applied, so use the subValue.
+                        finalValue = value[transformKey] === finalValue ? subValue : finalValue;
+                        // Apply the default transformation
+                        finalValue = this_1.transform(subSource, finalValue, type, arrayType_1, isSubValueMap, level + 1);
+                    }
+                    else {
+                        if (subValue === undefined && this_1.options.exposeDefaultValues) {
+                            // Set default value if nothing provided
+                            finalValue = newValue[newValueKey];
+                        }
+                        else {
+                            finalValue = this_1.transform(subSource, subValue, type, arrayType_1, isSubValueMap, level + 1);
+                            finalValue = this_1.applyCustomTransformations(finalValue, targetType, transformKey, value, this_1.transformationType);
+                        }
+                    }
+                    if (finalValue !== undefined || this_1.options.exposeUnsetFields) {
+                        if (newValue instanceof Map) {
+                            newValue.set(newValueKey, finalValue);
+                        }
+                        else {
+                            newValue[newValueKey] = finalValue;
+                        }
+                    }
+                }
+                else if (this_1.transformationType === _enums__WEBPACK_IMPORTED_MODULE_0__.TransformationType.CLASS_TO_CLASS) {
+                    var finalValue = subValue;
+                    finalValue = this_1.applyCustomTransformations(finalValue, targetType, key, value, this_1.transformationType);
+                    if (finalValue !== undefined || this_1.options.exposeUnsetFields) {
+                        if (newValue instanceof Map) {
+                            newValue.set(newValueKey, finalValue);
+                        }
+                        else {
+                            newValue[newValueKey] = finalValue;
+                        }
+                    }
+                }
+            };
+            var this_1 = this;
+            // traverse over keys
+            for (var _i = 0, keys_1 = keys; _i < keys_1.length; _i++) {
+                var key = keys_1[_i];
+                _loop_1(key);
+            }
+            if (this.options.enableCircularCheck) {
+                this.recursionStack.delete(value);
+            }
+            return newValue;
+        }
+        else {
+            return value;
+        }
+    };
+    TransformOperationExecutor.prototype.applyCustomTransformations = function (value, target, key, obj, transformationType) {
+        var _this = this;
+        var metadatas = _storage__WEBPACK_IMPORTED_MODULE_3__.defaultMetadataStorage.findTransformMetadatas(target, key, this.transformationType);
+        // apply versioning options
+        if (this.options.version !== undefined) {
+            metadatas = metadatas.filter(function (metadata) {
+                if (!metadata.options)
+                    return true;
+                return _this.checkVersion(metadata.options.since, metadata.options.until);
+            });
+        }
+        // apply grouping options
+        if (this.options.groups && this.options.groups.length) {
+            metadatas = metadatas.filter(function (metadata) {
+                if (!metadata.options)
+                    return true;
+                return _this.checkGroups(metadata.options.groups);
+            });
+        }
+        else {
+            metadatas = metadatas.filter(function (metadata) {
+                return !metadata.options || !metadata.options.groups || !metadata.options.groups.length;
+            });
+        }
+        metadatas.forEach(function (metadata) {
+            value = metadata.transformFn({ value: value, key: key, obj: obj, type: transformationType, options: _this.options });
+        });
+        return value;
+    };
+    // preventing circular references
+    TransformOperationExecutor.prototype.isCircular = function (object) {
+        return this.recursionStack.has(object);
+    };
+    TransformOperationExecutor.prototype.getReflectedType = function (target, propertyName) {
+        if (!target)
+            return undefined;
+        var meta = _storage__WEBPACK_IMPORTED_MODULE_3__.defaultMetadataStorage.findTypeMetadata(target, propertyName);
+        return meta ? meta.reflectedType : undefined;
+    };
+    TransformOperationExecutor.prototype.getKeys = function (target, object, isMap) {
+        var _this = this;
+        // determine exclusion strategy
+        var strategy = _storage__WEBPACK_IMPORTED_MODULE_3__.defaultMetadataStorage.getStrategy(target);
+        if (strategy === 'none')
+            strategy = this.options.strategy || 'exposeAll'; // exposeAll is default strategy
+        // get all keys that need to expose
+        var keys = [];
+        if (strategy === 'exposeAll' || isMap) {
+            if (object instanceof Map) {
+                keys = Array.from(object.keys());
+            }
+            else {
+                keys = Object.keys(object);
+            }
+        }
+        if (isMap) {
+            // expose & exclude do not apply for map keys only to fields
+            return keys;
+        }
+        /**
+         * If decorators are ignored but we don't want the extraneous values, then we use the
+         * metadata to decide which property is needed, but doesn't apply the decorator effect.
+         */
+        if (this.options.ignoreDecorators && this.options.excludeExtraneousValues && target) {
+            var exposedProperties = _storage__WEBPACK_IMPORTED_MODULE_3__.defaultMetadataStorage.getExposedProperties(target, this.transformationType);
+            var excludedProperties = _storage__WEBPACK_IMPORTED_MODULE_3__.defaultMetadataStorage.getExcludedProperties(target, this.transformationType);
+            keys = __spreadArray(__spreadArray([], exposedProperties, true), excludedProperties, true);
+        }
+        if (!this.options.ignoreDecorators && target) {
+            // add all exposed to list of keys
+            var exposedProperties = _storage__WEBPACK_IMPORTED_MODULE_3__.defaultMetadataStorage.getExposedProperties(target, this.transformationType);
+            if (this.transformationType === _enums__WEBPACK_IMPORTED_MODULE_0__.TransformationType.PLAIN_TO_CLASS) {
+                exposedProperties = exposedProperties.map(function (key) {
+                    var exposeMetadata = _storage__WEBPACK_IMPORTED_MODULE_3__.defaultMetadataStorage.findExposeMetadata(target, key);
+                    if (exposeMetadata && exposeMetadata.options && exposeMetadata.options.name) {
+                        return exposeMetadata.options.name;
+                    }
+                    return key;
+                });
+            }
+            if (this.options.excludeExtraneousValues) {
+                keys = exposedProperties;
+            }
+            else {
+                keys = keys.concat(exposedProperties);
+            }
+            // exclude excluded properties
+            var excludedProperties_1 = _storage__WEBPACK_IMPORTED_MODULE_3__.defaultMetadataStorage.getExcludedProperties(target, this.transformationType);
+            if (excludedProperties_1.length > 0) {
+                keys = keys.filter(function (key) {
+                    return !excludedProperties_1.includes(key);
+                });
+            }
+            // apply versioning options
+            if (this.options.version !== undefined) {
+                keys = keys.filter(function (key) {
+                    var exposeMetadata = _storage__WEBPACK_IMPORTED_MODULE_3__.defaultMetadataStorage.findExposeMetadata(target, key);
+                    if (!exposeMetadata || !exposeMetadata.options)
+                        return true;
+                    return _this.checkVersion(exposeMetadata.options.since, exposeMetadata.options.until);
+                });
+            }
+            // apply grouping options
+            if (this.options.groups && this.options.groups.length) {
+                keys = keys.filter(function (key) {
+                    var exposeMetadata = _storage__WEBPACK_IMPORTED_MODULE_3__.defaultMetadataStorage.findExposeMetadata(target, key);
+                    if (!exposeMetadata || !exposeMetadata.options)
+                        return true;
+                    return _this.checkGroups(exposeMetadata.options.groups);
+                });
+            }
+            else {
+                keys = keys.filter(function (key) {
+                    var exposeMetadata = _storage__WEBPACK_IMPORTED_MODULE_3__.defaultMetadataStorage.findExposeMetadata(target, key);
+                    return (!exposeMetadata ||
+                        !exposeMetadata.options ||
+                        !exposeMetadata.options.groups ||
+                        !exposeMetadata.options.groups.length);
+                });
+            }
+        }
+        // exclude prefixed properties
+        if (this.options.excludePrefixes && this.options.excludePrefixes.length) {
+            keys = keys.filter(function (key) {
+                return _this.options.excludePrefixes.every(function (prefix) {
+                    return key.substr(0, prefix.length) !== prefix;
+                });
+            });
+        }
+        // make sure we have unique keys
+        keys = keys.filter(function (key, index, self) {
+            return self.indexOf(key) === index;
+        });
+        return keys;
+    };
+    TransformOperationExecutor.prototype.checkVersion = function (since, until) {
+        var decision = true;
+        if (decision && since)
+            decision = this.options.version >= since;
+        if (decision && until)
+            decision = this.options.version < until;
+        return decision;
+    };
+    TransformOperationExecutor.prototype.checkGroups = function (groups) {
+        if (!groups)
+            return true;
+        return this.options.groups.some(function (optionGroup) { return groups.includes(optionGroup); });
+    };
+    return TransformOperationExecutor;
+}());
+
+//# sourceMappingURL=TransformOperationExecutor.js.map
+
+/***/ }),
+/* 29 */
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   TransformationType: () => (/* binding */ TransformationType)
+/* harmony export */ });
+var TransformationType;
+(function (TransformationType) {
+    TransformationType[TransformationType["PLAIN_TO_CLASS"] = 0] = "PLAIN_TO_CLASS";
+    TransformationType[TransformationType["CLASS_TO_PLAIN"] = 1] = "CLASS_TO_PLAIN";
+    TransformationType[TransformationType["CLASS_TO_CLASS"] = 2] = "CLASS_TO_CLASS";
+})(TransformationType || (TransformationType = {}));
+//# sourceMappingURL=transformation-type.enum.js.map
+
+/***/ }),
+/* 30 */
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   getGlobal: () => (/* binding */ getGlobal)
+/* harmony export */ });
+/**
+ * This function returns the global object across Node and browsers.
+ *
+ * Note: `globalThis` is the standardized approach however it has been added to
+ * Node.js in version 12. We need to include this snippet until Node 12 EOL.
+ */
+function getGlobal() {
+    if (typeof globalThis !== 'undefined') {
+        return globalThis;
+    }
+    if (typeof global !== 'undefined') {
+        return global;
+    }
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore: Cannot find name 'window'.
+    if (typeof window !== 'undefined') {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore: Cannot find name 'window'.
+        return window;
+    }
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore: Cannot find name 'self'.
+    if (typeof self !== 'undefined') {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore: Cannot find name 'self'.
+        return self;
+    }
+}
+//# sourceMappingURL=get-global.util.js.map
+
+/***/ }),
+/* 31 */
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   isPromise: () => (/* binding */ isPromise)
+/* harmony export */ });
+function isPromise(p) {
+    return p !== null && typeof p === 'object' && typeof p.then === 'function';
+}
+//# sourceMappingURL=is-promise.util.js.map
+
+/***/ }),
+/* 32 */
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   defaultMetadataStorage: () => (/* binding */ defaultMetadataStorage)
+/* harmony export */ });
+/* harmony import */ var _MetadataStorage__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(33);
+
+/**
+ * Default metadata storage is used as singleton and can be used to storage all metadatas.
+ */
+var defaultMetadataStorage = new _MetadataStorage__WEBPACK_IMPORTED_MODULE_0__.MetadataStorage();
+//# sourceMappingURL=storage.js.map
+
+/***/ }),
+/* 33 */
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   MetadataStorage: () => (/* binding */ MetadataStorage)
+/* harmony export */ });
+/* harmony import */ var _enums__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(29);
+
+/**
+ * Storage all library metadata.
+ */
+var MetadataStorage = /** @class */ (function () {
+    function MetadataStorage() {
+        // -------------------------------------------------------------------------
+        // Properties
+        // -------------------------------------------------------------------------
+        this._typeMetadatas = new Map();
+        this._transformMetadatas = new Map();
+        this._exposeMetadatas = new Map();
+        this._excludeMetadatas = new Map();
+        this._ancestorsMap = new Map();
+    }
+    // -------------------------------------------------------------------------
+    // Adder Methods
+    // -------------------------------------------------------------------------
+    MetadataStorage.prototype.addTypeMetadata = function (metadata) {
+        if (!this._typeMetadatas.has(metadata.target)) {
+            this._typeMetadatas.set(metadata.target, new Map());
+        }
+        this._typeMetadatas.get(metadata.target).set(metadata.propertyName, metadata);
+    };
+    MetadataStorage.prototype.addTransformMetadata = function (metadata) {
+        if (!this._transformMetadatas.has(metadata.target)) {
+            this._transformMetadatas.set(metadata.target, new Map());
+        }
+        if (!this._transformMetadatas.get(metadata.target).has(metadata.propertyName)) {
+            this._transformMetadatas.get(metadata.target).set(metadata.propertyName, []);
+        }
+        this._transformMetadatas.get(metadata.target).get(metadata.propertyName).push(metadata);
+    };
+    MetadataStorage.prototype.addExposeMetadata = function (metadata) {
+        if (!this._exposeMetadatas.has(metadata.target)) {
+            this._exposeMetadatas.set(metadata.target, new Map());
+        }
+        this._exposeMetadatas.get(metadata.target).set(metadata.propertyName, metadata);
+    };
+    MetadataStorage.prototype.addExcludeMetadata = function (metadata) {
+        if (!this._excludeMetadatas.has(metadata.target)) {
+            this._excludeMetadatas.set(metadata.target, new Map());
+        }
+        this._excludeMetadatas.get(metadata.target).set(metadata.propertyName, metadata);
+    };
+    // -------------------------------------------------------------------------
+    // Public Methods
+    // -------------------------------------------------------------------------
+    MetadataStorage.prototype.findTransformMetadatas = function (target, propertyName, transformationType) {
+        return this.findMetadatas(this._transformMetadatas, target, propertyName).filter(function (metadata) {
+            if (!metadata.options)
+                return true;
+            if (metadata.options.toClassOnly === true && metadata.options.toPlainOnly === true)
+                return true;
+            if (metadata.options.toClassOnly === true) {
+                return (transformationType === _enums__WEBPACK_IMPORTED_MODULE_0__.TransformationType.CLASS_TO_CLASS ||
+                    transformationType === _enums__WEBPACK_IMPORTED_MODULE_0__.TransformationType.PLAIN_TO_CLASS);
+            }
+            if (metadata.options.toPlainOnly === true) {
+                return transformationType === _enums__WEBPACK_IMPORTED_MODULE_0__.TransformationType.CLASS_TO_PLAIN;
+            }
+            return true;
+        });
+    };
+    MetadataStorage.prototype.findExcludeMetadata = function (target, propertyName) {
+        return this.findMetadata(this._excludeMetadatas, target, propertyName);
+    };
+    MetadataStorage.prototype.findExposeMetadata = function (target, propertyName) {
+        return this.findMetadata(this._exposeMetadatas, target, propertyName);
+    };
+    MetadataStorage.prototype.findExposeMetadataByCustomName = function (target, name) {
+        return this.getExposedMetadatas(target).find(function (metadata) {
+            return metadata.options && metadata.options.name === name;
+        });
+    };
+    MetadataStorage.prototype.findTypeMetadata = function (target, propertyName) {
+        return this.findMetadata(this._typeMetadatas, target, propertyName);
+    };
+    MetadataStorage.prototype.getStrategy = function (target) {
+        var excludeMap = this._excludeMetadatas.get(target);
+        var exclude = excludeMap && excludeMap.get(undefined);
+        var exposeMap = this._exposeMetadatas.get(target);
+        var expose = exposeMap && exposeMap.get(undefined);
+        if ((exclude && expose) || (!exclude && !expose))
+            return 'none';
+        return exclude ? 'excludeAll' : 'exposeAll';
+    };
+    MetadataStorage.prototype.getExposedMetadatas = function (target) {
+        return this.getMetadata(this._exposeMetadatas, target);
+    };
+    MetadataStorage.prototype.getExcludedMetadatas = function (target) {
+        return this.getMetadata(this._excludeMetadatas, target);
+    };
+    MetadataStorage.prototype.getExposedProperties = function (target, transformationType) {
+        return this.getExposedMetadatas(target)
+            .filter(function (metadata) {
+            if (!metadata.options)
+                return true;
+            if (metadata.options.toClassOnly === true && metadata.options.toPlainOnly === true)
+                return true;
+            if (metadata.options.toClassOnly === true) {
+                return (transformationType === _enums__WEBPACK_IMPORTED_MODULE_0__.TransformationType.CLASS_TO_CLASS ||
+                    transformationType === _enums__WEBPACK_IMPORTED_MODULE_0__.TransformationType.PLAIN_TO_CLASS);
+            }
+            if (metadata.options.toPlainOnly === true) {
+                return transformationType === _enums__WEBPACK_IMPORTED_MODULE_0__.TransformationType.CLASS_TO_PLAIN;
+            }
+            return true;
+        })
+            .map(function (metadata) { return metadata.propertyName; });
+    };
+    MetadataStorage.prototype.getExcludedProperties = function (target, transformationType) {
+        return this.getExcludedMetadatas(target)
+            .filter(function (metadata) {
+            if (!metadata.options)
+                return true;
+            if (metadata.options.toClassOnly === true && metadata.options.toPlainOnly === true)
+                return true;
+            if (metadata.options.toClassOnly === true) {
+                return (transformationType === _enums__WEBPACK_IMPORTED_MODULE_0__.TransformationType.CLASS_TO_CLASS ||
+                    transformationType === _enums__WEBPACK_IMPORTED_MODULE_0__.TransformationType.PLAIN_TO_CLASS);
+            }
+            if (metadata.options.toPlainOnly === true) {
+                return transformationType === _enums__WEBPACK_IMPORTED_MODULE_0__.TransformationType.CLASS_TO_PLAIN;
+            }
+            return true;
+        })
+            .map(function (metadata) { return metadata.propertyName; });
+    };
+    MetadataStorage.prototype.clear = function () {
+        this._typeMetadatas.clear();
+        this._exposeMetadatas.clear();
+        this._excludeMetadatas.clear();
+        this._ancestorsMap.clear();
+    };
+    // -------------------------------------------------------------------------
+    // Private Methods
+    // -------------------------------------------------------------------------
+    MetadataStorage.prototype.getMetadata = function (metadatas, target) {
+        var metadataFromTargetMap = metadatas.get(target);
+        var metadataFromTarget;
+        if (metadataFromTargetMap) {
+            metadataFromTarget = Array.from(metadataFromTargetMap.values()).filter(function (meta) { return meta.propertyName !== undefined; });
+        }
+        var metadataFromAncestors = [];
+        for (var _i = 0, _a = this.getAncestors(target); _i < _a.length; _i++) {
+            var ancestor = _a[_i];
+            var ancestorMetadataMap = metadatas.get(ancestor);
+            if (ancestorMetadataMap) {
+                var metadataFromAncestor = Array.from(ancestorMetadataMap.values()).filter(function (meta) { return meta.propertyName !== undefined; });
+                metadataFromAncestors.push.apply(metadataFromAncestors, metadataFromAncestor);
+            }
+        }
+        return metadataFromAncestors.concat(metadataFromTarget || []);
+    };
+    MetadataStorage.prototype.findMetadata = function (metadatas, target, propertyName) {
+        var metadataFromTargetMap = metadatas.get(target);
+        if (metadataFromTargetMap) {
+            var metadataFromTarget = metadataFromTargetMap.get(propertyName);
+            if (metadataFromTarget) {
+                return metadataFromTarget;
+            }
+        }
+        for (var _i = 0, _a = this.getAncestors(target); _i < _a.length; _i++) {
+            var ancestor = _a[_i];
+            var ancestorMetadataMap = metadatas.get(ancestor);
+            if (ancestorMetadataMap) {
+                var ancestorResult = ancestorMetadataMap.get(propertyName);
+                if (ancestorResult) {
+                    return ancestorResult;
+                }
+            }
+        }
+        return undefined;
+    };
+    MetadataStorage.prototype.findMetadatas = function (metadatas, target, propertyName) {
+        var metadataFromTargetMap = metadatas.get(target);
+        var metadataFromTarget;
+        if (metadataFromTargetMap) {
+            metadataFromTarget = metadataFromTargetMap.get(propertyName);
+        }
+        var metadataFromAncestorsTarget = [];
+        for (var _i = 0, _a = this.getAncestors(target); _i < _a.length; _i++) {
+            var ancestor = _a[_i];
+            var ancestorMetadataMap = metadatas.get(ancestor);
+            if (ancestorMetadataMap) {
+                if (ancestorMetadataMap.has(propertyName)) {
+                    metadataFromAncestorsTarget.push.apply(metadataFromAncestorsTarget, ancestorMetadataMap.get(propertyName));
+                }
+            }
+        }
+        return metadataFromAncestorsTarget
+            .slice()
+            .reverse()
+            .concat((metadataFromTarget || []).slice().reverse());
+    };
+    MetadataStorage.prototype.getAncestors = function (target) {
+        if (!target)
+            return [];
+        if (!this._ancestorsMap.has(target)) {
+            var ancestors = [];
+            for (var baseClass = Object.getPrototypeOf(target.prototype.constructor); typeof baseClass.prototype !== 'undefined'; baseClass = Object.getPrototypeOf(baseClass.prototype.constructor)) {
+                ancestors.push(baseClass);
+            }
+            this._ancestorsMap.set(target, ancestors);
+        }
+        return this._ancestorsMap.get(target);
+    };
+    return MetadataStorage;
+}());
+
+//# sourceMappingURL=MetadataStorage.js.map
+
+/***/ }),
+/* 34 */
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   defaultOptions: () => (/* binding */ defaultOptions)
+/* harmony export */ });
+/**
+ * These are the default options used by any transformation operation.
+ */
+var defaultOptions = {
+    enableCircularCheck: false,
+    enableImplicitConversion: false,
+    excludeExtraneousValues: false,
+    excludePrefixes: undefined,
+    exposeDefaultValues: false,
+    exposeUnsetFields: true,
+    groups: undefined,
+    ignoreDecorators: false,
+    strategy: undefined,
+    targetMaps: undefined,
+    version: undefined,
+};
+//# sourceMappingURL=default-options.constant.js.map
+
+/***/ }),
+/* 35 */
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Exclude: () => (/* reexport safe */ _exclude_decorator__WEBPACK_IMPORTED_MODULE_0__.Exclude),
+/* harmony export */   Expose: () => (/* reexport safe */ _expose_decorator__WEBPACK_IMPORTED_MODULE_1__.Expose),
+/* harmony export */   Transform: () => (/* reexport safe */ _transform_decorator__WEBPACK_IMPORTED_MODULE_5__.Transform),
+/* harmony export */   TransformInstanceToInstance: () => (/* reexport safe */ _transform_instance_to_instance_decorator__WEBPACK_IMPORTED_MODULE_2__.TransformInstanceToInstance),
+/* harmony export */   TransformInstanceToPlain: () => (/* reexport safe */ _transform_instance_to_plain_decorator__WEBPACK_IMPORTED_MODULE_3__.TransformInstanceToPlain),
+/* harmony export */   TransformPlainToInstance: () => (/* reexport safe */ _transform_plain_to_instance_decorator__WEBPACK_IMPORTED_MODULE_4__.TransformPlainToInstance),
+/* harmony export */   Type: () => (/* reexport safe */ _type_decorator__WEBPACK_IMPORTED_MODULE_6__.Type)
+/* harmony export */ });
+/* harmony import */ var _exclude_decorator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(36);
+/* harmony import */ var _expose_decorator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(37);
+/* harmony import */ var _transform_instance_to_instance_decorator__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(38);
+/* harmony import */ var _transform_instance_to_plain_decorator__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(39);
+/* harmony import */ var _transform_plain_to_instance_decorator__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(40);
+/* harmony import */ var _transform_decorator__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(41);
+/* harmony import */ var _type_decorator__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(42);
+
+
+
+
+
+
+
+//# sourceMappingURL=index.js.map
+
+/***/ }),
+/* 36 */
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Exclude: () => (/* binding */ Exclude)
+/* harmony export */ });
+/* harmony import */ var _storage__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(32);
+
+/**
+ * Marks the given class or property as excluded. By default the property is excluded in both
+ * constructorToPlain and plainToConstructor transformations. It can be limited to only one direction
+ * via using the `toPlainOnly` or `toClassOnly` option.
+ *
+ * Can be applied to class definitions and properties.
+ */
+function Exclude(options) {
+    if (options === void 0) { options = {}; }
+    /**
+     * NOTE: The `propertyName` property must be marked as optional because
+     * this decorator used both as a class and a property decorator and the
+     * Typescript compiler will freak out if we make it mandatory as a class
+     * decorator only receives one parameter.
+     */
+    return function (object, propertyName) {
+        _storage__WEBPACK_IMPORTED_MODULE_0__.defaultMetadataStorage.addExcludeMetadata({
+            target: object instanceof Function ? object : object.constructor,
+            propertyName: propertyName,
+            options: options,
+        });
+    };
+}
+//# sourceMappingURL=exclude.decorator.js.map
+
+/***/ }),
+/* 37 */
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Expose: () => (/* binding */ Expose)
+/* harmony export */ });
+/* harmony import */ var _storage__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(32);
+
+/**
+ * Marks the given class or property as included. By default the property is included in both
+ * constructorToPlain and plainToConstructor transformations. It can be limited to only one direction
+ * via using the `toPlainOnly` or `toClassOnly` option.
+ *
+ * Can be applied to class definitions and properties.
+ */
+function Expose(options) {
+    if (options === void 0) { options = {}; }
+    /**
+     * NOTE: The `propertyName` property must be marked as optional because
+     * this decorator used both as a class and a property decorator and the
+     * Typescript compiler will freak out if we make it mandatory as a class
+     * decorator only receives one parameter.
+     */
+    return function (object, propertyName) {
+        _storage__WEBPACK_IMPORTED_MODULE_0__.defaultMetadataStorage.addExposeMetadata({
+            target: object instanceof Function ? object : object.constructor,
+            propertyName: propertyName,
+            options: options,
+        });
+    };
+}
+//# sourceMappingURL=expose.decorator.js.map
+
+/***/ }),
+/* 38 */
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   TransformInstanceToInstance: () => (/* binding */ TransformInstanceToInstance)
+/* harmony export */ });
+/* harmony import */ var _ClassTransformer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(27);
+
+/**
+ * Return the class instance only with the exposed properties.
+ *
+ * Can be applied to functions and getters/setters only.
+ */
+function TransformInstanceToInstance(params) {
+    return function (target, propertyKey, descriptor) {
+        var classTransformer = new _ClassTransformer__WEBPACK_IMPORTED_MODULE_0__.ClassTransformer();
+        var originalMethod = descriptor.value;
+        descriptor.value = function () {
+            var args = [];
+            for (var _i = 0; _i < arguments.length; _i++) {
+                args[_i] = arguments[_i];
+            }
+            var result = originalMethod.apply(this, args);
+            var isPromise = !!result && (typeof result === 'object' || typeof result === 'function') && typeof result.then === 'function';
+            return isPromise
+                ? result.then(function (data) { return classTransformer.instanceToInstance(data, params); })
+                : classTransformer.instanceToInstance(result, params);
+        };
+    };
+}
+//# sourceMappingURL=transform-instance-to-instance.decorator.js.map
+
+/***/ }),
+/* 39 */
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   TransformInstanceToPlain: () => (/* binding */ TransformInstanceToPlain)
+/* harmony export */ });
+/* harmony import */ var _ClassTransformer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(27);
+
+/**
+ * Transform the object from class to plain object and return only with the exposed properties.
+ *
+ * Can be applied to functions and getters/setters only.
+ */
+function TransformInstanceToPlain(params) {
+    return function (target, propertyKey, descriptor) {
+        var classTransformer = new _ClassTransformer__WEBPACK_IMPORTED_MODULE_0__.ClassTransformer();
+        var originalMethod = descriptor.value;
+        descriptor.value = function () {
+            var args = [];
+            for (var _i = 0; _i < arguments.length; _i++) {
+                args[_i] = arguments[_i];
+            }
+            var result = originalMethod.apply(this, args);
+            var isPromise = !!result && (typeof result === 'object' || typeof result === 'function') && typeof result.then === 'function';
+            return isPromise
+                ? result.then(function (data) { return classTransformer.instanceToPlain(data, params); })
+                : classTransformer.instanceToPlain(result, params);
+        };
+    };
+}
+//# sourceMappingURL=transform-instance-to-plain.decorator.js.map
+
+/***/ }),
+/* 40 */
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   TransformPlainToInstance: () => (/* binding */ TransformPlainToInstance)
+/* harmony export */ });
+/* harmony import */ var _ClassTransformer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(27);
+
+/**
+ * Return the class instance only with the exposed properties.
+ *
+ * Can be applied to functions and getters/setters only.
+ */
+function TransformPlainToInstance(classType, params) {
+    return function (target, propertyKey, descriptor) {
+        var classTransformer = new _ClassTransformer__WEBPACK_IMPORTED_MODULE_0__.ClassTransformer();
+        var originalMethod = descriptor.value;
+        descriptor.value = function () {
+            var args = [];
+            for (var _i = 0; _i < arguments.length; _i++) {
+                args[_i] = arguments[_i];
+            }
+            var result = originalMethod.apply(this, args);
+            var isPromise = !!result && (typeof result === 'object' || typeof result === 'function') && typeof result.then === 'function';
+            return isPromise
+                ? result.then(function (data) { return classTransformer.plainToInstance(classType, data, params); })
+                : classTransformer.plainToInstance(classType, result, params);
+        };
+    };
+}
+//# sourceMappingURL=transform-plain-to-instance.decorator.js.map
+
+/***/ }),
+/* 41 */
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Transform: () => (/* binding */ Transform)
+/* harmony export */ });
+/* harmony import */ var _storage__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(32);
+
+/**
+ * Defines a custom logic for value transformation.
+ *
+ * Can be applied to properties only.
+ */
+function Transform(transformFn, options) {
+    if (options === void 0) { options = {}; }
+    return function (target, propertyName) {
+        _storage__WEBPACK_IMPORTED_MODULE_0__.defaultMetadataStorage.addTransformMetadata({
+            target: target.constructor,
+            propertyName: propertyName,
+            transformFn: transformFn,
+            options: options,
+        });
+    };
+}
+//# sourceMappingURL=transform.decorator.js.map
+
+/***/ }),
+/* 42 */
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Type: () => (/* binding */ Type)
+/* harmony export */ });
+/* harmony import */ var _storage__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(32);
+
+/**
+ * Specifies a type of the property.
+ * The given TypeFunction can return a constructor. A discriminator can be given in the options.
+ *
+ * Can be applied to properties only.
+ */
+function Type(typeFunction, options) {
+    if (options === void 0) { options = {}; }
+    return function (target, propertyName) {
+        var reflectedType = Reflect.getMetadata('design:type', target, propertyName);
+        _storage__WEBPACK_IMPORTED_MODULE_0__.defaultMetadataStorage.addTypeMetadata({
+            target: target.constructor,
+            propertyName: propertyName,
+            reflectedType: reflectedType,
+            typeFunction: typeFunction,
+            options: options,
+        });
+    };
+}
+//# sourceMappingURL=type.decorator.js.map
+
+/***/ }),
+/* 43 */
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   TransformationType: () => (/* reexport safe */ _transformation_type_enum__WEBPACK_IMPORTED_MODULE_0__.TransformationType)
+/* harmony export */ });
+/* harmony import */ var _transformation_type_enum__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(29);
+
+//# sourceMappingURL=index.js.map
+
+/***/ }),
+/* 44 */
+/***/ (() => {
+
+/*! *****************************************************************************
+Copyright (C) Microsoft. All rights reserved.
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+this file except in compliance with the License. You may obtain a copy of the
+License at http://www.apache.org/licenses/LICENSE-2.0
+
+THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
+WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
+MERCHANTABLITY OR NON-INFRINGEMENT.
+
+See the Apache Version 2.0 License for specific language governing permissions
+and limitations under the License.
+***************************************************************************** */
+var Reflect;
+(function (Reflect) {
+    // Metadata Proposal
+    // https://rbuckton.github.io/reflect-metadata/
+    (function (factory) {
+        var root = typeof global === "object" ? global :
+            typeof self === "object" ? self :
+                typeof this === "object" ? this :
+                    Function("return this;")();
+        var exporter = makeExporter(Reflect);
+        if (typeof root.Reflect === "undefined") {
+            root.Reflect = Reflect;
+        }
+        else {
+            exporter = makeExporter(root.Reflect, exporter);
+        }
+        factory(exporter);
+        function makeExporter(target, previous) {
+            return function (key, value) {
+                if (typeof target[key] !== "function") {
+                    Object.defineProperty(target, key, { configurable: true, writable: true, value: value });
+                }
+                if (previous)
+                    previous(key, value);
+            };
+        }
+    })(function (exporter) {
+        var hasOwn = Object.prototype.hasOwnProperty;
+        // feature test for Symbol support
+        var supportsSymbol = typeof Symbol === "function";
+        var toPrimitiveSymbol = supportsSymbol && typeof Symbol.toPrimitive !== "undefined" ? Symbol.toPrimitive : "@@toPrimitive";
+        var iteratorSymbol = supportsSymbol && typeof Symbol.iterator !== "undefined" ? Symbol.iterator : "@@iterator";
+        var supportsCreate = typeof Object.create === "function"; // feature test for Object.create support
+        var supportsProto = { __proto__: [] } instanceof Array; // feature test for __proto__ support
+        var downLevel = !supportsCreate && !supportsProto;
+        var HashMap = {
+            // create an object in dictionary mode (a.k.a. "slow" mode in v8)
+            create: supportsCreate
+                ? function () { return MakeDictionary(Object.create(null)); }
+                : supportsProto
+                    ? function () { return MakeDictionary({ __proto__: null }); }
+                    : function () { return MakeDictionary({}); },
+            has: downLevel
+                ? function (map, key) { return hasOwn.call(map, key); }
+                : function (map, key) { return key in map; },
+            get: downLevel
+                ? function (map, key) { return hasOwn.call(map, key) ? map[key] : undefined; }
+                : function (map, key) { return map[key]; },
+        };
+        // Load global or shim versions of Map, Set, and WeakMap
+        var functionPrototype = Object.getPrototypeOf(Function);
+        var usePolyfill = typeof process === "object" && process.env && process.env["REFLECT_METADATA_USE_MAP_POLYFILL"] === "true";
+        var _Map = !usePolyfill && typeof Map === "function" && typeof Map.prototype.entries === "function" ? Map : CreateMapPolyfill();
+        var _Set = !usePolyfill && typeof Set === "function" && typeof Set.prototype.entries === "function" ? Set : CreateSetPolyfill();
+        var _WeakMap = !usePolyfill && typeof WeakMap === "function" ? WeakMap : CreateWeakMapPolyfill();
+        // [[Metadata]] internal slot
+        // https://rbuckton.github.io/reflect-metadata/#ordinary-object-internal-methods-and-internal-slots
+        var Metadata = new _WeakMap();
+        /**
+         * Applies a set of decorators to a property of a target object.
+         * @param decorators An array of decorators.
+         * @param target The target object.
+         * @param propertyKey (Optional) The property key to decorate.
+         * @param attributes (Optional) The property descriptor for the target key.
+         * @remarks Decorators are applied in reverse order.
+         * @example
+         *
+         *     class Example {
+         *         // property declarations are not part of ES6, though they are valid in TypeScript:
+         *         // static staticProperty;
+         *         // property;
+         *
+         *         constructor(p) { }
+         *         static staticMethod(p) { }
+         *         method(p) { }
+         *     }
+         *
+         *     // constructor
+         *     Example = Reflect.decorate(decoratorsArray, Example);
+         *
+         *     // property (on constructor)
+         *     Reflect.decorate(decoratorsArray, Example, "staticProperty");
+         *
+         *     // property (on prototype)
+         *     Reflect.decorate(decoratorsArray, Example.prototype, "property");
+         *
+         *     // method (on constructor)
+         *     Object.defineProperty(Example, "staticMethod",
+         *         Reflect.decorate(decoratorsArray, Example, "staticMethod",
+         *             Object.getOwnPropertyDescriptor(Example, "staticMethod")));
+         *
+         *     // method (on prototype)
+         *     Object.defineProperty(Example.prototype, "method",
+         *         Reflect.decorate(decoratorsArray, Example.prototype, "method",
+         *             Object.getOwnPropertyDescriptor(Example.prototype, "method")));
+         *
+         */
+        function decorate(decorators, target, propertyKey, attributes) {
+            if (!IsUndefined(propertyKey)) {
+                if (!IsArray(decorators))
+                    throw new TypeError();
+                if (!IsObject(target))
+                    throw new TypeError();
+                if (!IsObject(attributes) && !IsUndefined(attributes) && !IsNull(attributes))
+                    throw new TypeError();
+                if (IsNull(attributes))
+                    attributes = undefined;
+                propertyKey = ToPropertyKey(propertyKey);
+                return DecorateProperty(decorators, target, propertyKey, attributes);
+            }
+            else {
+                if (!IsArray(decorators))
+                    throw new TypeError();
+                if (!IsConstructor(target))
+                    throw new TypeError();
+                return DecorateConstructor(decorators, target);
+            }
+        }
+        exporter("decorate", decorate);
+        // 4.1.2 Reflect.metadata(metadataKey, metadataValue)
+        // https://rbuckton.github.io/reflect-metadata/#reflect.metadata
+        /**
+         * A default metadata decorator factory that can be used on a class, class member, or parameter.
+         * @param metadataKey The key for the metadata entry.
+         * @param metadataValue The value for the metadata entry.
+         * @returns A decorator function.
+         * @remarks
+         * If `metadataKey` is already defined for the target and target key, the
+         * metadataValue for that key will be overwritten.
+         * @example
+         *
+         *     // constructor
+         *     @Reflect.metadata(key, value)
+         *     class Example {
+         *     }
+         *
+         *     // property (on constructor, TypeScript only)
+         *     class Example {
+         *         @Reflect.metadata(key, value)
+         *         static staticProperty;
+         *     }
+         *
+         *     // property (on prototype, TypeScript only)
+         *     class Example {
+         *         @Reflect.metadata(key, value)
+         *         property;
+         *     }
+         *
+         *     // method (on constructor)
+         *     class Example {
+         *         @Reflect.metadata(key, value)
+         *         static staticMethod() { }
+         *     }
+         *
+         *     // method (on prototype)
+         *     class Example {
+         *         @Reflect.metadata(key, value)
+         *         method() { }
+         *     }
+         *
+         */
+        function metadata(metadataKey, metadataValue) {
+            function decorator(target, propertyKey) {
+                if (!IsObject(target))
+                    throw new TypeError();
+                if (!IsUndefined(propertyKey) && !IsPropertyKey(propertyKey))
+                    throw new TypeError();
+                OrdinaryDefineOwnMetadata(metadataKey, metadataValue, target, propertyKey);
+            }
+            return decorator;
+        }
+        exporter("metadata", metadata);
+        /**
+         * Define a unique metadata entry on the target.
+         * @param metadataKey A key used to store and retrieve metadata.
+         * @param metadataValue A value that contains attached metadata.
+         * @param target The target object on which to define metadata.
+         * @param propertyKey (Optional) The property key for the target.
+         * @example
+         *
+         *     class Example {
+         *         // property declarations are not part of ES6, though they are valid in TypeScript:
+         *         // static staticProperty;
+         *         // property;
+         *
+         *         constructor(p) { }
+         *         static staticMethod(p) { }
+         *         method(p) { }
+         *     }
+         *
+         *     // constructor
+         *     Reflect.defineMetadata("custom:annotation", options, Example);
+         *
+         *     // property (on constructor)
+         *     Reflect.defineMetadata("custom:annotation", options, Example, "staticProperty");
+         *
+         *     // property (on prototype)
+         *     Reflect.defineMetadata("custom:annotation", options, Example.prototype, "property");
+         *
+         *     // method (on constructor)
+         *     Reflect.defineMetadata("custom:annotation", options, Example, "staticMethod");
+         *
+         *     // method (on prototype)
+         *     Reflect.defineMetadata("custom:annotation", options, Example.prototype, "method");
+         *
+         *     // decorator factory as metadata-producing annotation.
+         *     function MyAnnotation(options): Decorator {
+         *         return (target, key?) => Reflect.defineMetadata("custom:annotation", options, target, key);
+         *     }
+         *
+         */
+        function defineMetadata(metadataKey, metadataValue, target, propertyKey) {
+            if (!IsObject(target))
+                throw new TypeError();
+            if (!IsUndefined(propertyKey))
+                propertyKey = ToPropertyKey(propertyKey);
+            return OrdinaryDefineOwnMetadata(metadataKey, metadataValue, target, propertyKey);
+        }
+        exporter("defineMetadata", defineMetadata);
+        /**
+         * Gets a value indicating whether the target object or its prototype chain has the provided metadata key defined.
+         * @param metadataKey A key used to store and retrieve metadata.
+         * @param target The target object on which the metadata is defined.
+         * @param propertyKey (Optional) The property key for the target.
+         * @returns `true` if the metadata key was defined on the target object or its prototype chain; otherwise, `false`.
+         * @example
+         *
+         *     class Example {
+         *         // property declarations are not part of ES6, though they are valid in TypeScript:
+         *         // static staticProperty;
+         *         // property;
+         *
+         *         constructor(p) { }
+         *         static staticMethod(p) { }
+         *         method(p) { }
+         *     }
+         *
+         *     // constructor
+         *     result = Reflect.hasMetadata("custom:annotation", Example);
+         *
+         *     // property (on constructor)
+         *     result = Reflect.hasMetadata("custom:annotation", Example, "staticProperty");
+         *
+         *     // property (on prototype)
+         *     result = Reflect.hasMetadata("custom:annotation", Example.prototype, "property");
+         *
+         *     // method (on constructor)
+         *     result = Reflect.hasMetadata("custom:annotation", Example, "staticMethod");
+         *
+         *     // method (on prototype)
+         *     result = Reflect.hasMetadata("custom:annotation", Example.prototype, "method");
+         *
+         */
+        function hasMetadata(metadataKey, target, propertyKey) {
+            if (!IsObject(target))
+                throw new TypeError();
+            if (!IsUndefined(propertyKey))
+                propertyKey = ToPropertyKey(propertyKey);
+            return OrdinaryHasMetadata(metadataKey, target, propertyKey);
+        }
+        exporter("hasMetadata", hasMetadata);
+        /**
+         * Gets a value indicating whether the target object has the provided metadata key defined.
+         * @param metadataKey A key used to store and retrieve metadata.
+         * @param target The target object on which the metadata is defined.
+         * @param propertyKey (Optional) The property key for the target.
+         * @returns `true` if the metadata key was defined on the target object; otherwise, `false`.
+         * @example
+         *
+         *     class Example {
+         *         // property declarations are not part of ES6, though they are valid in TypeScript:
+         *         // static staticProperty;
+         *         // property;
+         *
+         *         constructor(p) { }
+         *         static staticMethod(p) { }
+         *         method(p) { }
+         *     }
+         *
+         *     // constructor
+         *     result = Reflect.hasOwnMetadata("custom:annotation", Example);
+         *
+         *     // property (on constructor)
+         *     result = Reflect.hasOwnMetadata("custom:annotation", Example, "staticProperty");
+         *
+         *     // property (on prototype)
+         *     result = Reflect.hasOwnMetadata("custom:annotation", Example.prototype, "property");
+         *
+         *     // method (on constructor)
+         *     result = Reflect.hasOwnMetadata("custom:annotation", Example, "staticMethod");
+         *
+         *     // method (on prototype)
+         *     result = Reflect.hasOwnMetadata("custom:annotation", Example.prototype, "method");
+         *
+         */
+        function hasOwnMetadata(metadataKey, target, propertyKey) {
+            if (!IsObject(target))
+                throw new TypeError();
+            if (!IsUndefined(propertyKey))
+                propertyKey = ToPropertyKey(propertyKey);
+            return OrdinaryHasOwnMetadata(metadataKey, target, propertyKey);
+        }
+        exporter("hasOwnMetadata", hasOwnMetadata);
+        /**
+         * Gets the metadata value for the provided metadata key on the target object or its prototype chain.
+         * @param metadataKey A key used to store and retrieve metadata.
+         * @param target The target object on which the metadata is defined.
+         * @param propertyKey (Optional) The property key for the target.
+         * @returns The metadata value for the metadata key if found; otherwise, `undefined`.
+         * @example
+         *
+         *     class Example {
+         *         // property declarations are not part of ES6, though they are valid in TypeScript:
+         *         // static staticProperty;
+         *         // property;
+         *
+         *         constructor(p) { }
+         *         static staticMethod(p) { }
+         *         method(p) { }
+         *     }
+         *
+         *     // constructor
+         *     result = Reflect.getMetadata("custom:annotation", Example);
+         *
+         *     // property (on constructor)
+         *     result = Reflect.getMetadata("custom:annotation", Example, "staticProperty");
+         *
+         *     // property (on prototype)
+         *     result = Reflect.getMetadata("custom:annotation", Example.prototype, "property");
+         *
+         *     // method (on constructor)
+         *     result = Reflect.getMetadata("custom:annotation", Example, "staticMethod");
+         *
+         *     // method (on prototype)
+         *     result = Reflect.getMetadata("custom:annotation", Example.prototype, "method");
+         *
+         */
+        function getMetadata(metadataKey, target, propertyKey) {
+            if (!IsObject(target))
+                throw new TypeError();
+            if (!IsUndefined(propertyKey))
+                propertyKey = ToPropertyKey(propertyKey);
+            return OrdinaryGetMetadata(metadataKey, target, propertyKey);
+        }
+        exporter("getMetadata", getMetadata);
+        /**
+         * Gets the metadata value for the provided metadata key on the target object.
+         * @param metadataKey A key used to store and retrieve metadata.
+         * @param target The target object on which the metadata is defined.
+         * @param propertyKey (Optional) The property key for the target.
+         * @returns The metadata value for the metadata key if found; otherwise, `undefined`.
+         * @example
+         *
+         *     class Example {
+         *         // property declarations are not part of ES6, though they are valid in TypeScript:
+         *         // static staticProperty;
+         *         // property;
+         *
+         *         constructor(p) { }
+         *         static staticMethod(p) { }
+         *         method(p) { }
+         *     }
+         *
+         *     // constructor
+         *     result = Reflect.getOwnMetadata("custom:annotation", Example);
+         *
+         *     // property (on constructor)
+         *     result = Reflect.getOwnMetadata("custom:annotation", Example, "staticProperty");
+         *
+         *     // property (on prototype)
+         *     result = Reflect.getOwnMetadata("custom:annotation", Example.prototype, "property");
+         *
+         *     // method (on constructor)
+         *     result = Reflect.getOwnMetadata("custom:annotation", Example, "staticMethod");
+         *
+         *     // method (on prototype)
+         *     result = Reflect.getOwnMetadata("custom:annotation", Example.prototype, "method");
+         *
+         */
+        function getOwnMetadata(metadataKey, target, propertyKey) {
+            if (!IsObject(target))
+                throw new TypeError();
+            if (!IsUndefined(propertyKey))
+                propertyKey = ToPropertyKey(propertyKey);
+            return OrdinaryGetOwnMetadata(metadataKey, target, propertyKey);
+        }
+        exporter("getOwnMetadata", getOwnMetadata);
+        /**
+         * Gets the metadata keys defined on the target object or its prototype chain.
+         * @param target The target object on which the metadata is defined.
+         * @param propertyKey (Optional) The property key for the target.
+         * @returns An array of unique metadata keys.
+         * @example
+         *
+         *     class Example {
+         *         // property declarations are not part of ES6, though they are valid in TypeScript:
+         *         // static staticProperty;
+         *         // property;
+         *
+         *         constructor(p) { }
+         *         static staticMethod(p) { }
+         *         method(p) { }
+         *     }
+         *
+         *     // constructor
+         *     result = Reflect.getMetadataKeys(Example);
+         *
+         *     // property (on constructor)
+         *     result = Reflect.getMetadataKeys(Example, "staticProperty");
+         *
+         *     // property (on prototype)
+         *     result = Reflect.getMetadataKeys(Example.prototype, "property");
+         *
+         *     // method (on constructor)
+         *     result = Reflect.getMetadataKeys(Example, "staticMethod");
+         *
+         *     // method (on prototype)
+         *     result = Reflect.getMetadataKeys(Example.prototype, "method");
+         *
+         */
+        function getMetadataKeys(target, propertyKey) {
+            if (!IsObject(target))
+                throw new TypeError();
+            if (!IsUndefined(propertyKey))
+                propertyKey = ToPropertyKey(propertyKey);
+            return OrdinaryMetadataKeys(target, propertyKey);
+        }
+        exporter("getMetadataKeys", getMetadataKeys);
+        /**
+         * Gets the unique metadata keys defined on the target object.
+         * @param target The target object on which the metadata is defined.
+         * @param propertyKey (Optional) The property key for the target.
+         * @returns An array of unique metadata keys.
+         * @example
+         *
+         *     class Example {
+         *         // property declarations are not part of ES6, though they are valid in TypeScript:
+         *         // static staticProperty;
+         *         // property;
+         *
+         *         constructor(p) { }
+         *         static staticMethod(p) { }
+         *         method(p) { }
+         *     }
+         *
+         *     // constructor
+         *     result = Reflect.getOwnMetadataKeys(Example);
+         *
+         *     // property (on constructor)
+         *     result = Reflect.getOwnMetadataKeys(Example, "staticProperty");
+         *
+         *     // property (on prototype)
+         *     result = Reflect.getOwnMetadataKeys(Example.prototype, "property");
+         *
+         *     // method (on constructor)
+         *     result = Reflect.getOwnMetadataKeys(Example, "staticMethod");
+         *
+         *     // method (on prototype)
+         *     result = Reflect.getOwnMetadataKeys(Example.prototype, "method");
+         *
+         */
+        function getOwnMetadataKeys(target, propertyKey) {
+            if (!IsObject(target))
+                throw new TypeError();
+            if (!IsUndefined(propertyKey))
+                propertyKey = ToPropertyKey(propertyKey);
+            return OrdinaryOwnMetadataKeys(target, propertyKey);
+        }
+        exporter("getOwnMetadataKeys", getOwnMetadataKeys);
+        /**
+         * Deletes the metadata entry from the target object with the provided key.
+         * @param metadataKey A key used to store and retrieve metadata.
+         * @param target The target object on which the metadata is defined.
+         * @param propertyKey (Optional) The property key for the target.
+         * @returns `true` if the metadata entry was found and deleted; otherwise, false.
+         * @example
+         *
+         *     class Example {
+         *         // property declarations are not part of ES6, though they are valid in TypeScript:
+         *         // static staticProperty;
+         *         // property;
+         *
+         *         constructor(p) { }
+         *         static staticMethod(p) { }
+         *         method(p) { }
+         *     }
+         *
+         *     // constructor
+         *     result = Reflect.deleteMetadata("custom:annotation", Example);
+         *
+         *     // property (on constructor)
+         *     result = Reflect.deleteMetadata("custom:annotation", Example, "staticProperty");
+         *
+         *     // property (on prototype)
+         *     result = Reflect.deleteMetadata("custom:annotation", Example.prototype, "property");
+         *
+         *     // method (on constructor)
+         *     result = Reflect.deleteMetadata("custom:annotation", Example, "staticMethod");
+         *
+         *     // method (on prototype)
+         *     result = Reflect.deleteMetadata("custom:annotation", Example.prototype, "method");
+         *
+         */
+        function deleteMetadata(metadataKey, target, propertyKey) {
+            if (!IsObject(target))
+                throw new TypeError();
+            if (!IsUndefined(propertyKey))
+                propertyKey = ToPropertyKey(propertyKey);
+            var metadataMap = GetOrCreateMetadataMap(target, propertyKey, /*Create*/ false);
+            if (IsUndefined(metadataMap))
+                return false;
+            if (!metadataMap.delete(metadataKey))
+                return false;
+            if (metadataMap.size > 0)
+                return true;
+            var targetMetadata = Metadata.get(target);
+            targetMetadata.delete(propertyKey);
+            if (targetMetadata.size > 0)
+                return true;
+            Metadata.delete(target);
+            return true;
+        }
+        exporter("deleteMetadata", deleteMetadata);
+        function DecorateConstructor(decorators, target) {
+            for (var i = decorators.length - 1; i >= 0; --i) {
+                var decorator = decorators[i];
+                var decorated = decorator(target);
+                if (!IsUndefined(decorated) && !IsNull(decorated)) {
+                    if (!IsConstructor(decorated))
+                        throw new TypeError();
+                    target = decorated;
+                }
+            }
+            return target;
+        }
+        function DecorateProperty(decorators, target, propertyKey, descriptor) {
+            for (var i = decorators.length - 1; i >= 0; --i) {
+                var decorator = decorators[i];
+                var decorated = decorator(target, propertyKey, descriptor);
+                if (!IsUndefined(decorated) && !IsNull(decorated)) {
+                    if (!IsObject(decorated))
+                        throw new TypeError();
+                    descriptor = decorated;
+                }
+            }
+            return descriptor;
+        }
+        function GetOrCreateMetadataMap(O, P, Create) {
+            var targetMetadata = Metadata.get(O);
+            if (IsUndefined(targetMetadata)) {
+                if (!Create)
+                    return undefined;
+                targetMetadata = new _Map();
+                Metadata.set(O, targetMetadata);
+            }
+            var metadataMap = targetMetadata.get(P);
+            if (IsUndefined(metadataMap)) {
+                if (!Create)
+                    return undefined;
+                metadataMap = new _Map();
+                targetMetadata.set(P, metadataMap);
+            }
+            return metadataMap;
+        }
+        // 3.1.1.1 OrdinaryHasMetadata(MetadataKey, O, P)
+        // https://rbuckton.github.io/reflect-metadata/#ordinaryhasmetadata
+        function OrdinaryHasMetadata(MetadataKey, O, P) {
+            var hasOwn = OrdinaryHasOwnMetadata(MetadataKey, O, P);
+            if (hasOwn)
+                return true;
+            var parent = OrdinaryGetPrototypeOf(O);
+            if (!IsNull(parent))
+                return OrdinaryHasMetadata(MetadataKey, parent, P);
+            return false;
+        }
+        // 3.1.2.1 OrdinaryHasOwnMetadata(MetadataKey, O, P)
+        // https://rbuckton.github.io/reflect-metadata/#ordinaryhasownmetadata
+        function OrdinaryHasOwnMetadata(MetadataKey, O, P) {
+            var metadataMap = GetOrCreateMetadataMap(O, P, /*Create*/ false);
+            if (IsUndefined(metadataMap))
+                return false;
+            return ToBoolean(metadataMap.has(MetadataKey));
+        }
+        // 3.1.3.1 OrdinaryGetMetadata(MetadataKey, O, P)
+        // https://rbuckton.github.io/reflect-metadata/#ordinarygetmetadata
+        function OrdinaryGetMetadata(MetadataKey, O, P) {
+            var hasOwn = OrdinaryHasOwnMetadata(MetadataKey, O, P);
+            if (hasOwn)
+                return OrdinaryGetOwnMetadata(MetadataKey, O, P);
+            var parent = OrdinaryGetPrototypeOf(O);
+            if (!IsNull(parent))
+                return OrdinaryGetMetadata(MetadataKey, parent, P);
+            return undefined;
+        }
+        // 3.1.4.1 OrdinaryGetOwnMetadata(MetadataKey, O, P)
+        // https://rbuckton.github.io/reflect-metadata/#ordinarygetownmetadata
+        function OrdinaryGetOwnMetadata(MetadataKey, O, P) {
+            var metadataMap = GetOrCreateMetadataMap(O, P, /*Create*/ false);
+            if (IsUndefined(metadataMap))
+                return undefined;
+            return metadataMap.get(MetadataKey);
+        }
+        // 3.1.5.1 OrdinaryDefineOwnMetadata(MetadataKey, MetadataValue, O, P)
+        // https://rbuckton.github.io/reflect-metadata/#ordinarydefineownmetadata
+        function OrdinaryDefineOwnMetadata(MetadataKey, MetadataValue, O, P) {
+            var metadataMap = GetOrCreateMetadataMap(O, P, /*Create*/ true);
+            metadataMap.set(MetadataKey, MetadataValue);
+        }
+        // 3.1.6.1 OrdinaryMetadataKeys(O, P)
+        // https://rbuckton.github.io/reflect-metadata/#ordinarymetadatakeys
+        function OrdinaryMetadataKeys(O, P) {
+            var ownKeys = OrdinaryOwnMetadataKeys(O, P);
+            var parent = OrdinaryGetPrototypeOf(O);
+            if (parent === null)
+                return ownKeys;
+            var parentKeys = OrdinaryMetadataKeys(parent, P);
+            if (parentKeys.length <= 0)
+                return ownKeys;
+            if (ownKeys.length <= 0)
+                return parentKeys;
+            var set = new _Set();
+            var keys = [];
+            for (var _i = 0, ownKeys_1 = ownKeys; _i < ownKeys_1.length; _i++) {
+                var key = ownKeys_1[_i];
+                var hasKey = set.has(key);
+                if (!hasKey) {
+                    set.add(key);
+                    keys.push(key);
+                }
+            }
+            for (var _a = 0, parentKeys_1 = parentKeys; _a < parentKeys_1.length; _a++) {
+                var key = parentKeys_1[_a];
+                var hasKey = set.has(key);
+                if (!hasKey) {
+                    set.add(key);
+                    keys.push(key);
+                }
+            }
+            return keys;
+        }
+        // 3.1.7.1 OrdinaryOwnMetadataKeys(O, P)
+        // https://rbuckton.github.io/reflect-metadata/#ordinaryownmetadatakeys
+        function OrdinaryOwnMetadataKeys(O, P) {
+            var keys = [];
+            var metadataMap = GetOrCreateMetadataMap(O, P, /*Create*/ false);
+            if (IsUndefined(metadataMap))
+                return keys;
+            var keysObj = metadataMap.keys();
+            var iterator = GetIterator(keysObj);
+            var k = 0;
+            while (true) {
+                var next = IteratorStep(iterator);
+                if (!next) {
+                    keys.length = k;
+                    return keys;
+                }
+                var nextValue = IteratorValue(next);
+                try {
+                    keys[k] = nextValue;
+                }
+                catch (e) {
+                    try {
+                        IteratorClose(iterator);
+                    }
+                    finally {
+                        throw e;
+                    }
+                }
+                k++;
+            }
+        }
+        // 6 ECMAScript Data Typ0es and Values
+        // https://tc39.github.io/ecma262/#sec-ecmascript-data-types-and-values
+        function Type(x) {
+            if (x === null)
+                return 1 /* Null */;
+            switch (typeof x) {
+                case "undefined": return 0 /* Undefined */;
+                case "boolean": return 2 /* Boolean */;
+                case "string": return 3 /* String */;
+                case "symbol": return 4 /* Symbol */;
+                case "number": return 5 /* Number */;
+                case "object": return x === null ? 1 /* Null */ : 6 /* Object */;
+                default: return 6 /* Object */;
+            }
+        }
+        // 6.1.1 The Undefined Type
+        // https://tc39.github.io/ecma262/#sec-ecmascript-language-types-undefined-type
+        function IsUndefined(x) {
+            return x === undefined;
+        }
+        // 6.1.2 The Null Type
+        // https://tc39.github.io/ecma262/#sec-ecmascript-language-types-null-type
+        function IsNull(x) {
+            return x === null;
+        }
+        // 6.1.5 The Symbol Type
+        // https://tc39.github.io/ecma262/#sec-ecmascript-language-types-symbol-type
+        function IsSymbol(x) {
+            return typeof x === "symbol";
+        }
+        // 6.1.7 The Object Type
+        // https://tc39.github.io/ecma262/#sec-object-type
+        function IsObject(x) {
+            return typeof x === "object" ? x !== null : typeof x === "function";
+        }
+        // 7.1 Type Conversion
+        // https://tc39.github.io/ecma262/#sec-type-conversion
+        // 7.1.1 ToPrimitive(input [, PreferredType])
+        // https://tc39.github.io/ecma262/#sec-toprimitive
+        function ToPrimitive(input, PreferredType) {
+            switch (Type(input)) {
+                case 0 /* Undefined */: return input;
+                case 1 /* Null */: return input;
+                case 2 /* Boolean */: return input;
+                case 3 /* String */: return input;
+                case 4 /* Symbol */: return input;
+                case 5 /* Number */: return input;
+            }
+            var hint = PreferredType === 3 /* String */ ? "string" : PreferredType === 5 /* Number */ ? "number" : "default";
+            var exoticToPrim = GetMethod(input, toPrimitiveSymbol);
+            if (exoticToPrim !== undefined) {
+                var result = exoticToPrim.call(input, hint);
+                if (IsObject(result))
+                    throw new TypeError();
+                return result;
+            }
+            return OrdinaryToPrimitive(input, hint === "default" ? "number" : hint);
+        }
+        // 7.1.1.1 OrdinaryToPrimitive(O, hint)
+        // https://tc39.github.io/ecma262/#sec-ordinarytoprimitive
+        function OrdinaryToPrimitive(O, hint) {
+            if (hint === "string") {
+                var toString_1 = O.toString;
+                if (IsCallable(toString_1)) {
+                    var result = toString_1.call(O);
+                    if (!IsObject(result))
+                        return result;
+                }
+                var valueOf = O.valueOf;
+                if (IsCallable(valueOf)) {
+                    var result = valueOf.call(O);
+                    if (!IsObject(result))
+                        return result;
+                }
+            }
+            else {
+                var valueOf = O.valueOf;
+                if (IsCallable(valueOf)) {
+                    var result = valueOf.call(O);
+                    if (!IsObject(result))
+                        return result;
+                }
+                var toString_2 = O.toString;
+                if (IsCallable(toString_2)) {
+                    var result = toString_2.call(O);
+                    if (!IsObject(result))
+                        return result;
+                }
+            }
+            throw new TypeError();
+        }
+        // 7.1.2 ToBoolean(argument)
+        // https://tc39.github.io/ecma262/2016/#sec-toboolean
+        function ToBoolean(argument) {
+            return !!argument;
+        }
+        // 7.1.12 ToString(argument)
+        // https://tc39.github.io/ecma262/#sec-tostring
+        function ToString(argument) {
+            return "" + argument;
+        }
+        // 7.1.14 ToPropertyKey(argument)
+        // https://tc39.github.io/ecma262/#sec-topropertykey
+        function ToPropertyKey(argument) {
+            var key = ToPrimitive(argument, 3 /* String */);
+            if (IsSymbol(key))
+                return key;
+            return ToString(key);
+        }
+        // 7.2 Testing and Comparison Operations
+        // https://tc39.github.io/ecma262/#sec-testing-and-comparison-operations
+        // 7.2.2 IsArray(argument)
+        // https://tc39.github.io/ecma262/#sec-isarray
+        function IsArray(argument) {
+            return Array.isArray
+                ? Array.isArray(argument)
+                : argument instanceof Object
+                    ? argument instanceof Array
+                    : Object.prototype.toString.call(argument) === "[object Array]";
+        }
+        // 7.2.3 IsCallable(argument)
+        // https://tc39.github.io/ecma262/#sec-iscallable
+        function IsCallable(argument) {
+            // NOTE: This is an approximation as we cannot check for [[Call]] internal method.
+            return typeof argument === "function";
+        }
+        // 7.2.4 IsConstructor(argument)
+        // https://tc39.github.io/ecma262/#sec-isconstructor
+        function IsConstructor(argument) {
+            // NOTE: This is an approximation as we cannot check for [[Construct]] internal method.
+            return typeof argument === "function";
+        }
+        // 7.2.7 IsPropertyKey(argument)
+        // https://tc39.github.io/ecma262/#sec-ispropertykey
+        function IsPropertyKey(argument) {
+            switch (Type(argument)) {
+                case 3 /* String */: return true;
+                case 4 /* Symbol */: return true;
+                default: return false;
+            }
+        }
+        // 7.3 Operations on Objects
+        // https://tc39.github.io/ecma262/#sec-operations-on-objects
+        // 7.3.9 GetMethod(V, P)
+        // https://tc39.github.io/ecma262/#sec-getmethod
+        function GetMethod(V, P) {
+            var func = V[P];
+            if (func === undefined || func === null)
+                return undefined;
+            if (!IsCallable(func))
+                throw new TypeError();
+            return func;
+        }
+        // 7.4 Operations on Iterator Objects
+        // https://tc39.github.io/ecma262/#sec-operations-on-iterator-objects
+        function GetIterator(obj) {
+            var method = GetMethod(obj, iteratorSymbol);
+            if (!IsCallable(method))
+                throw new TypeError(); // from Call
+            var iterator = method.call(obj);
+            if (!IsObject(iterator))
+                throw new TypeError();
+            return iterator;
+        }
+        // 7.4.4 IteratorValue(iterResult)
+        // https://tc39.github.io/ecma262/2016/#sec-iteratorvalue
+        function IteratorValue(iterResult) {
+            return iterResult.value;
+        }
+        // 7.4.5 IteratorStep(iterator)
+        // https://tc39.github.io/ecma262/#sec-iteratorstep
+        function IteratorStep(iterator) {
+            var result = iterator.next();
+            return result.done ? false : result;
+        }
+        // 7.4.6 IteratorClose(iterator, completion)
+        // https://tc39.github.io/ecma262/#sec-iteratorclose
+        function IteratorClose(iterator) {
+            var f = iterator["return"];
+            if (f)
+                f.call(iterator);
+        }
+        // 9.1 Ordinary Object Internal Methods and Internal Slots
+        // https://tc39.github.io/ecma262/#sec-ordinary-object-internal-methods-and-internal-slots
+        // 9.1.1.1 OrdinaryGetPrototypeOf(O)
+        // https://tc39.github.io/ecma262/#sec-ordinarygetprototypeof
+        function OrdinaryGetPrototypeOf(O) {
+            var proto = Object.getPrototypeOf(O);
+            if (typeof O !== "function" || O === functionPrototype)
+                return proto;
+            // TypeScript doesn't set __proto__ in ES5, as it's non-standard.
+            // Try to determine the superclass constructor. Compatible implementations
+            // must either set __proto__ on a subclass constructor to the superclass constructor,
+            // or ensure each class has a valid `constructor` property on its prototype that
+            // points back to the constructor.
+            // If this is not the same as Function.[[Prototype]], then this is definately inherited.
+            // This is the case when in ES6 or when using __proto__ in a compatible browser.
+            if (proto !== functionPrototype)
+                return proto;
+            // If the super prototype is Object.prototype, null, or undefined, then we cannot determine the heritage.
+            var prototype = O.prototype;
+            var prototypeProto = prototype && Object.getPrototypeOf(prototype);
+            if (prototypeProto == null || prototypeProto === Object.prototype)
+                return proto;
+            // If the constructor was not a function, then we cannot determine the heritage.
+            var constructor = prototypeProto.constructor;
+            if (typeof constructor !== "function")
+                return proto;
+            // If we have some kind of self-reference, then we cannot determine the heritage.
+            if (constructor === O)
+                return proto;
+            // we have a pretty good guess at the heritage.
+            return constructor;
+        }
+        // naive Map shim
+        function CreateMapPolyfill() {
+            var cacheSentinel = {};
+            var arraySentinel = [];
+            var MapIterator = /** @class */ (function () {
+                function MapIterator(keys, values, selector) {
+                    this._index = 0;
+                    this._keys = keys;
+                    this._values = values;
+                    this._selector = selector;
+                }
+                MapIterator.prototype["@@iterator"] = function () { return this; };
+                MapIterator.prototype[iteratorSymbol] = function () { return this; };
+                MapIterator.prototype.next = function () {
+                    var index = this._index;
+                    if (index >= 0 && index < this._keys.length) {
+                        var result = this._selector(this._keys[index], this._values[index]);
+                        if (index + 1 >= this._keys.length) {
+                            this._index = -1;
+                            this._keys = arraySentinel;
+                            this._values = arraySentinel;
+                        }
+                        else {
+                            this._index++;
+                        }
+                        return { value: result, done: false };
+                    }
+                    return { value: undefined, done: true };
+                };
+                MapIterator.prototype.throw = function (error) {
+                    if (this._index >= 0) {
+                        this._index = -1;
+                        this._keys = arraySentinel;
+                        this._values = arraySentinel;
+                    }
+                    throw error;
+                };
+                MapIterator.prototype.return = function (value) {
+                    if (this._index >= 0) {
+                        this._index = -1;
+                        this._keys = arraySentinel;
+                        this._values = arraySentinel;
+                    }
+                    return { value: value, done: true };
+                };
+                return MapIterator;
+            }());
+            return /** @class */ (function () {
+                function Map() {
+                    this._keys = [];
+                    this._values = [];
+                    this._cacheKey = cacheSentinel;
+                    this._cacheIndex = -2;
+                }
+                Object.defineProperty(Map.prototype, "size", {
+                    get: function () { return this._keys.length; },
+                    enumerable: true,
+                    configurable: true
+                });
+                Map.prototype.has = function (key) { return this._find(key, /*insert*/ false) >= 0; };
+                Map.prototype.get = function (key) {
+                    var index = this._find(key, /*insert*/ false);
+                    return index >= 0 ? this._values[index] : undefined;
+                };
+                Map.prototype.set = function (key, value) {
+                    var index = this._find(key, /*insert*/ true);
+                    this._values[index] = value;
+                    return this;
+                };
+                Map.prototype.delete = function (key) {
+                    var index = this._find(key, /*insert*/ false);
+                    if (index >= 0) {
+                        var size = this._keys.length;
+                        for (var i = index + 1; i < size; i++) {
+                            this._keys[i - 1] = this._keys[i];
+                            this._values[i - 1] = this._values[i];
+                        }
+                        this._keys.length--;
+                        this._values.length--;
+                        if (key === this._cacheKey) {
+                            this._cacheKey = cacheSentinel;
+                            this._cacheIndex = -2;
+                        }
+                        return true;
+                    }
+                    return false;
+                };
+                Map.prototype.clear = function () {
+                    this._keys.length = 0;
+                    this._values.length = 0;
+                    this._cacheKey = cacheSentinel;
+                    this._cacheIndex = -2;
+                };
+                Map.prototype.keys = function () { return new MapIterator(this._keys, this._values, getKey); };
+                Map.prototype.values = function () { return new MapIterator(this._keys, this._values, getValue); };
+                Map.prototype.entries = function () { return new MapIterator(this._keys, this._values, getEntry); };
+                Map.prototype["@@iterator"] = function () { return this.entries(); };
+                Map.prototype[iteratorSymbol] = function () { return this.entries(); };
+                Map.prototype._find = function (key, insert) {
+                    if (this._cacheKey !== key) {
+                        this._cacheIndex = this._keys.indexOf(this._cacheKey = key);
+                    }
+                    if (this._cacheIndex < 0 && insert) {
+                        this._cacheIndex = this._keys.length;
+                        this._keys.push(key);
+                        this._values.push(undefined);
+                    }
+                    return this._cacheIndex;
+                };
+                return Map;
+            }());
+            function getKey(key, _) {
+                return key;
+            }
+            function getValue(_, value) {
+                return value;
+            }
+            function getEntry(key, value) {
+                return [key, value];
+            }
+        }
+        // naive Set shim
+        function CreateSetPolyfill() {
+            return /** @class */ (function () {
+                function Set() {
+                    this._map = new _Map();
+                }
+                Object.defineProperty(Set.prototype, "size", {
+                    get: function () { return this._map.size; },
+                    enumerable: true,
+                    configurable: true
+                });
+                Set.prototype.has = function (value) { return this._map.has(value); };
+                Set.prototype.add = function (value) { return this._map.set(value, value), this; };
+                Set.prototype.delete = function (value) { return this._map.delete(value); };
+                Set.prototype.clear = function () { this._map.clear(); };
+                Set.prototype.keys = function () { return this._map.keys(); };
+                Set.prototype.values = function () { return this._map.values(); };
+                Set.prototype.entries = function () { return this._map.entries(); };
+                Set.prototype["@@iterator"] = function () { return this.keys(); };
+                Set.prototype[iteratorSymbol] = function () { return this.keys(); };
+                return Set;
+            }());
+        }
+        // naive WeakMap shim
+        function CreateWeakMapPolyfill() {
+            var UUID_SIZE = 16;
+            var keys = HashMap.create();
+            var rootKey = CreateUniqueKey();
+            return /** @class */ (function () {
+                function WeakMap() {
+                    this._key = CreateUniqueKey();
+                }
+                WeakMap.prototype.has = function (target) {
+                    var table = GetOrCreateWeakMapTable(target, /*create*/ false);
+                    return table !== undefined ? HashMap.has(table, this._key) : false;
+                };
+                WeakMap.prototype.get = function (target) {
+                    var table = GetOrCreateWeakMapTable(target, /*create*/ false);
+                    return table !== undefined ? HashMap.get(table, this._key) : undefined;
+                };
+                WeakMap.prototype.set = function (target, value) {
+                    var table = GetOrCreateWeakMapTable(target, /*create*/ true);
+                    table[this._key] = value;
+                    return this;
+                };
+                WeakMap.prototype.delete = function (target) {
+                    var table = GetOrCreateWeakMapTable(target, /*create*/ false);
+                    return table !== undefined ? delete table[this._key] : false;
+                };
+                WeakMap.prototype.clear = function () {
+                    // NOTE: not a real clear, just makes the previous data unreachable
+                    this._key = CreateUniqueKey();
+                };
+                return WeakMap;
+            }());
+            function CreateUniqueKey() {
+                var key;
+                do
+                    key = "@@WeakMap@@" + CreateUUID();
+                while (HashMap.has(keys, key));
+                keys[key] = true;
+                return key;
+            }
+            function GetOrCreateWeakMapTable(target, create) {
+                if (!hasOwn.call(target, rootKey)) {
+                    if (!create)
+                        return undefined;
+                    Object.defineProperty(target, rootKey, { value: HashMap.create() });
+                }
+                return target[rootKey];
+            }
+            function FillRandomBytes(buffer, size) {
+                for (var i = 0; i < size; ++i)
+                    buffer[i] = Math.random() * 0xff | 0;
+                return buffer;
+            }
+            function GenRandomBytes(size) {
+                if (typeof Uint8Array === "function") {
+                    if (typeof crypto !== "undefined")
+                        return crypto.getRandomValues(new Uint8Array(size));
+                    if (typeof msCrypto !== "undefined")
+                        return msCrypto.getRandomValues(new Uint8Array(size));
+                    return FillRandomBytes(new Uint8Array(size), size);
+                }
+                return FillRandomBytes(new Array(size), size);
+            }
+            function CreateUUID() {
+                var data = GenRandomBytes(UUID_SIZE);
+                // mark as random - RFC 4122 § 4.4
+                data[6] = data[6] & 0x4f | 0x40;
+                data[8] = data[8] & 0xbf | 0x80;
+                var result = "";
+                for (var offset = 0; offset < UUID_SIZE; ++offset) {
+                    var byte = data[offset];
+                    if (offset === 4 || offset === 6 || offset === 8)
+                        result += "-";
+                    if (byte < 16)
+                        result += "0";
+                    result += byte.toString(16).toLowerCase();
+                }
+                return result;
+            }
+        }
+        // uses a heuristic used by v8 and chakra to force an object into dictionary mode.
+        function MakeDictionary(obj) {
+            obj.__ = undefined;
+            delete obj.__;
+            return obj;
+        }
+    });
+})(Reflect || (Reflect = {}));
+
+
 /***/ })
 /******/ 	]);
 /************************************************************************/
@@ -4575,11 +7263,40 @@ function onceStrict (fn) {
 /******/ 		};
 /******/ 	
 /******/ 		// Execute the module function
-/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
+/******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
 /******/ 	
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
+/******/ 	
+/************************************************************************/
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
@@ -4593,9 +7310,14 @@ exports.deactivate = exports.activate = void 0;
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 const vscode = __webpack_require__(1);
-const VirtualFolderTreeView_1 = __webpack_require__(3);
+const VirtualFolderTreeView_1 = __webpack_require__(2);
+const classTransformer = __webpack_require__(26);
 // let context_global_forPersistence: vscode.ExtensionContext;
 // let virtualFolderTreeView_global_forPersistence: VirtualFolderTreeView;
+// @messy
+// let funcGenerate_SaveNodeStructure: ((det_SaveNodeStructure: boolean) => () => void) | null = null;
+// let saveNodeStructure_onExtensionClose: (() => Promise<Record<string, any>>) | null = null;
+const globalStateItemName_VirtualFolderTreeView_RootNode = 'VirtualFolderTreeView_RootNode';
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
 function activate(context) {
@@ -4728,167 +7450,322 @@ function activate(context) {
     //
     //   //!SECTION
     //SECTION ### File Explorer Tree View
-    // const fileSystemProvider = new FileSystemProvider();
-    // vscode.window.registerTreeDataProvider('idVal_virtualFolderTreeView', fileSystemProvider);
-    const virtualFolderTreeView = new VirtualFolderTreeView_1.VirtualFolderTreeView();
-    // ;halt; const virtualFolderTreeView_nodeRoot_prev = context.globalState.get('VirtualFolderTreeView_RootNode');
-    // ;halt; const virtualFolderTreeView = new VirtualFolderTreeView(virtualFolderTreeView_nodeRoot_prev as VirtualFolderNodeTypeHolder | undefined);
-    vscode.window.registerTreeDataProvider('idVal_virtualFolderTreeView', virtualFolderTreeView);
-    // vscode command identifier syntax.. still dk no_knowlres
-    // No view is registered with id: idVal_virtualFolderTreeView.fileExplorer
-    // dont think its multi pb.. just json need add, but is this necessary? ..
-    // vscode.window.registerTreeDataProvider('idVal_virtualFolderTreeView.fileExplorer', virtualFolderTreeView.fileSystemProvider);
-    // []
-    // callback: (args: any[]) => any
-    // A command handler function.
-    // <>
-    // https://code.visualstudio.com/api/references/vscode-api
-    // ~~//? still where is that ` (node: Dependency) =>` coming from?
-    context.subscriptions.push(vscode.commands.registerCommand('idVal_virtualFolderTreeView.addEntry', (node) => {
-        // cannot be Entry -- cmd should not activated for that -- det by contextValue
-        node.addChildNode(new VirtualFolderTreeView_1.VirtualFolderNodeTypeHolder('New_Folder', vscode.TreeItemCollapsibleState.Collapsed));
-        virtualFolderTreeView.refresh();
-        vscode.window.showInformationMessage(`Executed add :: ${node.label}.`);
-    }));
-    context.subscriptions.push(vscode.commands.registerCommand('idVal_virtualFolderTreeView.editEntry', async (node) => {
-        // Ability to edit the label in a treeview · Issue #117502 · microsoft/vscode
-        // https://github.com/microsoft/vscode/issues/117502
-        //
-        // [Extension API] Allow input box in tree view. · Issue #179938 · microsoft/vscode
-        // https://github.com/microsoft/vscode/issues/179938
-        //
-        // Provide some richer (optional) UI for custom tree views · Issue #97190 · microsoft/vscode
-        // https://github.com/microsoft/vscode/issues/97190
-        //
-        // vscode extension command for input - Google 搜索
-        // https://www.google.ca/search?q=vscode+extension+command+for+input&newwindow=1&sca_esv=569594169&sxsrf=AM9HkKnBwLzXbneS4nY4ulPAijYlroMDDQ%3A1696032168874&ei=qGUXZfSANYSxptQP75GEMA&ved=0ahUKEwj09M-XhNGBAxWEmIkEHe8IAQYQ4dUDCBA&uact=5&oq=vscode+extension+command+for+input&gs_lp=Egxnd3Mtd2l6LXNlcnAiInZzY29kZSBleHRlbnNpb24gY29tbWFuZCBmb3IgaW5wdXQyBRAhGKABSMQlULYRWJUicAF4AZABAJgBeaABxQqqAQQxNS4yuAEDyAEA-AEBwgIKEAAYRxjWBBiwA8ICCBAAGMsBGIAEwgIFEAAYgATCAgQQABgewgIGEAAYHhgKwgIGEAAYCBgewgIHECEYoAEYCuIDBBgAIEGIBgGQBgo&sclient=gws-wiz-serp
-        //
-        // Get user input from input box in visual studio code – CodepediaOrg
-        // https://www.codepedia.org/snippets/60dbfb494095c204661309bf/get-user-input-from-input-box-in-visual-studio-code
-        //
-        // VS Code API | Visual Studio Code Extension API
-        // https://code.visualstudio.com/api/references/vscode-api#window.createInputBox
-        const inputText = await vscode.window.showInputBox({
-            placeHolder: 'place your folder name here',
-            prompt: 'Edit virtual folder name',
-            value: 'Folder 1',
-        });
-        if (inputText !== undefined) {
-            node.label = inputText;
-            virtualFolderTreeView.refresh(); // well this gen hum
-            vscode.window.showInformationMessage(`Executed edit :: ${node.label}.`);
+    function load_virtualFolderTreeView() {
+        // let virtualFolderTreeView_i;
+        const nodeRootJsonStr_Saved = context.globalState.get(globalStateItemName_VirtualFolderTreeView_RootNode);
+        if (nodeRootJsonStr_Saved === undefined) {
+            // const nodeRootJsonStr_Saved_T1 = /* json */ `@¦  {@¦    "collapsibleState": 2,@¦    "label": "root VirtualFolderNode",@¦    "realFileExplorerEntry": null,@¦    "contextValue": "ctxvalueVal_virtualFolder",@¦    "virtualFolderNode": {@¦      "arr_node_child": [@¦        {@¦          "collapsibleState": 2,@¦          "label": "h:\\\\Using\\\\JsParserSub\\\\src - Lv2 RealFileNode Test",@¦          "realFileExplorerEntry": {@¦            "uri": {@¦              "scheme": "file",@¦              "authority": "",@¦              "path": "/h:/Using/JsParserSub/src",@¦              "query": "",@¦              "fragment": "",@¦              "_formatted": null,@¦              "_fsPath": "h:\\\\Using\\\\JsParserSub\\\\src"@¦            },@¦            "type": 2@¦          },@¦          "contextValue": "ctxvalueVal_virtualFolder",@¦          "virtualFolderNode": {@¦            "arr_node_child": [],@¦            "name": "h:\\\\Using\\\\JsParserSub\\\\src - Lv2 RealFileNode Test"@¦          }@¦        },@¦        {@¦          "collapsibleState": 0,@¦          "label": "h:\\\\Using\\\\JsParserSub\\\\tsconfig.json - Lv2 RealFileNode Test",@¦          "realFileExplorerEntry": {@¦            "uri": {@¦              "scheme": "file",@¦              "authority": "",@¦              "path": "/h:/Using/JsParserSub/tsconfig.json",@¦              "query": "",@¦              "fragment": "",@¦              "_formatted": null,@¦              "_fsPath": "h:\\\\Using\\\\JsParserSub\\\\tsconfig.json"@¦            },@¦            "type": 1@¦          },@¦          "contextValue": "ctxvalueVal_virtualFolder",@¦          "virtualFolderNode": {@¦            "arr_node_child": [],@¦            "name": "h:\\\\Using\\\\JsParserSub\\\\tsconfig.json - Lv2 RealFileNode Test"@¦          }@¦        },@¦        {@¦          "collapsibleState": 0,@¦          "label": "Lv2 VirtualFileNode Test",@¦          "realFileExplorerEntry": null,@¦          "contextValue": "ctxvalueVal_virtualFolder",@¦          "virtualFolderNode": {@¦            "arr_node_child": [],@¦            "name": "Lv2 VirtualFileNode Test"@¦          }@¦        },@¦        {@¦          "collapsibleState": 1,@¦          "label": "Lv2 VirtualFileNode Collapsed Test",@¦          "realFileExplorerEntry": null,@¦          "contextValue": "ctxvalueVal_virtualFolder",@¦          "virtualFolderNode": {@¦            "arr_node_child": [],@¦            "name": "Lv2 VirtualFileNode Collapsed Test"@¦          }@¦        }@¦      ],@¦      "node_parent": null,@¦      "name": "root VirtualFolderNode"@¦    }@¦  }`;
+            // const nodeRoot_Saved = classTransformer.plainToInstance(VirtualFolderNodeTypeHolder, JSON.parse(nodeRootJsonStr_Saved_T1) as { length?: never }, {
+            return new VirtualFolderTreeView_1.VirtualFolderTreeView();
         }
+        else {
+            const nodeRoot_Saved = classTransformer.plainToInstance(VirtualFolderTreeView_1.VirtualFolderNodeTypeHolder, nodeRootJsonStr_Saved, {
+                enableCircularCheck: true,
+            });
+            return new VirtualFolderTreeView_1.VirtualFolderTreeView(nodeRoot_Saved);
+        }
+    }
+    const virtualFolderTreeView = load_virtualFolderTreeView();
+    // vscode.window.registerTreeDataProvider('idVal_virtualFolderTreeView', virtualFolderTreeView);
+    const view = vscode.window.createTreeView('idVal_virtualFolderTreeView', {
+        treeDataProvider: virtualFolderTreeView,
+        showCollapseAll: true,
+        canSelectMany: true,
+        dragAndDropController: virtualFolderTreeView, // k this
+    });
+    // ;seems cannot use this if need reload..; context.subscriptions.push(view);
+    // ## add & edit & delete & refresh
+    {
+        // vscode command identifier syntax.. still dk no_knowlres
+        // No view is registered with id: idVal_virtualFolderTreeView.fileExplorer
+        // dont think its multi pb.. just json need add, but is this necessary? ..
+        // vscode.window.registerTreeDataProvider('idVal_virtualFolderTreeView.fileExplorer', virtualFolderTreeView.fileSystemProvider);
         // []
-        //         "keybindings": [
-        //             {
-        //                 "command": "extension.insertLink",
-        //                 "key": "ctrl+alt+l",
-        //                 "mac": "shift+cmd+f"
-        //             },
+        // callback: (args: any[]) => any
+        // A command handler function.
         // <>
-        // https://stackoverflow.com/questions/42164748/how-do-i-set-a-keybinding-for-an-extension-in-vscode
-    }));
-    context.subscriptions.push(vscode.commands.registerCommand('idVal_virtualFolderTreeView.deleteEntry', (node) => {
-        node.removeSelf();
-        virtualFolderTreeView.refresh();
-        // vscode.window.showInformationMessage(`Executed delete :: ${node instanceof VirtualFolderNodeTypeHolder ? node.label : virtualFolderTreeView.getTreeItem(node).label}.`);
-        vscode.window.showInformationMessage(`Executed delete :: ${node.label}.`);
-    }));
-    //
-    context.subscriptions.push(vscode.commands.registerCommand('idVal_virtualFolderTreeView.refreshEntry', () => {
-        virtualFolderTreeView.refresh();
-        // let msg;
-        // if (node) {
-        //   msg = node instanceof VirtualFolderNodeTypeHolder ? node.label : virtualFolderTreeView.getTreeItem(node).label;
-        // } else {
-        //   msg = node;
-        // }
-        // this just nothing passing in guess / wel pb
-        vscode.window.showInformationMessage(`Executed refresh.`);
-    }));
-    // #--<
-    context.subscriptions.push(
-    // idVal_virtualFolderTreeView.fileExplorer.openFile // dk confliction // but its hardcoded `treeItem.command = { command: 'fileExplorer.openFile', `
-    vscode.commands.registerCommand('fileExplorer.openFile', (resource) => {
-        // ~~~//copied-modified-from fileExplorer // @messy
-        vscode.window.showTextDocument(resource);
-    }));
-    let node_Clipped = null;
-    //
-    context.subscriptions.push(vscode.commands.registerCommand('idVal_virtualFolderTreeView.cmd_cut_FileorfolderNode', (node) => {
-        if (node instanceof VirtualFolderTreeView_1.VirtualFolderNodeTypeHolder) {
-            node_Clipped = node;
-            vscode.window.showInformationMessage(`Executed cut :: ${node.label}.`);
-        }
-        else if (node.uri !== undefined) {
-            node_Clipped = node;
-            vscode.window.showInformationMessage(`Executed copy instead of cut -- cuz you cannot modify real FileSystem Structure :: ${node.uri}.`);
-        }
-        else {
-            throw new TypeError();
-        }
-    }));
-    context.subscriptions.push(vscode.commands.registerCommand('idVal_virtualFolderTreeView.cmd_paste_FileorfolderNode', (node) => {
-        if (node_Clipped === null) {
-            vscode.window.showInformationMessage(`[Mistake]: cannot paste, cuz node_Clipped === null.`);
-        }
-        else {
+        // https://code.visualstudio.com/api/references/vscode-api
+        // ~~//? still where is that ` (node: Dependency) =>` coming from?
+        context.subscriptions.push(vscode.commands.registerCommand('idVal_virtualFolderTreeView.addEntry', async (node) => {
+            // cannot be Entry -- cmd should not activated for that -- det by contextValue
+            // node.addChildNode(new VirtualFolderNodeTypeHolder('New_Folder', vscode.TreeItemCollapsibleState.Collapsed));
+            const inputText = await vscode.window.showInputBox({
+                placeHolder: 'place your folder name here',
+                prompt: 'Edit virtual folder name',
+                value: 'Folder 1',
+            });
+            if (inputText !== undefined) {
+                node.addChildNode(new VirtualFolderTreeView_1.VirtualFolderNodeTypeHolder(inputText, vscode.TreeItemCollapsibleState.Collapsed));
+                refreshView_and_saveNodeStructure();
+                vscode.window.showInformationMessage(`Executed add :: ${node.label}.`);
+            }
+        }));
+        context.subscriptions.push(vscode.commands.registerCommand('idVal_virtualFolderTreeView.editEntry', async (node) => {
+            // Ability to edit the label in a treeview · Issue #117502 · microsoft/vscode
+            // https://github.com/microsoft/vscode/issues/117502
+            //
+            // [Extension API] Allow input box in tree view. · Issue #179938 · microsoft/vscode
+            // https://github.com/microsoft/vscode/issues/179938
+            //
+            // Provide some richer (optional) UI for custom tree views · Issue #97190 · microsoft/vscode
+            // https://github.com/microsoft/vscode/issues/97190
+            //
+            // vscode extension command for input - Google 搜索
+            // https://www.google.ca/search?q=vscode+extension+command+for+input&newwindow=1&sca_esv=569594169&sxsrf=AM9HkKnBwLzXbneS4nY4ulPAijYlroMDDQ%3A1696032168874&ei=qGUXZfSANYSxptQP75GEMA&ved=0ahUKEwj09M-XhNGBAxWEmIkEHe8IAQYQ4dUDCBA&uact=5&oq=vscode+extension+command+for+input&gs_lp=Egxnd3Mtd2l6LXNlcnAiInZzY29kZSBleHRlbnNpb24gY29tbWFuZCBmb3IgaW5wdXQyBRAhGKABSMQlULYRWJUicAF4AZABAJgBeaABxQqqAQQxNS4yuAEDyAEA-AEBwgIKEAAYRxjWBBiwA8ICCBAAGMsBGIAEwgIFEAAYgATCAgQQABgewgIGEAAYHhgKwgIGEAAYCBgewgIHECEYoAEYCuIDBBgAIEGIBgGQBgo&sclient=gws-wiz-serp
+            //
+            // Get user input from input box in visual studio code – CodepediaOrg
+            // https://www.codepedia.org/snippets/60dbfb494095c204661309bf/get-user-input-from-input-box-in-visual-studio-code
+            //
+            // VS Code API | Visual Studio Code Extension API
+            // https://code.visualstudio.com/api/references/vscode-api#window.createInputBox
+            const inputText = await vscode.window.showInputBox({
+                placeHolder: 'place your folder name here',
+                prompt: 'Edit virtual folder name',
+                value: 'Folder 1',
+            });
+            if (inputText !== undefined) {
+                node.label = inputText;
+                refreshView_and_saveNodeStructure(); // well this gen hum
+                vscode.window.showInformationMessage(`Executed edit :: ${node.label}.`);
+            }
+            // []
+            //         "keybindings": [
+            //             {
+            //                 "command": "extension.insertLink",
+            //                 "key": "ctrl+alt+l",
+            //                 "mac": "shift+cmd+f"
+            //             },
+            // <>
+            // https://stackoverflow.com/questions/42164748/how-do-i-set-a-keybinding-for-an-extension-in-vscode
+        }));
+        context.subscriptions.push(vscode.commands.registerCommand('idVal_virtualFolderTreeView.deleteEntry', (node) => {
+            node.removeSelf();
+            refreshView_and_saveNodeStructure();
+            // vscode.window.showInformationMessage(`Executed delete :: ${node instanceof VirtualFolderNodeTypeHolder ? node.label : virtualFolderTreeView.getTreeItem(node).label}.`);
+            vscode.window.showInformationMessage(`Executed delete :: ${node.label}.`);
+        }));
+    }
+    {
+        //
+        context.subscriptions.push(vscode.commands.registerCommand('idVal_virtualFolderTreeView.refreshEntry', () => {
+            refreshView_and_saveNodeStructure();
+            // let msg;
+            // if (node) {
+            //   msg = node instanceof VirtualFolderNodeTypeHolder ? node.label : virtualFolderTreeView.getTreeItem(node).label;
+            // } else {
+            //   msg = node;
+            // }
+            // this just nothing passing in guess / wel pb
+            vscode.window.showInformationMessage(`Executed refresh.`);
+        }));
+    }
+    // ## fileExplorer.openFile
+    {
+        // #--<
+        context.subscriptions.push(
+        // idVal_virtualFolderTreeView.fileExplorer.openFile // dk confliction // but its hardcoded `treeItem.command = { command: 'fileExplorer.openFile', `
+        vscode.commands.registerCommand('fileExplorer.openFile', (resource) => {
+            // ~~~//copied-modified-from fileExplorer // @messy
+            vscode.window.showTextDocument(resource);
+        }));
+    }
+    // ## Cut & Paste
+    {
+        let node_Clipped = null;
+        //
+        context.subscriptions.push(vscode.commands.registerCommand('idVal_virtualFolderTreeView.cmd_cut_FileorfolderNode', (node) => {
             if (node instanceof VirtualFolderTreeView_1.VirtualFolderNodeTypeHolder) {
-                // @codepath[normal] paste virtual folder / virtual real mix folder to virtual folder
-                if (node_Clipped instanceof VirtualFolderTreeView_1.VirtualFolderNodeTypeHolder) {
-                    node.addChildNode(node_Clipped);
-                    const label = node_Clipped.label;
-                    node_Clipped = null;
-                    virtualFolderTreeView.refresh();
-                    vscode.window.showInformationMessage(`Executed paste :: pasted ${label} on ${node.label}.`);
-                }
-                // @codepath[normal] paste real folder / real real mix file to virtual folder
-                else if (node_Clipped.uri !== undefined) {
-                    // here need to check folder or file too .. @check ...
-                    let state_CollapsedOr = vscode.TreeItemCollapsibleState.Collapsed;
-                    if (node_Clipped.type === vscode.FileType.Directory) {
-                        state_CollapsedOr = vscode.TreeItemCollapsibleState.Collapsed;
+                node_Clipped = node;
+                vscode.window.showInformationMessage(`Executed cut :: ${node.label}.`);
+            }
+            else if (node.uri !== undefined) {
+                node_Clipped = node;
+                vscode.window.showInformationMessage(`Executed copy instead of cut -- cuz you cannot modify real FileSystem Structure :: ${node.uri}.`);
+            }
+            else {
+                throw new TypeError();
+            }
+        }));
+        context.subscriptions.push(vscode.commands.registerCommand('idVal_virtualFolderTreeView.cmd_paste_FileorfolderNode', (node) => {
+            if (node_Clipped === null) {
+                vscode.window.showInformationMessage(`[Mistake]: cannot paste, cuz node_Clipped === null.`);
+            }
+            else {
+                if (node instanceof VirtualFolderTreeView_1.VirtualFolderNodeTypeHolder) {
+                    // @codepath[normal] paste virtual folder / virtual real mix folder to virtual folder
+                    if (node_Clipped instanceof VirtualFolderTreeView_1.VirtualFolderNodeTypeHolder) {
+                        node.addChildNode(node_Clipped);
+                        const label = node_Clipped.label;
+                        node_Clipped = null;
+                        refreshView_and_saveNodeStructure();
+                        vscode.window.showInformationMessage(`Executed paste :: pasted ${label} on ${node.label}.`);
                     }
-                    else if (node_Clipped.type === vscode.FileType.File) {
-                        state_CollapsedOr = vscode.TreeItemCollapsibleState.None;
-                        // const fsPath = node_Clipped.uri.fsPath;
-                        // if (fs.lstatSync(fsPath).isDirectory()) {
-                        //   state_CollapsedOr = vscode.TreeItemCollapsibleState.Collapsed;
-                        // } else if (fs.lstatSync(fsPath).isFile()) {
-                        //   // console.error('>>>>>> file ');
-                        //   state_CollapsedOr = vscode.TreeItemCollapsibleState.None;
+                    // @pb //? why cut paste fileExplorer.Entry is able to be removed from old parent? ...
+                    // @codepath[normal] paste real folder / real real mix file to virtual folder
+                    else if (node_Clipped.uri !== undefined) {
+                        // here need to check folder or file too .. @check ...
+                        let state_CollapsedOr = vscode.TreeItemCollapsibleState.Collapsed;
+                        if (node_Clipped.type === vscode.FileType.Directory) {
+                            state_CollapsedOr = vscode.TreeItemCollapsibleState.Collapsed;
+                        }
+                        else if (node_Clipped.type === vscode.FileType.File) {
+                            state_CollapsedOr = vscode.TreeItemCollapsibleState.None;
+                            // const fsPath = node_Clipped.uri.fsPath;
+                            // if (fs.lstatSync(fsPath).isDirectory()) {
+                            //   state_CollapsedOr = vscode.TreeItemCollapsibleState.Collapsed;
+                            // } else if (fs.lstatSync(fsPath).isFile()) {
+                            //   // console.error('>>>>>> file ');
+                            //   state_CollapsedOr = vscode.TreeItemCollapsibleState.None;
+                        }
+                        else {
+                            throw new TypeError();
+                        }
+                        // ;not_needed;[dk why not, still a gap]
+                        // actually the paste is correct ... just that gap is really confusing ...
+                        // Idk that extra padding right
+                        // cuz even in Simple Test it wouldnt be that far off ...
+                        // but align-icon-with-twisty is indeed the solve
+                        // collapse need specify too yeah
+                        //
+                        //         H(be, Te) {
+                        //             be.parentElement.classList.toggle("align-icon-with-twisty", !this.g && this.m.alignIconWithTwisty(Te))
+                        //         }
+                        // Developer Tools - vscode-file://vscode-app/g:/Microsoft%20VS%20Code/resources/app/out/vs/code/electron-sandbox/workbench/workbench.html workbench.desktop.main.js
+                        // 41.98 >> 37.99 // 20px >> 16px // dk now that smaller emm.. (so kinda correct e)
+                        // cant compare too much, visually seems no diff... ; and the uri still doesnt help em // super(vscode.Uri.file('/v/fake'), collapsibleState);
+                        // @solved: its the folder cannot have icon ...
+                        node.addChildNode(new VirtualFolderTreeView_1.VirtualFolderNodeTypeHolder(null, state_CollapsedOr, node_Clipped));
+                        const uri = node_Clipped.uri;
+                        node_Clipped = null;
+                        refreshView_and_saveNodeStructure();
+                        vscode.window.showInformationMessage(`Executed paste :: pasted ${uri} on ${node.label}.`);
                     }
                     else {
                         throw new TypeError();
                     }
-                    // TODO ;not_needed;[dk why not, still a gap]
-                    // actually the paste is correct ... just that gap is really confusing ...
-                    // Idk that extra padding right
-                    // cuz even in Simple Test it wouldnt be that far off ...
-                    // but align-icon-with-twisty is indeed the solve
-                    // collapse need specify too yeah
-                    //         H(be, Te) {
-                    //             be.parentElement.classList.toggle("align-icon-with-twisty", !this.g && this.m.alignIconWithTwisty(Te))
-                    //         }
-                    // Developer Tools - vscode-file://vscode-app/g:/Microsoft%20VS%20Code/resources/app/out/vs/code/electron-sandbox/workbench/workbench.html workbench.desktop.main.js
-                    node.addChildNode(new VirtualFolderTreeView_1.VirtualFolderNodeTypeHolder(null, state_CollapsedOr, node_Clipped));
-                    const uri = node_Clipped.uri;
-                    node_Clipped = null;
-                    virtualFolderTreeView.refresh();
-                    vscode.window.showInformationMessage(`Executed paste :: pasted ${uri} on ${node.label}.`);
+                }
+                else if (node.uri !== undefined) {
+                    vscode.window.showInformationMessage(`[Mistake]: cannot paste -- cuz you cannot modify real FileSystem Structure :: ${node.uri}.`);
                 }
                 else {
                     throw new TypeError();
                 }
             }
-            else if (node.uri !== undefined) {
-                vscode.window.showInformationMessage(`[Mistake]: cannot paste -- cuz you cannot modify real FileSystem Structure :: ${node.uri}.`);
+        }));
+    }
+    // ## (Print &) Save & Load
+    async function saveNodeStructure() {
+        // I think the reason this wont work cuz the view is already cleared before activate() is called ....
+        // seems more of async issue ...
+        // seems like timing is the pb too must clean up fast? f there just no event to update these?
+        // []
+        //  Extensions have at most 5 seconds to clean up after themselves.
+        // <>
+        // https://github.com/microsoft/vscode/issues/114688
+        // console.error(`zzzzzzzzzzz`)
+        // await new Promise((r) => setTimeout(r, 2000, ''));
+        // console.error(virtualFolderTreeView)
+        // console.error(virtualFolderTreeView.nodeRoot)
+        // console.error(context)
+        // console.error(context.globalState)
+        const nodeRoot_classTransformer_instanceToPlain = classTransformer.instanceToPlain(virtualFolderTreeView.nodeRoot, {
+            enableCircularCheck: true,
+        });
+        await context.globalState.update(globalStateItemName_VirtualFolderTreeView_RootNode, nodeRoot_classTransformer_instanceToPlain);
+        // console.error(new Date()) // cant exec to this point ...
+        return nodeRoot_classTransformer_instanceToPlain;
+    }
+    // @performance I dont want to, but seem have to bind this to refresh ...
+    function refreshView_and_saveNodeStructure() {
+        virtualFolderTreeView.refresh();
+        saveNodeStructure(); // << yes this is async ...
+    }
+    // @messy
+    virtualFolderTreeView.refreshView_and_saveNodeStructure__import_messy = refreshView_and_saveNodeStructure;
+    {
+        context.subscriptions.push(vscode.commands.registerCommand('idVal_virtualFolderTreeView.cmd_print_RootVirtualFolderNode_inJson', () => {
+            // ;learn,test;         // console.log(virtualFolderTreeView.nodeRoot);
+            // ;learn,test;         // console.log(JSON.stringify(virtualFolderTreeView.nodeRoot));
+            // ;learn,test;         // use a library like [JSONC](https://www.npmjs.com/package/jsonc) that supports
+            // ;learn,test;         // https://stackoverflow.com/questions/4816099/chrome-sendrequest-error-typeerror-converting-circular-structure-to-json
+            // ;learn,test;         // console.log(Flatted.stringify(virtualFolderTreeView.nodeRoot, null, 2));
+            // ;learn,test;         // console.log(Flatted.toJSON(virtualFolderTreeView.nodeRoot));
+            // ;learn,test;         // ~~~// not the structure I like ...
+            // ;learn,test;         // []
+            // ;learn,test;         // const result = serialize(instance, { enableCircularCheck: true });
+            // ;learn,test;         // <>
+            // ;learn,test;         // https://github.com/typestack/class-transformer/issues/501
+            // ;learn,test;
+            // ;learn,test;         const nodeRoot_Flatted_stringify = Flatted.stringify(virtualFolderTreeView.nodeRoot);
+            // ;learn,test;         const nodeRoot_Flatted_parse = Flatted.parse(nodeRoot_Flatted_stringify);
+            // ;learn,test;         const nodeRoot_classTransformer_plainToInstance_fromFlatted = classTransformer.plainToInstance(VirtualFolderNodeTypeHolder, nodeRoot_Flatted_parse as { length?: never }, {
+            // ;learn,test;           enableCircularCheck: true,
+            // ;learn,test;         });
+            // ;learn,test;         const nodeRoot_classTransformer_instanceToPlain = classTransformer.instanceToPlain(virtualFolderTreeView.nodeRoot, {
+            // ;learn,test;           enableCircularCheck: true,
+            // ;learn,test;         });
+            // ;learn,test;         const nodeRoot_classTransformer_plainToInstance = classTransformer.plainToInstance(VirtualFolderNodeTypeHolder, JSON.parse(JSON.stringify(nodeRoot_classTransformer_instanceToPlain)) as { length?: never }, {
+            // ;learn,test;           enableCircularCheck: true,
+            // ;learn,test;         });
+            // ;learn,test;
+            // ;learn,test;         console.log(virtualFolderTreeView.nodeRoot);
+            // ;learn,test;         console.log(nodeRoot_Flatted_parse);
+            // ;learn,test;         console.log(nodeRoot_classTransformer_plainToInstance_fromFlatted);
+            // ;learn,test;         console.log(nodeRoot_classTransformer_instanceToPlain);
+            // ;learn,test;         console.log(nodeRoot_classTransformer_plainToInstance); //  as { length?: never } welwlel
+            // ;learn,test;
+            // ;learn,test;         console.log(virtualFolderTreeView.nodeRoot.constructor.name); // console.log(typeof virtualFolderTreeView.nodeRoot)
+            // ;learn,test;         console.log(nodeRoot_classTransformer_plainToInstance_fromFlatted.constructor.name);
+            // ;learn,test;         console.log(nodeRoot_Flatted_parse.constructor.name); // console.log(typeof nodeRoot_Flatted_parse)
+            // ;learn,test;         console.log(nodeRoot_classTransformer_instanceToPlain.constructor.name);
+            // ;learn,test;         console.log(nodeRoot_classTransformer_plainToInstance.constructor.name);
+            const nodeRoot_classTransformer_instanceToPlain = classTransformer.instanceToPlain(virtualFolderTreeView.nodeRoot, {
+                enableCircularCheck: true,
+            });
+            console.log(virtualFolderTreeView.nodeRoot);
+            console.log(JSON.stringify(nodeRoot_classTransformer_instanceToPlain, null, 2));
+            // ;moved; for test case
+        }));
+        //
+        // saveNodeStructure_onExtensionClose = saveNodeStructure; // @messy aga
+        // why typescript dont call an error here?  // seem void can take that ...
+        context.subscriptions.push(vscode.commands.registerCommand('idVal_virtualFolderTreeView.cmd_save_VirtualFolderStructure', async () => {
+            const result = await saveNodeStructure();
+            vscode.window.showInformationMessage(`Executed save :: here is the data saved \n\n${JSON.stringify(result, null, 2)}`);
+        }));
+        context.subscriptions.push(vscode.commands.registerCommand('idVal_virtualFolderTreeView.cmd_restoreToFactory_VirtualFolderStructure', async () => {
+            // []
+            // What I wish to do is to find a way to remove the key, not only clear the value.
+            // <>
+            // https://stackoverflow.com/questions/57845512/remove-useless-keys-from-vscode-extensioncontext-globalstate
+            await context.globalState.update(globalStateItemName_VirtualFolderTreeView_RootNode, undefined);
+            // saveNodeStructure_onExtensionClose = null; // @messy
+            await vscode.commands.executeCommand('idVal_virtualFolderTreeView.reloadExtension');
+            vscode.window.showInformationMessage(`Executed restore & reload extension.`);
+        }));
+    }
+    // ## reload extension
+    {
+        // []
+        // [![enter image description here](https://i.stack.imgur.com/I1prf.png)](https://i.stack.imgur.com/I1prf.png) Press **Ctrl + Shift + P** to Open **Command Palette** and Type **Restart Extension Host**
+        // <>
+        // https://stackoverflow.com/questions/62352029/how-to-manually-restart-an-extension-in-vscode
+        // []
+        // I added a command that calls `deactivate`, then `dispose()` on everything in `subscriptions` and then calls `activate` again. Seems to be working OK (with some minor supporting changes).
+        // <>
+        // https://github.com/microsoft/vscode/issues/45774
+        // >"
+        // No tree view with id 'idVal_virtualFolderTreeView' registered.:
+        // ...
+        // ;seems cannot use this if need reload..; context.subscriptions.push(view); @check
+        context.subscriptions.push(vscode.commands.registerCommand('idVal_virtualFolderTreeView.reloadExtension', () => {
+            deactivate();
+            for (const sub of context.subscriptions) {
+                sub.dispose();
             }
-            else {
-                throw new TypeError();
-            }
-        }
-    }));
+            activate(context);
+        }));
+    }
     //     "views": {
     //       "idVal_virtualFolderViewContainer": [
     // ~~~// seem no need for that contribution.. just drag drop can do too... idk ..
@@ -4912,29 +7789,25 @@ function activate(context) {
     // <>
     // https://code.visualstudio.com/docs/getstarted/keybindings
     // ~~~// well this arg from then ... but still need more explain where from
-    //
-    // ;halt; context.subscriptions.push(
-    // ;halt;   vscode.commands.registerCommand('idVal_virtualFolderTreeView.cmd_save_VirtualFolderStructure', () => {
-    // ;halt;     console.log(JSON.stringify(virtualFolderTreeView.nodeRoot, null, 2));
-    // ;halt;     context.globalState.update('VirtualFolderTreeView_RootNode', virtualFolderTreeView.nodeRoot);
-    // ;halt;   })
-    // ;halt; );
-    // ,
-    //         {
-    //           "// command": "idVal_virtualFolderTreeView.cmd_save_VirtualFolderStructure",
-    //           "// when": "view == idVal_virtualFolderTreeView",
-    //           "// group": "navigation"
-    //         }
-    // TODO save & serialization ...
-    // TODO "title": "Restore to Factory"
     //!SECTION
 }
 exports.activate = activate;
 // This method is called when your extension is deactivated
+// ;seems cannot pass arg; export function deactivate(context: vscode.ExtensionContext, det_SaveNodeStructure = true, virtualFolderTreeView: VirtualFolderTreeView) {
+// ;seems cannot pass arg;   console.error(']]]]]]')
+// ;seems cannot pass arg;   console.error(context)
+// ;seems cannot pass arg;   // @duplicated_code
+// ;seems cannot pass arg;   if (det_SaveNodeStructure === true) {
+// ;seems cannot pass arg;     const nodeRoot_classTransformer_instanceToPlain = classTransformer.instanceToPlain(virtualFolderTreeView.nodeRoot, {
+// ;seems cannot pass arg;       enableCircularCheck: true,
+// ;seems cannot pass arg;     });
+// ;seems cannot pass arg;     context.globalState.update(globalStateItemName_VirtualFolderTreeView_RootNode, nodeRoot_classTransformer_instanceToPlain);
+// ;seems cannot pass arg;   }
+// ;seems cannot pass arg; }
 function deactivate() {
-    // ;not_working; console.error('zzzzzzzzzzzzzzzzzz');
-    // ;not_working; console.log(JSON.stringify(virtualFolderTreeView_global_forPersistence.nodeRoot, null, 2));
-    // ;not_working; context_global_forPersistence.globalState.update('VirtualFolderTreeView_RootNode', virtualFolderTreeView_global_forPersistence.nodeRoot);
+    // ;not_working; if (saveNodeStructure_onExtensionClose !== null) {
+    // ;not_working;   await saveNodeStructure_onExtensionClose();
+    // ;not_working; }
 }
 exports.deactivate = deactivate;
 // TODO
@@ -4943,6 +7816,8 @@ exports.deactivate = deactivate;
 // 1. edit name
 // 1. localStorage
 // 1. hotkey trigger
+// TODO-v save & serialization ...
+// TODO-v "title": "Restore to Factory"
 // "// when": "view == idVal_virtualFolderTreeView // need remove this, dk why, // but still wont work, cuz no context is passed https://github.com/microsoft/vscode/issues/72442 "
 // []
 // // Check if we have an old state to restore from
@@ -4974,6 +7849,18 @@ exports.deactivate = deactivate;
 // <>
 // https://github.com/Microsoft/vscode/issues/47881
 // ~~~// dk
+// TODO if paste inside itself -- inf recursion?
+// >"
+// 			"request": "launch", // seems like sometimes need to open this launch.json file so the run `npm: watch ` knows where to start ...
+// 			"args": [
+// 				"--extensionDevelopmentPath=${workspaceFolder}"
+// 			],
+// <>
+// H:\Using\virtualfoldervsc\.vscode\launch.json
+// ok that becomes that one why
+// ~~~// still feels missing? shouldnt .. just drag .. emm cmd should be just all those ..
+// well icon said whatever ..
+// just reload .... guess svg file ones need bigger reload
 
 })();
 
