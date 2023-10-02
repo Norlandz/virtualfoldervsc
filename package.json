@@ -9,7 +9,13 @@
     "vscode": "^1.82.0"
   },
   "categories": [
-    "Other"
+    "Other",
+    "Visualization"
+  ],
+  "keywords": [
+    "treeview",
+    "file-explorer",
+    "file-manager"
   ],
   "activationEvents": [
     "// onCommand:vstodo.helloWorld // This activation event can be removed for extensions targeting engine version ^1.75 as VS Code will generate these automatically from your package.json contribution declarations."
