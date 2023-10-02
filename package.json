@@ -4,6 +4,10 @@
   "description": "create Virtual Folders in Vscode Panel for Files",
   "version": "0.1.4",
   "publisher": "norlz",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Norlandz/virtualfoldervsc"
+  },
   "icon": "./docs/logo.png",
   "engines": {
     "vscode": "^1.82.0"
@@ -15,7 +19,9 @@
   "keywords": [
     "treeview",
     "file-explorer",
-    "file-manager"
+    "file-manager",
+    "folder",
+    "virtual"
   ],
   "activationEvents": [
     "// onCommand:vstodo.helloWorld // This activation event can be removed for extensions targeting engine version ^1.75 as VS Code will generate these automatically from your package.json contribution declarations."

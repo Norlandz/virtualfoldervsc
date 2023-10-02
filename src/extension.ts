@@ -766,3 +766,10 @@ export function deactivate() {
 // The field in which you set the path to an icon is called `"icon"`. The icon file itself has to be 128x128 pixels.
 // <>
 // https://stackoverflow.com/questions/42877083/set-icon-or-logo-for-extension-in-vscode
+
+// []
+// A `README.md` file at the root of your extension will be used to populate the extension's Marketplace page's contents. `vsce` will modify README links for you in two different ways:
+// 
+// *   If you add a `repository` field to your `package.json` and it is a public GitHub repository, `vsce` will automatically detect it and adjust relative links accordingly,
+// <>
+// https://code.visualstudio.com/api/working-with-extensions/publishing-extension

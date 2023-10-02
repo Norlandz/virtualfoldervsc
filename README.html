@@ -205,71 +205,80 @@ Then <strong>move</strong> your workspace (<strong>real</strong>) files/folders 
 (-- thats what Virtual stands for).</p>
 </li>
 <li>
-<p>These below are Project Folders copied from your current workspace.</p>
-<p>You drag files/folders from here into the Virtual Folder.</p>
+<p>These below are Project Folders copied from your current workspace. <br>
+You drag files/folders from here into the Virtual Folder.</p>
 </li>
 <li>
 <p><img src="file:///h:\Using\virtualfoldervsc\docs\virtualfoldervsc%20demo%2020230930%20.png" alt="demo"></p>
 </li>
 <li>
-<p><video src="virtualfoldervsc%20demo%2020231001_222157%20.mp4" controls title="demo"></video></p>
+<p><a href="https://github.com/Norlandz/virtualfoldervsc/assets/43581880/a97d3cbb-4e4a-45aa-9a2f-a55258da8a54">https://github.com/Norlandz/virtualfoldervsc/assets/43581880/a97d3cbb-4e4a-45aa-9a2f-a55258da8a54</a></p>
 </li>
 </ul>
 <h3 id="functionality">Functionality</h3>
 <ul>
 <li>
-<p>has a Root Virtual Folder <br>
-have your workspace (real) files/folders below</p>
+<p>has a <strong>Root Virtual Folder</strong> <br>
+have your <strong>workspace (real) files/folders</strong> below</p>
 </li>
 <li>
-<p>create Virtual Folder inside the Root Virtual Folder</p>
+<p><strong>create Virtual Folder</strong> inside the Root Virtual Folder</p>
 </li>
 <li>
-<p>copy real files/folders into virtual folders</p>
+<p>copy real files/folders <strong>into</strong> virtual folders</p>
 </li>
 <li>
-<p>The below/copied underlying (real) files/folders will not be changed</p>
+<p>The below-copied underlying (<strong>real</strong>) files/folders <strong>will not be changed</strong></p>
 <ul>
 <li>(if you attempt to do so, it will either only appears in the virtual way, or not respond to your action)</li>
-<li>though, of course you <strong>are</strong> allowed to open the file &amp; <strong>edit</strong> them in the editors</li>
+<li>though, of course you are allowed to open the file &amp; <strong>edit</strong> them in the editors</li>
 <li>the thing wont chagne is the <strong>Folder Structure</strong> in your file system</li>
 </ul>
 </li>
 <li>
-<p>drag and drop the files/folders</p>
+<p><strong>drag and drop</strong> the files/folders <br>
+(allow drag from <strong>other File Explorer</strong> too)</p>
 </li>
 <li>
-<p>save the Virtual Folder Structure on every modification</p>
+<p><strong>save</strong> the Virtual Folder Structure (automatically on every modification)</p>
 </li>
 <li>
-<p>restore the Virtual Folder Structure back to Factory (empty the Root Virtual Folder)</p>
+<p><strong>restore</strong> the Virtual Folder Structure back to Factory (empty the Root Virtual Folder)</p>
+</li>
+<li>
+<p><strong>undo</strong> (no redo yet)</p>
 </li>
 </ul>
 <h3 id="limiations--problems">Limiations / Problems</h3>
 <ul>
 <li>
-<p>you cannot use hotkeys on the Tree Item <br>
--- I think this is the Vscode problem (the Tree Item context just wont get passed into the command handler)</p>
+<p>you <strong>cannot use hotk</strong>eys on the Tree Item <br>
+-- I think this is the Vscode problem (the Tree Item context just <strong>wont</strong> get passed into the command handler)</p>
 </li>
 <li>
-<p>save the Virtual Folder Structure is executed on every modification <br>
+<p>save the Virtual Folder Structure is executed <strong>on every modification</strong> <br>
 -- bad for performance -- should do it when you close the Extension/Vscode <br>
 -- but exec on <code>deactivate()</code> cannot do the job, cuz it has a limit of 5 seconds (though, save doesnt take that long, it just wont execute) <br>
 &amp; there is no other Event trigger for &quot;on Extension Closed&quot;</p>
 </li>
 <li>
-<p>may still have (many) bugs</p>
+<p>may still have (many) <strong>bugs</strong></p>
 </li>
 <li>
-<p>the Real and Virtual can coexist if its at the same Level (conceptually, its still Virtual folder) -- this is bit mixed (but nothing wrong, just powerful &amp; complex). <br>
-but you cannot make that coexist happen for the subfolders inside below that level</p>
+<p>the Real and Virtual can <strong>coexist</strong> if its at the same Level (conceptually, its still Virtual folder) -- this is bit <strong>mixed</strong> (but nothing wrong, just powerful &amp; <strong>complex</strong>). <br>
+but you <strong>cannot</strong> make that coexist happen for the <strong>subfolders</strong> inside below that level</p>
 </li>
 <li>
-<p>can have inf recurrsion if you drop the folder into itself (wont break, just hard to spot)</p>
+<p>can have <strong>inf recurrsion</strong> if you drop the folder into itself (wont break, deps on your usage; &amp; hard to notice;)</p>
 </li>
 </ul>
 <h3 id="version--update">Version &amp; Update</h3>
-<p>XXX</p>
+<ul>
+<li>v0.1.4 (initial publish)</li>
+</ul>
+<h3 id="links-related">Links related</h3>
+<p>github: <a href="https://github.com/Norlandz/virtualfoldervsc">https://github.com/Norlandz/virtualfoldervsc</a></p>
+<p>vscode marketplace: <a href="https://marketplace.visualstudio.com/items?itemName=norlz.virtualfoldervsc">https://marketplace.visualstudio.com/items?itemName=norlz.virtualfoldervsc</a></p>
 
         
         
