@@ -13,8 +13,9 @@
 
   You drag files/folders from here into the Virtual Folder.
 
-- ![image](https://github.com/Norlandz/virtualfoldervsc/assets/43581880/16703b54-49cc-46cb-909d-dc4f1428e75d)
-
+- ![demo](<virtualfoldervsc demo 20230930 .png>)
+- <video src="virtualfoldervsc%20demo%2020231001_222157%20.mp4" controls title="demo"></video>
+  
 ### Functionality
 
 - has a Root Virtual Folder \

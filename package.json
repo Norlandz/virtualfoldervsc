@@ -4,6 +4,7 @@
   "description": "create Virtual Folders in Vscode Panel for Files",
   "version": "0.1.4",
   "publisher": "norlz",
+  "icon": "./docs/logo.png",
   "engines": {
     "vscode": "^1.82.0"
   },

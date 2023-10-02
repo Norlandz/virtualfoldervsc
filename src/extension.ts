@@ -761,3 +761,8 @@ export function deactivate() {
 // I just ended up using yarn for my vscode extension, while using pnpm for everything else. Hopefully this will be solved soon.
 // <>
 // https://github.com/microsoft/vscode-vsce/issues/421
+
+// []
+// The field in which you set the path to an icon is called `"icon"`. The icon file itself has to be 128x128 pixels.
+// <>
+// https://stackoverflow.com/questions/42877083/set-icon-or-logo-for-extension-in-vscode
