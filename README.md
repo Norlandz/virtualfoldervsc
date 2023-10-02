@@ -12,7 +12,7 @@
 - These below are Project Folders copied from your current workspace. \
   You drag files/folders from here into the Virtual Folder.
 
-- ![demo](<./docs/virtualfoldervsc demo 20230930 .png>)
+- ![demo](https://github.com/Norlandz/virtualfoldervsc/assets/43581880/16703b54-49cc-46cb-909d-dc4f1428e75d)
 - https://github.com/Norlandz/virtualfoldervsc/assets/43581880/a97d3cbb-4e4a-45aa-9a2f-a55258da8a54
 
 
