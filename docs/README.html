@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Introduction</title>
+        <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+</style>
+        
+        
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+        <style>
+
+pre {
+  position: relative;
+}
+
+pre, pre code {
+  font-family: Consolas;
+  font-size: 12px;
+}
+
+h1 {
+  font-family: Consolas;
+  font-size: 32px;
+}
+
+h2 {
+  font-family: Bell MT;
+  font-size: 30px;
+}
+
+h3 {
+  font-family: Lucida Fax;
+  font-size: 22px;
+}
+
+h4 {
+  font-family: Bookman Old Style;
+  font-size: 18px;
+}
+
+h5 {
+  font-family: Palatino Linotype;
+  font-size: 16px;
+}
+
+h6 {
+  font-family: Arial;
+  font-size: 14px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  padding: 0;
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+table, th, td {
+  border: 1px solid;
+}
+
+table {
+  margin: 1em;
+  border-collapse: collapse;
+  width: -moz-max-content;
+  width: max-content;
+  max-width: 1500px;
+}
+
+tbody tr:nth-child(even) {
+  background-color: rgba(245, 248, 255, 0.8);
+}
+
+tbody {
+  border: 5px solid rgba(147, 174, 207, 0.9);
+  border-top: 10px solid rgba(147, 174, 207, 0.9);
+}
+
+table p {
+  margin-bottom: 0.3em;
+}
+
+td {
+  padding: 0.3em;
+  text-align: left;
+  vertical-align: top;
+  font-size: 90%;
+}
+
+dl {
+  display: block;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+dt {
+  display: block;
+}
+
+dd {
+  display: block;
+  margin: 0;
+  padding: 0;
+  margin-left: 1em;
+  position: relative;
+  line-height: 110%;
+  margin-bottom: 1.5em;
+}
+
+ol, ul {
+  display: block;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+li {
+  margin: 0;
+  padding: 0;
+  margin-left: 1em;
+  /* padding-left: 1em; */
+}
+
+:is(ol, ul, dl)::before {
+  content: "";
+  background: linear-gradient(180deg, rgba(182, 182, 182, 0.5) 0%, rgba(241, 241, 241, 0.5) 15%, rgba(241, 241, 241, 0.5) 95%, rgba(182, 182, 182, 0.5) 100%);
+  display: block;
+  height: 100%;
+  width: 2px;
+  position: absolute;
+}
+
+img {
+  -o-object-fit: scale-down;
+     object-fit: scale-down;
+  max-width: 650px;
+  max-height: 200px;
+  text-align: center;
+}
+
+img {
+  cursor: zoom-in;
+}
+
+figure {
+  text-align: center;
+}
+
+
+a {
+  color: rgb(70, 2, 122);
+  text-decoration: none;
+}
+
+
+blockquote {
+  padding: 1px 0px 1px 1em;
+  border-left: 4px solid rgba(203, 203, 203, 0.8);
+  background-color: rgba(248, 248, 248, 0.8);
+}
+
+/*  */
+
+p {
+  margin: 0;
+}
+
+blockquote {
+  margin: 0.3em 0 0 0;
+}
+</style>
+    </head>
+    <body class="vscode-body vscode-light">
+        <h3 id="introduction">Introduction</h3>
+<ul>
+<li>
+<p>This is a Virtual Folder.</p>
+<p>You can <strong>create more virtual folders</strong> inside. <br>
+Then <strong>move</strong> your workspace (<strong>real</strong>) files/folders inside <br>
+&amp; <strong>manage</strong> them better <strong>inside</strong> the Virtual Folder.</p>
+<p>The underlying (real) files/folders <strong>will not be changed</strong> <br>
+(-- thats what Virtual stands for).</p>
+</li>
+<li>
+<p>These below are Project Folders copied from your current workspace.</p>
+<p>You drag files/folders from here into the Virtual Folder.</p>
+</li>
+<li>
+<p><img src="https://github.com/Norlandz/virtualfoldervsc/assets/43581880/16703b54-49cc-46cb-909d-dc4f1428e75d" alt="image"></p>
+</li>
+</ul>
+<h3 id="functionality">Functionality</h3>
+<ul>
+<li>
+<p>has a Root Virtual Folder <br>
+have your workspace (real) files/folders below</p>
+</li>
+<li>
+<p>create Virtual Folder inside the Root Virtual Folder</p>
+</li>
+<li>
+<p>copy real files/folders into virtual folders</p>
+</li>
+<li>
+<p>The below/copied underlying (real) files/folders will not be changed</p>
+<ul>
+<li>(if you attempt to do so, it will either only appears in the virtual way, or not respond to your action)</li>
+<li>though, of course you <strong>are</strong> allowed to open the file &amp; <strong>edit</strong> them in the editors</li>
+<li>the thing wont chagne is the <strong>Folder Structure</strong> in your file system</li>
+</ul>
+</li>
+<li>
+<p>drag and drop the files/folders</p>
+</li>
+<li>
+<p>save the Virtual Folder Structure on every modification</p>
+</li>
+<li>
+<p>restore the Virtual Folder Structure back to Factory (empty the Root Virtual Folder)</p>
+</li>
+</ul>
+<h3 id="limiations--problems">Limiations / Problems</h3>
+<ul>
+<li>
+<p>you cannot use hotkeys on the Tree Item <br>
+-- I think this is the Vscode problem (the Tree Item context just wont get passed into the command handler)</p>
+</li>
+<li>
+<p>save the Virtual Folder Structure is executed on every modification <br>
+-- bad for performance -- should do it when you close the Extension/Vscode <br>
+-- but exec on <code>deactivate()</code> cannot do the job, cuz it has a limit of 5 seconds (though, save doesnt take that long, it just wont execute) <br>
+&amp; there is no other Event trigger for &quot;on Extension Closed&quot;</p>
+</li>
+<li>
+<p>may still have (many) bugs</p>
+</li>
+<li>
+<p>the Real and Virtual can coexist if its at the same Level (conceptually, its still Virtual folder) -- this is bit mixed (but nothing wrong, just powerful &amp; complex). <br>
+but you cannot make that coexist happen for the subfolders inside below that level</p>
+</li>
+<li>
+<p>can have inf recurrsion if you drop the folder into itself (wont break, just hard to spot)</p>
+</li>
+</ul>
+<h3 id="version--update">Version &amp; Update</h3>
+<p>XXX</p>
+
+        
+        
+    </body>
+    </html>

@@ -16,6 +16,71 @@
 				"${workspaceFolder}/dist/**/*.js"
 			],
 			"preLaunchTask": "${defaultBuildTask}"
+      // 
+      // >"
+      // [Window Title] Visual Studio Code [Content] The task 'npm: watch' cannot be tracked. Make sure to have a problem matcher defined. [ ] Remember my choice for this task [Debug Anyway] [Configure Task] [Cancel]
+      // 
+      // 
+      // []
+      // Since the task is long running, Vscode will give warning popup after waiting for 10 seconds saying that the specified task cannot be tracked. You can still debug by pressing the "debug anyway" button. But to avoid this popup we define a begin/end pattern.
+      // 
+      // The problemMatcher’s background field defines when the task is considered to begin and end as is shown in the console output. You need to make sure that the beginsPattern and endsPattern matches what you actually see in the terminal output. If you copied an example from elsewhere, it probably does not match your actual terminal output.
+      // <>
+      // https://stackoverflow.com/questions/53899680/the-specified-task-cannot-be-tracked-when-trying-to-start-a-server-with-a-task
+      // 
+      // []
+      // #### The specified task cannot be tracked
+      // 
+      // Notice we leverage the `preLaunchTask` here so that the watch task `npm start` can run before browser is launched. The problemMatcher’s background field is to define when the task is considered as begins and which is ends in the **console output.** This is important as our watch task is a long running background one. Otherwise vscode will give warning popup after waiting for 10 seconds saying `The specified task cannot be tracked`. You can still debug by pressing the `debug anyway` button but it is not that elegant. Having begin/end pattern will resolve this issue.
+      // <>
+      // https://vcfvct.wordpress.com/2019/01/11/debug-browser-code-in-vscode/
+      // []
+      // Depending on your needs, removing the `preLaunchTask` could remove the prompt:
+      // <>
+      // https://stackoverflow.com/questions/53899680/the-specified-task-cannot-be-tracked-when-trying-to-start-a-server-with-a-task
+      // []
+      // Do not use "isBackground": true property with preLaunchTask. Tested with .net 5 project.
+      // <>
+      // https://stackoverflow.com/questions/53899680/the-specified-task-cannot-be-tracked-when-trying-to-start-a-server-with-a-task
+      // 
+      // 
+      // []
+      // We want to produce a problem matcher that can capture the message in the output and show a corresponding problem in VS Code. Problem matchers heavily rely on [regular expressions](https://en.wikipedia.org/wiki/Regular_expression).
+      // <>
+      // https://code.visualstudio.com/Docs/editor/tasks#_defining-a-problem-matcher
+      // []
+      // To capture this information, a problem matcher can provide a `background` property.
+      // <>
+      // https://code.visualstudio.com/Docs/editor/tasks#_defining-a-problem-matcher
+      // []
+      // the task itself has to be marked as `isBackground` so that the task keeps running in the background.
+      // <>
+      // https://code.visualstudio.com/Docs/editor/tasks#_defining-a-problem-matcher
+      // []
+      // "isDefault": true
+      // <>
+      // https://code.visualstudio.com/docs/editor/tasks
+      // []
+      // *   **${defaultBuildTask}** - the name of the default build task
+      // <>
+      // https://code.visualstudio.com/docs/editor/variables-reference
+      // 
+      // 
+      // Unrecognized problem matcher. $ts-webpack-watch
+      // 
+      // TypeScript + Webpack Problem Matchers - Visual Studio Marketplace
+      // https://marketplace.visualstudio.com/items?itemName=amodio.tsl-problem-matcher
+      // ~~~~// e already had, disabled ... 
+
+      // []
+      // **${workspaceFolder}** - `/home/your-username/your-project`
+      // <>
+      // https://code.visualstudio.com/docs/editor/variables-reference
+      // 
+      // ~~~// dk multi project in workspace 
+      // & that curr open file .. 
+      // well always unclear .. 
+
 		},
 		{
 			"name": "Extension Tests",

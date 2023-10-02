@@ -2,8 +2,10 @@ import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as fileExplorer from '../../lib/treeView/fileExplorer';
-import { instanceToPlain, plainToInstance, Type, Transform, TransformationType } from 'class-transformer';
+import * as classTransformer from 'class-transformer';
 import 'reflect-metadata';
+import * as flatted from 'flatted';
+import * as url from 'url';
 
 export class VirtualFolderTreeView
   implements
@@ -101,7 +103,7 @@ export class VirtualFolderTreeView
     }
   }
 
-  public readonly nodeRoot: VirtualFolderNodeTypeHolder = new VirtualFolderNodeTypeHolder('root VirtualFolderNode', vscode.TreeItemCollapsibleState.Expanded);
+  public nodeRoot: VirtualFolderNodeTypeHolder = new VirtualFolderNodeTypeHolder('root VirtualFolderNode', vscode.TreeItemCollapsibleState.Expanded);
   // /**
   //  * @deprecated better private not public...
   //  */
@@ -308,8 +310,10 @@ export class VirtualFolderTreeView
   // https://stackoverflow.com/questions/72055681/is-it-possible-to-drag-drop-between-custom-vs-code-tree-views
   //
   // ~~~// missing_details dk how that custom works hum // also the auto set .. em
-  dragMimeTypes: readonly string[] = ['application/vnd.code.tree.idval_virtualfoldertreeview'] // , 'text/uri-list'];
-  dropMimeTypes: readonly string[] = ['application/vnd.code.tree.idval_virtualfoldertreeview'];
+  // to support drag from others hum , but guess this drag wont get called & btw just this impl was messy already // @messy
+  // where_talked the *file universal type? & where that ex to check type did it? // no_knowlres ...
+  dragMimeTypes: readonly string[] = ['application/vnd.code.tree.idval_virtualfoldertreeview']; // , 'text/uri-list'];
+  dropMimeTypes: readonly string[] = ['application/vnd.code.tree.idval_virtualfoldertreeview', 'text/uri-list'];
   // TODO allow drop from Window FileSystem ... -- so any file
 
   private readonly arr_node_Clipped: (VirtualFolderNodeTypeHolder | fileExplorer.Entry)[] = [];
@@ -346,7 +350,7 @@ export class VirtualFolderTreeView
     // <>
     // https://www.eliostruyf.com/cancel-progress-programmatically-visual-studio-code-extensions/
 
-    // @check //;not_working; maybe just clear everytime before ... 
+    // @check //;not_working; maybe just clear everytime before ...
     token.onCancellationRequested(() => {
       console.log('>> token.onCancellationRequested()');
       this.arr_node_Clipped.length = 0;
@@ -363,7 +367,7 @@ export class VirtualFolderTreeView
     // "token.onCancellationRequested is not a function"
     // console.log(token)
     // ~~~// ? no idea but only that is accessible , is that how its used ? ...
-    // @check //;not_working; maybe just clear everytime before ... 
+    // @check //;not_working; maybe just clear everytime before ...
     if (token.isCancellationRequested) {
       console.log('>> token.isCancellationRequested');
       this.arr_node_Clipped.length = 0;
@@ -429,31 +433,98 @@ export class VirtualFolderTreeView
       // ;M;   }
       // ;M; }
 
-      for (const node_Clipped of this.arr_node_Clipped) {
-        if (node_Clipped instanceof VirtualFolderNodeTypeHolder) {
-          if (target.realFileExplorerEntry === null) {
-            target.addChildNode(node_Clipped);
-          } else {
-            // TODO if drop at a real file, its gone ....  
-            console.error('Target is fileExplorer.Entry, cannot drop.');
-          }
-        } else if ((node_Clipped as fileExplorer.Entry).uri !== undefined) {
-          let state_CollapsedOr = vscode.TreeItemCollapsibleState.Collapsed;
-          if (node_Clipped.type === vscode.FileType.Directory) {
-            state_CollapsedOr = vscode.TreeItemCollapsibleState.Collapsed;
-          } else if (node_Clipped.type === vscode.FileType.File) {
-            state_CollapsedOr = vscode.TreeItemCollapsibleState.None;
+      // conditional statements - Why would you use an assignment in a condition? - Stack Overflow
+      // https://stackoverflow.com/questions/151850/why-would-you-use-an-assignment-in-a-condition
+      //
+      // java - Assign variable value inside if-statement - Stack Overflow
+      // https://stackoverflow.com/questions/16148580/assign-variable-value-inside-if-statement
+      //
+      // javascript - Assign variable in if condition statement, good practice or not? - Stack Overflow
+      // https://stackoverflow.com/questions/2576571/assign-variable-in-if-condition-statement-good-practice-or-not
+      //
+      // []
+      // Because unlike [`while`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/while) loops, the condition is only evaluated once, so the assignment is only performed once. The code above is equivalent to:
+      // <>
+      // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/if...else
+      let transferItem: vscode.DataTransferItem | undefined;
+      // ## drag and drop for Virtual Folder Tree View only
+      if ((transferItem = dataTransfer.get('application/vnd.code.tree.idval_virtualfoldertreeview'))) {
+        transferItem; // by design, this has no use here... @messy
+        // console.log(`if ((transferItem = dataTransfer.get('application/vnd.code.tree.idval_virtualfoldertreeview'))) {`);
+        // console.log(transferItem);
+        for (const node_Clipped of this.arr_node_Clipped) {
+          if (node_Clipped instanceof VirtualFolderNodeTypeHolder) {
+            if (target.realFileExplorerEntry === null) {
+              target.addChildNode(node_Clipped);
+            } else {
+              // TODO if drop at a real file, its gone ....
+              console.error('Target is fileExplorer.Entry, cannot drop.');
+            }
+          } else if ((node_Clipped as fileExplorer.Entry).uri !== undefined) {
+            let state_CollapsedOr: vscode.TreeItemCollapsibleState;
+            if (node_Clipped.type === vscode.FileType.Directory) {
+              state_CollapsedOr = vscode.TreeItemCollapsibleState.Collapsed;
+            } else if (node_Clipped.type === vscode.FileType.File) {
+              state_CollapsedOr = vscode.TreeItemCollapsibleState.None;
+            } else {
+              throw new TypeError();
+            }
+            target.addChildNode(new VirtualFolderNodeTypeHolder(null, state_CollapsedOr, node_Clipped));
           } else {
             throw new TypeError();
           }
-          target.addChildNode(new VirtualFolderNodeTypeHolder(null, state_CollapsedOr, node_Clipped));
-        } else {
-          throw new TypeError();
         }
+        this.arr_node_Clipped.length = 0;
+        // this.refresh(); // must call save too ...
+        this.refreshView_and_saveNodeStructure__import_messy!();
+      } 
+      // ## add support to drag and drop from other file explorers
+      else if ((transferItem = dataTransfer.get('text/uri-list'))) {
+        // console.log(`} else if ((transferItem = dataTransfer.get('text/uri-list'))) {`)
+        // console.log(transferItem);
+
+        if (this.arr_node_Clipped.length !== 0) {
+          throw new Error('Should be 0, nothing should be in the clipboard -- cuz this is not from the Virtual Folder Tree View');
+        }
+
+        // const arr_pathUri = transferItem.value as string[];
+        const arrStr_pathUri = transferItem.value as string;
+        const arr_pathUri = arrStr_pathUri.split(/\r\n|\r|\n/);
+        for (const pathUri of arr_pathUri) {
+          // @note: this is not an array -- this is a single string with \r\n linebreak... idkwhy
+          // const pathUri = transferItem.value as string;
+          const pathFile = url.fileURLToPath(pathUri);
+          // https://stackoverflow.com/questions/20619488/how-to-convert-local-file-path-to-a-file-url-safely-in-node-js
+          // console.log(pathUri)
+          // console.log(pathFile)
+          // console.log(vscode.Uri.file(pathUri)) // wrong
+          // console.log(vscode.Uri.file(pathFile)) // correct
+          // console.log(vscode.Uri.parse(pathUri)) // correct
+          // console.log(vscode.Uri.parse(pathFile)) // wrong
+
+          let state_CollapsedOr: vscode.TreeItemCollapsibleState;
+          let fileType: vscode.FileType;
+          if (fs.lstatSync(pathFile).isDirectory()) {
+            state_CollapsedOr = vscode.TreeItemCollapsibleState.Collapsed;
+            fileType = vscode.FileType.Directory;
+          } else if (fs.lstatSync(pathFile).isFile()) {
+            state_CollapsedOr = vscode.TreeItemCollapsibleState.None;
+            fileType = vscode.FileType.File;
+          } else {
+            throw new TypeError();
+          }
+          target.addChildNode(
+            new VirtualFolderNodeTypeHolder(null, state_CollapsedOr, {
+              // uri: vscode.Uri.parse(path), // seems use parse not file
+              uri: vscode.Uri.file(pathFile),
+              type: fileType,
+            })
+          );
+        }
+        this.refreshView_and_saveNodeStructure__import_messy!();
+      } else {
+        throw new TypeError();
       }
-      this.arr_node_Clipped.length = 0;
-      // this.refresh(); // must call save too ... 
-      this.refreshView_and_saveNodeStructure__import_messy!();
     } else if ((target as fileExplorer.Entry).uri !== undefined) {
       this.arr_node_Clipped.length = 0;
       console.error('Targe is fileExplorer.Entry, cannot drop.');
@@ -490,8 +561,84 @@ export class VirtualFolderNodeTypeHolder extends vscode.TreeItem {
   //     // ~~~// dk & that offline
   //     "experimentalDecorators": true
   // https://stackoverflow.com/questions/36446480/typescript-decorator-reports-unable-to-resolve-signature-of-class-decorator-whe
-  @Type(() => VirtualFolderNode)
+  @classTransformer.Type(() => VirtualFolderNode)
+  // ;not_working;[circular dep hack fail]   @classTransformer.Transform((tinfo) => {
+  // ;not_working;[circular dep hack fail]     console.log('@classTransformer.Transform((tinfo) => { private readonly virtualFolderNode: VirtualFolderNode;');
+  // ;not_working;[circular dep hack fail]     console.log(tinfo);
+  // ;not_working;[circular dep hack fail]
+  // ;not_working;[circular dep hack fail]     const value = tinfo.value as VirtualFolderNode;
+  // ;not_working;[circular dep hack fail]     if (value === undefined || value === null) {
+  // ;not_working;[circular dep hack fail]       throw new TypeError('VirtualFolderNodeTypeHolder cannot be undefined or null');
+  // ;not_working;[circular dep hack fail]     }
+  // ;not_working;[circular dep hack fail]
+  // ;not_working;[circular dep hack fail]     if (value.node_parent === null) {
+  // ;not_working;[circular dep hack fail]       const pointer2ndLayerHolder: {
+  // ;not_working;[circular dep hack fail]         pointer: string | VirtualFolderNode;
+  // ;not_working;[circular dep hack fail]       } = {
+  // ;not_working;[circular dep hack fail]         pointer: 'this should be changed to the value of `this` (-- the return `result`) after this transformation is done',
+  // ;not_working;[circular dep hack fail]       };
+  // ;not_working;[circular dep hack fail]
+  // ;not_working;[circular dep hack fail]       // js can i menipulate reference address - Google 搜索
+  // ;not_working;[circular dep hack fail]       // https://www.google.ca/search?q=js+can+i+menipulate+reference+address
+  // ;not_working;[circular dep hack fail]       //
+  // ;not_working;[circular dep hack fail]       // Is JavaScript a pass-by-reference or pass-by-value language? - Stack Overflow
+  // ;not_working;[circular dep hack fail]       // https://stackoverflow.com/questions/518000/is-javascript-a-pass-by-reference-or-pass-by-value-language
+  // ;not_working;[circular dep hack fail]       //
+  // ;not_working;[circular dep hack fail]       // Are there pointers in javascript? - Stack Overflow
+  // ;not_working;[circular dep hack fail]       // https://stackoverflow.com/questions/17382427/are-there-pointers-in-javascript
+  // ;not_working;[circular dep hack fail]       // ~~~// feels can add another layer of ojbect though ...
+  // ;not_working;[circular dep hack fail]       (value as any).refHolderTo_CircularDependencyObj_hack = pointer2ndLayerHolder.pointer;
+  // ;not_working;[circular dep hack fail]       // []
+  // ;not_working;[circular dep hack fail]       // (user as any).otherProperty = 'hello';
+  // ;not_working;[circular dep hack fail]       // <>
+  // ;not_working;[circular dep hack fail]       // https://stackoverflow.com/questions/12710905/how-do-i-dynamically-assign-properties-to-an-object-in-typescript
+  // ;not_working;[circular dep hack fail]       // const result = Object.assign(new VirtualFolderNode('@dummy will be overwritten'), value);
+  // ;not_working;[circular dep hack fail]       // but if that call is recursive, this wont return yet ... dk internal ...
+  // ;not_working;[circular dep hack fail]       // well that recursion should call classTransform aga just .
+  // ;not_working;[circular dep hack fail]       // console.log(value)
+  // ;not_working;[circular dep hack fail]       const result = classTransformer.plainToInstance(VirtualFolderNode, value as { length?: never }, {
+  // ;not_working;[circular dep hack fail]         enableCircularCheck: true,
+  // ;not_working;[circular dep hack fail]       });
+  // ;not_working;[circular dep hack fail]       // console.log('Should exec later') // indeed, so its recursive , order correct
+  // ;not_working;[circular dep hack fail]       pointer2ndLayerHolder.pointer = result;
+  // ;not_working;[circular dep hack fail]       return result;
+  // ;not_working;[circular dep hack fail]     } else {
+  // ;not_working;[circular dep hack fail]       // console.log('Should exec first')
+  // ;not_working;[circular dep hack fail]       // How do I check if an object has a specific property in JavaScript? - Stack Overflow
+  // ;not_working;[circular dep hack fail]       // https://stackoverflow.com/questions/135448/how-do-i-check-if-an-object-has-a-specific-property-in-javascript
+  // ;not_working;[circular dep hack fail]       //
+  // ;not_working;[circular dep hack fail]       // javascript - How to check if object property exists with a variable holding the property name? - Stack Overflow
+  // ;not_working;[circular dep hack fail]       // https://stackoverflow.com/questions/11040472/how-to-check-if-object-property-exists-with-a-variable-holding-the-property-name
+  // ;not_working;[circular dep hack fail]       // ~~~// not check undefined? ...
+  // ;not_working;[circular dep hack fail]       // if (!Object.hasOwn(value.node_parent, 'refHolderTo_CircularDependencyObj_hack')) {
+  // ;not_working;[circular dep hack fail]       if (!Object.hasOwn(value.node_parent.virtualFolderNode, 'refHolderTo_CircularDependencyObj_hack')) { // @note: not at the parent -- need go inside the wrapper...  weell my design ...
+  // ;not_working;[circular dep hack fail]         // isnt that is private?...... whatever ..
+  // ;not_working;[circular dep hack fail]         console.error(value);
+  // ;not_working;[circular dep hack fail]         console.error(value.node_parent.virtualFolderNode);
+  // ;not_working;[circular dep hack fail]         throw new Error('it should have a parent, & the ref hack should have been set');
+  // ;not_working;[circular dep hack fail]       }
+  // ;not_working;[circular dep hack fail]       const pointer2ndLayerHolder: {
+  // ;not_working;[circular dep hack fail]         pointer: string | VirtualFolderNode;
+  // ;not_working;[circular dep hack fail]       } = {
+  // ;not_working;[circular dep hack fail]         pointer: 'this should be changed to the value of `this` (-- the return `result`) after this transformation is done',
+  // ;not_working;[circular dep hack fail]       };
+  // ;not_working;[circular dep hack fail]       (value as any).refHolderTo_CircularDependencyObj_hack = pointer2ndLayerHolder.pointer;
+  // ;not_working;[circular dep hack fail]       const result = classTransformer.plainToInstance(VirtualFolderNode, value as { length?: never }, {
+  // ;not_working;[circular dep hack fail]         enableCircularCheck: true,
+  // ;not_working;[circular dep hack fail]       });
+  // ;not_working;[circular dep hack fail]       result.node_parent = (value.node_parent.virtualFolderNode as any).refHolderTo_CircularDependencyObj_hack;
+  // ;not_working;[circular dep hack fail]       return result;
+  // ;not_working;[circular dep hack fail]     }
+  // ;not_working;[circular dep hack fail]   })
+  // ;not_working;[circular dep hack fail] << seems classTransform init new instead of use jsobj ref, ....... just brute force add parent ...
   private readonly virtualFolderNode: VirtualFolderNode;
+
+  /**
+   * @deprecated Only for debug (well @messy ...)
+   */
+  public get_virtualFolderNode_debug(): VirtualFolderNode {
+    return this.virtualFolderNode;
+  }
 
   /**
    * reference to realFileExplorerEntry
@@ -503,7 +650,7 @@ export class VirtualFolderNodeTypeHolder extends vscode.TreeItem {
    */
   // ;X @Transform((tinfo) => plainToInstance(VirtualFolderNodeTypeHolder, tinfo.value))
   // @Type(() => fileExplorer.Entry)
-  @Transform((tinfo) => {
+  @classTransformer.Transform((tinfo) => {
     // console.log('>> @Transform((tinfo) => ');
     // console.log(tinfo);
     // console.log(JSON.stringify(tinfo, null, 2));
@@ -608,7 +755,15 @@ export class VirtualFolderNodeTypeHolder extends vscode.TreeItem {
   */
   addChildNode(child: VirtualFolderNodeTypeHolder) {
     // when move, need ori parent to remove the link too ...
-    child.virtualFolderNode.node_parent?.removeChildNode(child);
+    // child.virtualFolderNode.node_parent?.removeChildNode(child);
+    if (child.virtualFolderNode.node_parent === null) {
+      // @do_nothing
+    } else if (child.virtualFolderNode.node_parent === undefined) {
+      throw new TypeError('maybe: classtransformer ignores circular dependency, so the parent is undefined (in jsobj) / default to null (in class)?'); // remains default value -- null'); // not become undefined .. // actuall idk seems null.. not string Circular either so ..
+      // actually if js obj its undefined, if class is default value ...
+    } else {
+      child.virtualFolderNode.node_parent.removeChildNode(child);
+    }
     child.virtualFolderNode.node_parent = this;
     this.virtualFolderNode.arr_node_child.push(child);
   }
@@ -657,9 +812,17 @@ class VirtualFolderNode {
    * @deprecated not much of use... but for common sense leave it here ....
    */
   public readonly name: string;
-  @Type(() => VirtualFolderNodeTypeHolder)
+  @classTransformer.Type(() => VirtualFolderNodeTypeHolder)
   public readonly arr_node_child: VirtualFolderNodeTypeHolder[] = [];
-  @Type(() => VirtualFolderNodeTypeHolder)
+
+  // // []
+  //   // ## [How does it handle circular references?](https://github.com/typestack/class-transformer#how-does-it-handle-circular-references)[⬆](https://github.com/typestack/class-transformer#table-of-contents)
+  //   //
+  //   // Circular references are ignored. For example, if you are transforming class `User` that contains property `photos` with type of `Photo`, and `Photo` contains link `user` to its parent `User`, then `user` will be ignored during transformation. Circular references are not ignored only during `classToClass` operation.
+  //   // <>
+  //   // https://github.com/typestack/class-transformer
+  //   // TODO Restored items seems not able to constructe the parent?... thus not removing itself
+  @classTransformer.Type(() => VirtualFolderNodeTypeHolder)
   public node_parent: VirtualFolderNodeTypeHolder | null = null;
 
   constructor(name: string) {

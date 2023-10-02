@@ -1,11 +1,10 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import * as fs from 'fs';
 // import { Dependency, DepNodeProvider } from './lib/treeView/nodeDependencies';
 import * as fileExplorer from './lib/treeView/fileExplorer';
 import { VirtualFolderNodeTypeHolder, VirtualFolderTreeView } from './main/treeView/VirtualFolderTreeView';
-import Flatted = require('flatted');
+// import Flatted = require('flatted');
+import * as flatted from 'flatted';
 import * as classTransformer from 'class-transformer';
 
 // let context_global_forPersistence: vscode.ExtensionContext;
@@ -13,18 +12,17 @@ import * as classTransformer from 'class-transformer';
 // @messy
 // let funcGenerate_SaveNodeStructure: ((det_SaveNodeStructure: boolean) => () => void) | null = null;
 // let saveNodeStructure_onExtensionClose: (() => Promise<Record<string, any>>) | null = null;
+/**
+ * must reset when Extension reload (better make null then ... )
+ * @messy @pb can be bad idea, cuz all the instance ref changed ...
+ * @messy @pb for undo, use the 2nd last (the last item is the curr state) -- the way how push undo state works (need init push too...)
+ */
+let arr_nodeRootJsobj_Saves: Record<string, any>[] | null = null;
+// let arr_nodeRootJsobj_Saves: string[] | null = null;
 
 const globalStateItemName_VirtualFolderTreeView_RootNode = 'VirtualFolderTreeView_RootNode';
 
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
-  //   // // Use the console to output diagnostic information (console.log) and errors (console.error)
-  //   // // This line of code will only be executed once when your extension is activated
-  //   // console.log('Congratulations, your extension "virtualfoldervsc" is now active!');
-  //
-  //   let disposable;
-  //
   //   //SECTION ### Simple Case - Intro
   //
   //   // The command has been defined in the package.json file
@@ -150,17 +148,33 @@ export function activate(context: vscode.ExtensionContext) {
 
   //SECTION ### File Explorer Tree View
 
+  arr_nodeRootJsobj_Saves = [];
+
+  // @messy due to Circular dependency is omitted in classTransform & Flatted couldnt help further & hack failed.. 
+  function load_and_reconstruct_virtualFolderTreeView_fixParentCircularDep(nodeRootJsobj_Saved: any) {
+    const nodeRoot_Saved = classTransformer.plainToInstance(VirtualFolderNodeTypeHolder, nodeRootJsobj_Saved as { length?: never }, {
+      enableCircularCheck: true,
+    });
+
+    function recursiveAssignBackParent(node_parent: VirtualFolderNodeTypeHolder) {
+      for (const node_child of node_parent.getChildren()) {
+        node_child.get_virtualFolderNode_debug().node_parent = node_parent;
+        recursiveAssignBackParent(node_child);
+      }
+    }
+    recursiveAssignBackParent(nodeRoot_Saved);
+
+    return nodeRoot_Saved;
+  }
   function load_virtualFolderTreeView() {
     // let virtualFolderTreeView_i;
-    const nodeRootJsonStr_Saved = context.globalState.get(globalStateItemName_VirtualFolderTreeView_RootNode);
-    if (nodeRootJsonStr_Saved === undefined) {
+    const nodeRootJsobj_Saved = context.globalState.get(globalStateItemName_VirtualFolderTreeView_RootNode);
+    if (nodeRootJsobj_Saved === undefined) {
       // const nodeRootJsonStr_Saved_T1 = /* json */ `@¦  {@¦    "collapsibleState": 2,@¦    "label": "root VirtualFolderNode",@¦    "realFileExplorerEntry": null,@¦    "contextValue": "ctxvalueVal_virtualFolder",@¦    "virtualFolderNode": {@¦      "arr_node_child": [@¦        {@¦          "collapsibleState": 2,@¦          "label": "h:\\\\Using\\\\JsParserSub\\\\src - Lv2 RealFileNode Test",@¦          "realFileExplorerEntry": {@¦            "uri": {@¦              "scheme": "file",@¦              "authority": "",@¦              "path": "/h:/Using/JsParserSub/src",@¦              "query": "",@¦              "fragment": "",@¦              "_formatted": null,@¦              "_fsPath": "h:\\\\Using\\\\JsParserSub\\\\src"@¦            },@¦            "type": 2@¦          },@¦          "contextValue": "ctxvalueVal_virtualFolder",@¦          "virtualFolderNode": {@¦            "arr_node_child": [],@¦            "name": "h:\\\\Using\\\\JsParserSub\\\\src - Lv2 RealFileNode Test"@¦          }@¦        },@¦        {@¦          "collapsibleState": 0,@¦          "label": "h:\\\\Using\\\\JsParserSub\\\\tsconfig.json - Lv2 RealFileNode Test",@¦          "realFileExplorerEntry": {@¦            "uri": {@¦              "scheme": "file",@¦              "authority": "",@¦              "path": "/h:/Using/JsParserSub/tsconfig.json",@¦              "query": "",@¦              "fragment": "",@¦              "_formatted": null,@¦              "_fsPath": "h:\\\\Using\\\\JsParserSub\\\\tsconfig.json"@¦            },@¦            "type": 1@¦          },@¦          "contextValue": "ctxvalueVal_virtualFolder",@¦          "virtualFolderNode": {@¦            "arr_node_child": [],@¦            "name": "h:\\\\Using\\\\JsParserSub\\\\tsconfig.json - Lv2 RealFileNode Test"@¦          }@¦        },@¦        {@¦          "collapsibleState": 0,@¦          "label": "Lv2 VirtualFileNode Test",@¦          "realFileExplorerEntry": null,@¦          "contextValue": "ctxvalueVal_virtualFolder",@¦          "virtualFolderNode": {@¦            "arr_node_child": [],@¦            "name": "Lv2 VirtualFileNode Test"@¦          }@¦        },@¦        {@¦          "collapsibleState": 1,@¦          "label": "Lv2 VirtualFileNode Collapsed Test",@¦          "realFileExplorerEntry": null,@¦          "contextValue": "ctxvalueVal_virtualFolder",@¦          "virtualFolderNode": {@¦            "arr_node_child": [],@¦            "name": "Lv2 VirtualFileNode Collapsed Test"@¦          }@¦        }@¦      ],@¦      "node_parent": null,@¦      "name": "root VirtualFolderNode"@¦    }@¦  }`;
       // const nodeRoot_Saved = classTransformer.plainToInstance(VirtualFolderNodeTypeHolder, JSON.parse(nodeRootJsonStr_Saved_T1) as { length?: never }, {
       return new VirtualFolderTreeView();
     } else {
-      const nodeRoot_Saved = classTransformer.plainToInstance(VirtualFolderNodeTypeHolder, nodeRootJsonStr_Saved as { length?: never }, {
-        enableCircularCheck: true,
-      });
+      const nodeRoot_Saved = load_and_reconstruct_virtualFolderTreeView_fixParentCircularDep(nodeRootJsobj_Saved);
       return new VirtualFolderTreeView(nodeRoot_Saved);
     }
   }
@@ -173,6 +187,7 @@ export function activate(context: vscode.ExtensionContext) {
     dragAndDropController: virtualFolderTreeView, // k this
   });
   // ;seems cannot use this if need reload..; context.subscriptions.push(view);
+  refreshView_and_addToUndoStateList_and_saveNodeStructure(); // init push
 
   // ## add & edit & delete & refresh
   {
@@ -198,7 +213,7 @@ export function activate(context: vscode.ExtensionContext) {
         });
         if (inputText !== undefined) {
           node.addChildNode(new VirtualFolderNodeTypeHolder(inputText, vscode.TreeItemCollapsibleState.Collapsed));
-          refreshView_and_saveNodeStructure();
+          refreshView_and_addToUndoStateList_and_saveNodeStructure();
           vscode.window.showInformationMessage(`Executed add :: ${node.label}.`);
         }
       })
@@ -229,7 +244,7 @@ export function activate(context: vscode.ExtensionContext) {
         });
         if (inputText !== undefined) {
           node.label = inputText;
-          refreshView_and_saveNodeStructure(); // well this gen hum
+          refreshView_and_addToUndoStateList_and_saveNodeStructure(); // well this gen hum
           vscode.window.showInformationMessage(`Executed edit :: ${node.label}.`);
         }
         // []
@@ -246,7 +261,7 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(
       vscode.commands.registerCommand('idVal_virtualFolderTreeView.deleteEntry', (node: VirtualFolderNodeTypeHolder) => {
         node.removeSelf();
-        refreshView_and_saveNodeStructure();
+        refreshView_and_addToUndoStateList_and_saveNodeStructure();
         // vscode.window.showInformationMessage(`Executed delete :: ${node instanceof VirtualFolderNodeTypeHolder ? node.label : virtualFolderTreeView.getTreeItem(node).label}.`);
         vscode.window.showInformationMessage(`Executed delete :: ${node.label}.`);
       })
@@ -256,7 +271,7 @@ export function activate(context: vscode.ExtensionContext) {
     //
     context.subscriptions.push(
       vscode.commands.registerCommand('idVal_virtualFolderTreeView.refreshEntry', () => {
-        refreshView_and_saveNodeStructure();
+        refreshView_and_addToUndoStateList_and_saveNodeStructure();
         // let msg;
         // if (node) {
         //   msg = node instanceof VirtualFolderNodeTypeHolder ? node.label : virtualFolderTreeView.getTreeItem(node).label;
@@ -310,7 +325,7 @@ export function activate(context: vscode.ExtensionContext) {
               node.addChildNode(node_Clipped);
               const label = node_Clipped.label;
               node_Clipped = null;
-              refreshView_and_saveNodeStructure();
+              refreshView_and_addToUndoStateList_and_saveNodeStructure();
               vscode.window.showInformationMessage(`Executed paste :: pasted ${label} on ${node.label}.`);
             }
 
@@ -350,7 +365,7 @@ export function activate(context: vscode.ExtensionContext) {
               node.addChildNode(new VirtualFolderNodeTypeHolder(null, state_CollapsedOr, node_Clipped));
               const uri = node_Clipped.uri;
               node_Clipped = null;
-              refreshView_and_saveNodeStructure();
+              refreshView_and_addToUndoStateList_and_saveNodeStructure();
               vscode.window.showInformationMessage(`Executed paste :: pasted ${uri} on ${node.label}.`);
             } else {
               throw new TypeError();
@@ -366,7 +381,7 @@ export function activate(context: vscode.ExtensionContext) {
   }
 
   // ## (Print &) Save & Load
-  async function saveNodeStructure() {
+  async function saveNodeStructure(nodeRoot_classTransformer_instanceToPlain_preExist?: Record<string, any>) {
     // I think the reason this wont work cuz the view is already cleared before activate() is called ....
     // seems more of async issue ...
     // seems like timing is the pb too must clean up fast? f there just no event to update these?
@@ -380,21 +395,134 @@ export function activate(context: vscode.ExtensionContext) {
     // console.error(virtualFolderTreeView.nodeRoot)
     // console.error(context)
     // console.error(context.globalState)
-    const nodeRoot_classTransformer_instanceToPlain = classTransformer.instanceToPlain(virtualFolderTreeView.nodeRoot, {
-      enableCircularCheck: true,
-    });
+    const nodeRoot_classTransformer_instanceToPlain =
+      nodeRoot_classTransformer_instanceToPlain_preExist === undefined
+        ? classTransformer.instanceToPlain(virtualFolderTreeView.nodeRoot, {
+            enableCircularCheck: true,
+          })
+        : nodeRoot_classTransformer_instanceToPlain_preExist; // aga seems ?? is not the meaning of; || seems more of ; but syntax just bad ..
     await context.globalState.update(globalStateItemName_VirtualFolderTreeView_RootNode, nodeRoot_classTransformer_instanceToPlain);
-    // console.error(new Date()) // cant exec to this point ...
+    // console.log(`>> saveNodeStructure() ${new Date()}`) // cant exec to this point ...
     return nodeRoot_classTransformer_instanceToPlain;
   }
 
   // @performance I dont want to, but seem have to bind this to refresh ...
-  function refreshView_and_saveNodeStructure() {
+  // @performance dont want to specify Redo Compensation for each -- just restore state much easier ..
+  // @pb // undo doesnt work, cuz the state is already changed // if have to sequential programing then not much better than the compensation steps ...
+  // ok that just make the steps circular order one back -- take the second last state ..
+  function refreshView_and_addToUndoStateList_and_saveNodeStructure() {
+    // virtualFolderTreeView.refresh();
+    // const nodeRoot_classTransformer_instanceToPlain = classTransformer.instanceToPlain(virtualFolderTreeView.nodeRoot, {
+    //   enableCircularCheck: true,
+    // });
+    // saveNodeStructure(nodeRoot_classTransformer_instanceToPlain); // << yes this is async ...
+    // arr_nodeRootJsobj_Saves!.push(nodeRoot_classTransformer_instanceToPlain);
+    // // // ~~~~// wish could change the code oreder inside, add list first , dk seems cant (decide)..
+    // // (async function saveNodeStructure_and_addToRedoStateList() {
+    // //   const nodeRoot_classTransformer_instanceToPlain = await saveNodeStructure(); // << yes this is async ...
+    // //   arr_SavedNodeStructureState!.push(nodeRoot_classTransformer_instanceToPlain);
+    // // })();
     virtualFolderTreeView.refresh();
-    saveNodeStructure(); // << yes this is async ...
+
+    //     const nodeRootJsstrFlatted = flatted.stringify(virtualFolderTreeView.nodeRoot);
+    //     const nodeRootJsobjFlatted_Saved = flatted.parse(nodeRootJsstrFlatted);
+    //     console.log('>> Flatted.parse(nodeRootJsstrFlatted);');
+    //     console.log(nodeRootJsobjFlatted_Saved);
+    //     console.log(nodeRootJsobjFlatted_Saved.virtualFolderNode.arr_node_child[0]?.virtualFolderNode.node_parent);
+    //     console.log(nodeRootJsobjFlatted_Saved.virtualFolderNode.arr_node_child[0]?.virtualFolderNode.node_parent === nodeRootJsobjFlatted_Saved); // true
+    //     // does print true em
+    //
+    //     const nodeRootJsobjClassTransformer = classTransformer.instanceToPlain(virtualFolderTreeView.nodeRoot, {
+    //       enableCircularCheck: true,
+    //     });
+    //     console.log('>> classTransformer.instanceToPlain(virtualFolderTreeView.nodeRoot, {');
+    //     console.log(nodeRootJsobjClassTransformer);
+    //     console.log(nodeRootJsobjClassTransformer.virtualFolderNode.arr_node_child[0]?.virtualFolderNode.node_parent); // undefined
+    //     console.log(nodeRootJsobjClassTransformer.virtualFolderNode.arr_node_child[0]?.virtualFolderNode.node_parent === nodeRootJsobjClassTransformer); // false
+
+    const nodeRootJsobjClassTransformer = classTransformer.instanceToPlain(virtualFolderTreeView.nodeRoot, {
+      enableCircularCheck: true,
+    });
+    saveNodeStructure(nodeRootJsobjClassTransformer); // << yes this is async ...
+    arr_nodeRootJsobj_Saves!.push(nodeRootJsobjClassTransformer);
   }
   // @messy
-  virtualFolderTreeView.refreshView_and_saveNodeStructure__import_messy = refreshView_and_saveNodeStructure;
+  virtualFolderTreeView.refreshView_and_saveNodeStructure__import_messy = refreshView_and_addToUndoStateList_and_saveNodeStructure;
+
+  function undo_restorePrevSavedNodeStructureState() {
+    // arr_nodeRootJsobj_Saves!.pop()
+    // // []
+    // // As others said, In Javascript `array[-1]` is just a reference to a *member* of `array` indexed by `"-1"` (like `"length"`) that is usually `undefined` (because `array['-1']` is not evaluated to any value).
+    // // <>
+    // // https://stackoverflow.com/questions/54066261/why-cant-i-do-array-1-in-javascript
+    // // ~~~~// ok indeed undefined , good
+    // const nodeRootJsobj_Saved = arr_nodeRootJsobj_Saves![arr_nodeRootJsobj_Saves!.length - 1];
+    // // @messy: well seems better just allow change of root node better ... (plus all the ref is changed anyways...)
+    // // well cstu can be left with .. just leave that ..
+    // if (nodeRootJsobj_Saved === undefined) {
+    //   vscode.window.showInformationMessage(`[Mistake]: cannot undo, cuz nodeRootJsobj_Saved === undefined.`);
+    //   return null;
+    // }
+    if (arr_nodeRootJsobj_Saves === null) {
+      throw new Error('Must initalized when Extension is activated');
+    }
+    if (arr_nodeRootJsobj_Saves.length === 1) {
+      vscode.window.showInformationMessage(`[Mistake]: cannot undo, cuz current state is the Most Beginning state.`);
+      return null;
+    }
+    //     arr_nodeRootJsobj_Saves.pop();
+    //     const nodeRootJsobj_Saved = arr_nodeRootJsobj_Saves[arr_nodeRootJsobj_Saves.length - 1];
+    //     if (nodeRootJsobj_Saved === undefined) {
+    //       throw new TypeError('Not_Reachable cuz length check before');
+    //     }
+    //
+    //     const nodeRoot_Saved = classTransformer.plainToInstance(VirtualFolderNodeTypeHolder, nodeRootJsobj_Saved as { length?: never }, {
+    //       enableCircularCheck: true,
+    //     });
+    //     // just the messy & vs reload extension & ref messed
+    //     virtualFolderTreeView.nodeRoot = nodeRoot_Saved;
+    //     {
+    //       virtualFolderTreeView.refresh(); // Only refresh & save, no undo
+    //       saveNodeStructure(nodeRootJsobj_Saved); // << yes this is async ...
+    //     }
+    //     return nodeRoot_Saved;
+
+    arr_nodeRootJsobj_Saves.pop();
+    const nodeRootJsobjClassTransformer_Saved = arr_nodeRootJsobj_Saves[arr_nodeRootJsobj_Saves.length - 1];
+    if (nodeRootJsobjClassTransformer_Saved === undefined) {
+      throw new TypeError('Not_Reachable cuz length check before');
+    }
+
+    // []
+    // I know this is documented as the behavior when detecting a circular reference.
+    // <>
+    // https://github.com/typestack/class-transformer/issues/224
+    // em ... // still no solve
+
+    //     const nodeRootJsobjFlatted_Saved = Flatted.parse(nodeRootJsstrFlatted_Saved);
+    //     const nodeRoot_Saved = classTransformer.plainToInstance(VirtualFolderNodeTypeHolder, nodeRootJsobjFlatted_Saved as { length?: never }, {
+    //       enableCircularCheck: true,
+    //     }) as any;
+    //
+    //     console.log('>> Flatted.parse(nodeRootJsstrFlatted_Saved);');
+    //     console.log(nodeRootJsobjFlatted_Saved);
+    //     console.log(nodeRootJsobjFlatted_Saved.virtualFolderNode.arr_node_child[0]?.virtualFolderNode.node_parent);
+    //     console.log(nodeRootJsobjFlatted_Saved.virtualFolderNode.arr_node_child[0]?.virtualFolderNode.node_parent === nodeRootJsobjFlatted_Saved); // true
+    //
+    //     console.log('>> classTransformer.plainToInstance(VirtualFolderNodeTypeHolder, nodeRootJsobjFlatted_Saved as { length?: never }, {');
+    //     console.log(nodeRoot_Saved);
+    //     console.log(nodeRoot_Saved.virtualFolderNode.arr_node_child[0]?.virtualFolderNode.node_parent); // null
+    //     console.log(nodeRoot_Saved.virtualFolderNode.arr_node_child[0]?.virtualFolderNode.node_parent === nodeRoot_Saved); // false
+
+    const nodeRoot_Saved = load_and_reconstruct_virtualFolderTreeView_fixParentCircularDep(nodeRootJsobjClassTransformer_Saved);
+    // just the messy & vs reload extension & ref messed
+    virtualFolderTreeView.nodeRoot = nodeRoot_Saved;
+    {
+      virtualFolderTreeView.refresh(); // Only refresh & save, no undo
+      saveNodeStructure(nodeRootJsobjClassTransformer_Saved); // << yes this is async ...
+    }
+    return nodeRoot_Saved;
+  }
 
   {
     context.subscriptions.push(
@@ -457,14 +585,24 @@ export function activate(context: vscode.ExtensionContext) {
     );
     context.subscriptions.push(
       vscode.commands.registerCommand('idVal_virtualFolderTreeView.cmd_restoreToFactory_VirtualFolderStructure', async () => {
-        // []
-        // What I wish to do is to find a way to remove the key, not only clear the value.
-        // <>
-        // https://stackoverflow.com/questions/57845512/remove-useless-keys-from-vscode-extensioncontext-globalstate
-        await context.globalState.update(globalStateItemName_VirtualFolderTreeView_RootNode, undefined);
-        // saveNodeStructure_onExtensionClose = null; // @messy
-        await vscode.commands.executeCommand('idVal_virtualFolderTreeView.reloadExtension');
-        vscode.window.showInformationMessage(`Executed restore & reload extension.`);
+        const response = await vscode.window.showInformationMessage('Confirm: Restore to factory?', 'Yes', 'No');
+        if (response === 'No' || response === undefined) {
+          return;
+        } else if (response === 'Yes') {
+          // []
+          // What I wish to do is to find a way to remove the key, not only clear the value.
+          // <>
+          // https://stackoverflow.com/questions/57845512/remove-useless-keys-from-vscode-extensioncontext-globalstate
+          await context.globalState.update(globalStateItemName_VirtualFolderTreeView_RootNode, undefined);
+          // saveNodeStructure_onExtensionClose = null; // @messy
+          await vscode.commands.executeCommand('idVal_virtualFolderTreeView.reloadExtension');
+          vscode.window.showInformationMessage(`Executed restore & reload extension.`);
+        }
+      })
+    );
+    context.subscriptions.push(
+      vscode.commands.registerCommand('idVal_virtualFolderTreeView.cmd_undo_VirtualFolderStructure', () => {
+        undo_restorePrevSavedNodeStructureState(); // async ...
       })
     );
   }
@@ -526,7 +664,6 @@ export function activate(context: vscode.ExtensionContext) {
   //!SECTION
 }
 
-// This method is called when your extension is deactivated
 // ;seems cannot pass arg; export function deactivate(context: vscode.ExtensionContext, det_SaveNodeStructure = true, virtualFolderTreeView: VirtualFolderTreeView) {
 // ;seems cannot pass arg;   console.error(']]]]]]')
 // ;seems cannot pass arg;   console.error(context)
@@ -608,3 +745,19 @@ export function deactivate() {
 // well icon said whatever ..
 
 // just reload .... guess svg file ones need bigger reload
+
+// []
+// *   The badges provided in the `package.json` may not be SVGs unless they are from [trusted badge providers](https://code.visualstudio.com/api/references/extension-manifest#approved-badges).
+// <>
+// https://code.visualstudio.com/api/working-with-extensions/publishing-extension
+//no_knowlres waste my time 
+
+// seem like that create project is not needed ... just org & token & publisher
+
+// https://stackoverflow.com/questions/9853325/how-to-convert-a-svg-to-a-png-with-imagemagick
+// E:\ImageMagick-7.0.10-Q16-HDRI\convert.exe -background none -size 1024x1024 input.svg output.png
+
+// []
+// I just ended up using yarn for my vscode extension, while using pnpm for everything else. Hopefully this will be solved soon.
+// <>
+// https://github.com/microsoft/vscode-vsce/issues/421

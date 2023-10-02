@@ -2,7 +2,8 @@
   "name": "virtualfoldervsc",
   "displayName": "VirtualFolderVsc",
   "description": "create Virtual Folders in Vscode Panel for Files",
-  "version": "0.0.1",
+  "version": "0.1.4",
+  "publisher": "norlz",
   "engines": {
     "vscode": "^1.82.0"
   },
@@ -70,6 +71,11 @@
       {
         "command": "idVal_virtualFolderTreeView.reloadExtension",
         "title": "Reload Extension"
+      },
+      {
+        "command": "idVal_virtualFolderTreeView.cmd_undo_VirtualFolderStructure",
+        "title": "Undo",
+        "icon": "media/undo.svg"
       }
     ],
     "keybindings": [
@@ -132,6 +138,11 @@
           "command": "idVal_virtualFolderTreeView.cmd_restoreToFactory_VirtualFolderStructure",
           "when": "view == idVal_virtualFolderTreeView",
           "group": "navigation@12"
+        },
+        {
+          "command": "idVal_virtualFolderTreeView.cmd_undo_VirtualFolderStructure",
+          "when": "view == idVal_virtualFolderTreeView",
+          "group": "navigation@16"
         }
       ]
     },
