@@ -14,7 +14,9 @@
   You drag files/folders from here into the Virtual Folder.
 
 - ![demo](<virtualfoldervsc demo 20230930 .png>)
-- <video src="virtualfoldervsc%20demo%2020231001_222157%20.mp4" controls title="demo"></video>
+- https://github.com/Norlandz/virtualfoldervsc/assets/43581880/a97d3cbb-4e4a-45aa-9a2f-a55258da8a54
+
+
   
 ### Functionality
 
