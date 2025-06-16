@@ -1,3 +1,15 @@
+**_Update:_**
+
+This project is broken
+
+The "virtual" was only meant for more like a **shortcut** to the files, by maintaining a **"virtual project structure"**,\
+But once you clicked and go to the file in the editor, you **are editing the underlying files**.
+
+
+---
+
+**_Outdated & Misleading Readme:_**
+
 ### Introduction
 
 - This is a Virtual Folder.
